@@ -227,7 +227,8 @@
 
   // ── Intercept add-to-cart network calls ──────────────────
   function interceptAddToCart() {
-    var cartPattern = /api\/commerce\/shopping-cart|api\/3\/commerce\/cart/;
+    // Must match the add-to-cart endpoints only — NOT the bare /shopping-cart init POST
+  var cartPattern = /api\/commerce\/shopping-cart\/entries|api\/3\/commerce\/cart\/[^\/]+\/items/;
     var origOpen = XMLHttpRequest.prototype.open;
     var origSend = XMLHttpRequest.prototype.send;
     XMLHttpRequest.prototype.open = function(method, url) {
