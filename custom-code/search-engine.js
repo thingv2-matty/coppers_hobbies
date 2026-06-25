@@ -38,15 +38,15 @@
     // Model kit manufacturers
     'Abteilung502','Academy','AFV','AFV Club','AK','AK Interactive','Albion Alloys','All Game Terrain and Woodland Scenics',
     'Alpha Abrasives','AMT','Amusing Hobby','Aoshima','Arma','Arma Hobby','Army Painter','Asuka',
-    'Bandai','Bob Smith Industries','Border','Border Model','Bronco',
+    'Bandai','Bare Metal Foil','Bob Smith Industries','Border','Border Model','Bronco','Bud Nosen Wood',
     'Classy Hobby','Copper State Models','Dragon','DSPIAE',
     'Eduard','Evergreen','Excel','Flex-Pad',
     'Fujimi','Gaahleri','Gamers Grass','Gecko','Gecko Models',
     'GodHand','Gofer Racing','Good Smile Company','Great Wall Hobby','GSI Creos','Gunze',
-    'Hasegawa','Heller','HiQ Parts','Hobby Boss',
+    'Hasegawa','Heller','HiQ Parts','HK Models','Hobby Boss',
     'ICM','Italeri','Iwata',
     'K&S Metals','Kinetic','Kotare',
-    'Lifecolor','Magic Factory','Many Minis','Master Box','Master Tools','Mathos Models',
+    'Lifecolor','Magic Factory','Many Minis','Master Box','Master Tools','Matho Models','Mathos Models',
     'Meng','MicroScale','Microscale','Milliput','MiniArt','Mission Models','Moebius','Molotow','MPC','Mr Hobby','Mr. Hobby',
     'Pit Road','Platz','Plastruct','Polar Lights',
     'Revell','Revell Germany','RFM','Roden','Ryefield Model',
@@ -716,40 +716,46 @@
       // Scale — collapsed
       (scales.length ? section('Scale', checklist(scales, 'fc-scale', filters.scales)) : '') +
 
-      (hasFilters ? '<button class="ch-clr" style="margin-top:8px;font-size:11px">Clear all filters</button>' : '') +
+      '<button id="ch-clr-all" class="ch-clr" style="margin-top:8px;font-size:11px;display:none">Clear all filters</button>' +
     '</div>';
   }
 
   function wireFilters(container, priceRange, onFilterChange) {
+    function syncClearBtn() {
+      var btn = container.querySelector('#ch-clr-all');
+      if (btn) btn.style.display = getActiveFilterCount() > 0 ? 'block' : 'none';
+    }
+    function onChange() { onFilterChange(); syncClearBtn(); }
+
     // Availability
     var instockCb = container.querySelector('#ch-instock');
-    if (instockCb) instockCb.addEventListener('change', function() { filters.inStockOnly = this.checked; onFilterChange(); });
+    if (instockCb) instockCb.addEventListener('change', function() { filters.inStockOnly = this.checked; onChange(); });
 
     // Department
     container.querySelectorAll('.fc-col').forEach(function(cb) {
-      cb.addEventListener('change', function() { filters.collections[cb.value] = cb.checked; onFilterChange(); });
+      cb.addEventListener('change', function() { filters.collections[cb.value] = cb.checked; onChange(); });
     });
 
     // Brand
     container.querySelectorAll('.fc-brand').forEach(function(cb) {
-      cb.addEventListener('change', function() { filters.brands[cb.value] = cb.checked; onFilterChange(); });
+      cb.addEventListener('change', function() { filters.brands[cb.value] = cb.checked; onChange(); });
     });
 
     // Category
     container.querySelectorAll('.fc-cat').forEach(function(cb) {
-      cb.addEventListener('change', function() { filters.categories[cb.value] = cb.checked; onFilterChange(); });
+      cb.addEventListener('change', function() { filters.categories[cb.value] = cb.checked; onChange(); });
     });
 
     // Scale
     container.querySelectorAll('.fc-scale').forEach(function(cb) {
-      cb.addEventListener('change', function() { filters.scales[cb.value] = cb.checked; onFilterChange(); });
+      cb.addEventListener('change', function() { filters.scales[cb.value] = cb.checked; onChange(); });
     });
 
     // Clear buttons
     container.querySelectorAll('.ch-clr').forEach(function(btn) {
       btn.addEventListener('click', function() {
         filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
-        onFilterChange();
+        onChange();
       });
     });
 
@@ -781,7 +787,7 @@
         var lo = parseFloat(rangeMin.value), hi = parseFloat(rangeMax.value);
         filters.priceMin = lo > absMin ? lo : null;
         filters.priceMax = hi < absMax ? hi : null;
-        onFilterChange();
+        onChange();
       }, 300);
     }
 
