@@ -286,21 +286,8 @@
     new MutationObserver(hidePopup).observe(document.body, { childList: true, subtree: true });
   }
 
-  // ── Watch cart badge for auto-open on add-to-cart ────────
-  function watchCartBadge() {
-    var badge = document.querySelector('.sqs-cart-quantity');
-    if (!badge) return;
-    var last = badge.textContent.trim();
-    new MutationObserver(function() {
-      var now = badge.textContent.trim();
-      if (now !== last && parseInt(now) > parseInt(last || '0')) openDrawer();
-      last = now;
-    }).observe(badge, { childList: true, characterData: true, subtree: true });
-  }
-
   interceptAddToCart();
   hookCartLinks();
-  watchCartBadge();
   suppressCartPopup();
   new MutationObserver(hookCartLinks).observe(document.body, { childList: true, subtree: true });
 
