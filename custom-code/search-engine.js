@@ -340,6 +340,8 @@
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
           console.log('[CH Search] Cache hit:', allProducts.length, 'products');
+          if (isSearchPage()) renderSearchResults();
+          if (isCollectionPage()) renderCollectionPage();
           return Promise.resolve();
         }
       }
