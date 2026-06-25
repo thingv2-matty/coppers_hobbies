@@ -435,9 +435,18 @@
       if (e.key === 'Enter')     { onEnter(e); }
     });
 
-    // Prevent input blur (and Squarespace form submit) when clicking a flyout item.
-    // mousedown preventDefault keeps focus on the input; click still fires and navigates.
+    // Squarespace's search container intercepts clicks and navigates to /search.
+    // mousedown preventDefault stops input blur; click handler stops propagation
+    // and navigates manually so Squarespace's listener never fires.
     flyout.addEventListener('mousedown', function(e) { e.preventDefault(); });
+    flyout.addEventListener('click', function(e) {
+      var link = e.target.closest('a.ch-fr');
+      if (link) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = link.href;
+      }
+    });
 
     document.addEventListener('click', function(e) {
       if (flyout && !flyout.contains(e.target) && e.target !== searchInput) closeFlyout();
