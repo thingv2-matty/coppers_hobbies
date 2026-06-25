@@ -118,8 +118,9 @@
     return null;
   }
 
-  var CACHE_KEY = 'ch_search_v3'; // bumped: added scale field + brand/price/pagination
+  var CACHE_KEY = 'ch_search_v3';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
+  var CACHE_STORE = window.sessionStorage; // sessionStorage: ~10MB limit, cleared on tab close → images always show
 
   // ── State ───────────────────────────────────────────────────────────────────
   var allProducts  = [];
@@ -327,17 +328,11 @@
   function buildIndex() {
     var cacheLoaded = false;
     try {
-      var raw = localStorage.getItem(CACHE_KEY);
+      var raw = CACHE_STORE.getItem(CACHE_KEY);
       if (raw) {
         var cached = JSON.parse(raw);
         if (Date.now() - cached.ts < CACHE_TTL && cached.products && cached.products.length > 0) {
-          // cn was stripped from cache to save space — reconstruct from collection key
-          var colNameMap = {};
-          COLLECTIONS.forEach(function(col) { colNameMap[col.key] = col.name; });
-          allProducts  = cached.products.map(function(p) {
-            p.cn = colNameMap[p.c] || p.c;
-            return p;
-          });
+          allProducts  = cached.products;
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
           cacheLoaded  = true;
@@ -378,18 +373,9 @@
         fuseInstance = makeFuse(allProducts); // final rebuild with everything
         hideStatus();
         console.log('[CH Search] Full index ready:', allProducts.length, 'products');
-        // Strip img (CDN URLs, ~700KB) and cn (derivable from c key) to fit mobile localStorage limits
-        var cacheable = allProducts.map(function(p) {
-          return { id: p.id, t: p.t, u: p.u, p: p.p, s: p.s, c: p.c, cats: p.cats, scale: p.scale };
-        });
         try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: cacheable }));
-        } catch(e) {
-          try {
-            ['ch_search_v1','ch_search_v2'].forEach(function(k){ localStorage.removeItem(k); });
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: cacheable }));
-          } catch(e2) { console.warn('[CH Search] Cache write failed — localStorage full'); }
-        }
+          CACHE_STORE.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: allProducts }));
+        } catch(e) { console.warn('[CH Search] Cache write failed:', e); }
         if (isSearchPage()) renderSearchResults();
         if (isCollectionPage()) renderCollectionPage();
       })
