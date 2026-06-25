@@ -450,6 +450,10 @@
       if (e.key === 'Enter')     { onEnter(e); }
     });
 
+    // Prevent input blur (and Squarespace form submit) when clicking a flyout item.
+    // mousedown preventDefault keeps focus on the input; click still fires and navigates.
+    flyout.addEventListener('mousedown', function(e) { e.preventDefault(); });
+
     document.addEventListener('click', function(e) {
       if (flyout && !flyout.contains(e.target) && e.target !== searchInput) closeFlyout();
     });
