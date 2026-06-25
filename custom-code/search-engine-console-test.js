@@ -177,10 +177,24 @@
     '#ch-sl{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}',
     '@media(max-width:720px){#ch-sl{grid-template-columns:1fr}}',
     '#ch-sf{position:sticky;top:24px;max-height:calc(100vh - 80px);overflow-y:auto;padding-right:4px;scrollbar-width:thin}',
+    // Mobile: sidebar hidden in layout; shown via fixed body-level wrapper
+    '@media(max-width:720px){#ch-sf{display:none!important}}',
+    '@media(max-width:720px){#ch-sl{grid-template-columns:1fr}}',
+    // Mobile filter wrapper — always at body level so z-index is root stacking context
+    '#ch-mobile-filter{position:fixed;bottom:0;left:0;right:0;max-height:85dvh;z-index:9990;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 30px rgba(31,28,24,.15);overflow-y:auto;transform:translateY(100%);transition:transform .3s ease;pointer-events:none}',
+    '#ch-mobile-filter.open{transform:translateY(0);pointer-events:all}',
+    '#ch-mobile-filter #ch-sf{display:block!important;padding:20px 16px;max-height:none!important;overflow-y:visible!important}',
+    '.ch-filter-scrim{display:none;position:fixed;inset:0;background:rgba(28,24,18,.45);z-index:9989}',
+    '.ch-filter-scrim.open{display:block}',
+    '#ch-sf-close-bar{display:none}',
+    '@media(max-width:720px){#ch-sf-close-bar{display:flex;width:100%;justify-content:space-between;align-items:center;padding:0 0 16px;border-bottom:1px solid #ece4d6;margin-bottom:16px}}',
+    '.ch-filter-btn{display:none}',
+    '@media(max-width:720px){.ch-filter-btn{display:flex;align-items:center;gap:6px;background:none;border:1.5px solid #2c2820;color:#1f1c18;padding:7px 14px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:13px;cursor:pointer}}',
+    '.ch-filter-badge{background:#c9943a;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:2px}',
     '.ch-fg-hd{cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;margin:0 0 10px}',
     '.ch-fg-hd h3{margin:0}',
-    '.ch-fg-hd::after{content:"▴";font-size:14px;color:#8a8273;flex-shrink:0;margin-left:8px;line-height:1}',
-    '.ch-fg.collapsed .ch-fg-hd::after{content:"▾"}',
+    '.ch-fg.collapsible .ch-fg-hd::after{content:"▴";font-size:14px;color:#8a8273;flex-shrink:0;margin-left:8px;line-height:1}',
+    '.ch-fg.collapsible.collapsed .ch-fg-hd::after{content:"▾"}',
     '.ch-fg.collapsed .ch-fg-bd{display:none}',
     '.ch-fg{margin-bottom:28px}',
     '.ch-fg h3{font-family:"Work Sans",sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8a8273;margin:0 0 10px}',
@@ -330,7 +344,13 @@
       if (raw) {
         var cached = JSON.parse(raw);
         if (Date.now() - cached.ts < CACHE_TTL && cached.products && cached.products.length > 0) {
-          allProducts  = cached.products;
+          // cn was stripped from cache to save space — reconstruct from collection key
+          var colNameMap = {};
+          COLLECTIONS.forEach(function(col) { colNameMap[col.key] = col.name; });
+          allProducts  = cached.products.map(function(p) {
+            p.cn = colNameMap[p.c] || p.c;
+            return p;
+          });
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
           console.log('[CH Search] Cache hit:', allProducts.length, 'products');
@@ -338,6 +358,9 @@
         }
       }
     } catch(e) {}
+
+    // Clean up old cache versions to free localStorage space before writing new one
+    ['ch_search_v1', 'ch_search_v2'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
 
     showStatus('Building search index…');
 
@@ -362,9 +385,18 @@
         fuseInstance = makeFuse(allProducts); // final rebuild with everything
         hideStatus();
         console.log('[CH Search] Full index ready:', allProducts.length, 'products');
+        // Strip img (CDN URLs, ~700KB) and cn (derivable from c key) to fit mobile localStorage limits
+        var cacheable = allProducts.map(function(p) {
+          return { id: p.id, t: p.t, u: p.u, p: p.p, s: p.s, c: p.c, cats: p.cats, scale: p.scale };
+        });
         try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: allProducts }));
-        } catch(e) { console.warn('[CH Search] Cache write failed — storage may be full'); }
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: cacheable }));
+        } catch(e) {
+          try {
+            ['ch_search_v1','ch_search_v2'].forEach(function(k){ localStorage.removeItem(k); });
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: cacheable }));
+          } catch(e2) { console.warn('[CH Search] Cache write failed — localStorage full'); }
+        }
         if (isSearchPage()) renderSearchResults();
         if (isCollectionPage()) renderCollectionPage();
       })
@@ -550,7 +582,7 @@
         '<h1>Results for "' + esc(q) + '"</h1>' +
         '<p class="ch-rc" id="ch-sr-count">' + countTxt + '</p>' +
         '<div id="ch-sl">' +
-          renderSidebar({ brands: brands, cats: cats, scales: scales, priceRange: pr, showDept: true }) +
+          renderSidebar({ brands: brands, cats: cats, scales: scales, priceRange: pr, showDept: true, activeCols: getActiveCollectionKeys(all) }) +
           '<div id="ch-sg"></div>' +
         '</div>';
       wireFilters(container, pr, function() { srPage = 1; refreshSRGrid(all, pr, isMobile); });
@@ -574,6 +606,7 @@
       if (sg) sg.innerHTML = renderPerPage(mob) + renderCards(pg) + renderPagination(filt.length, srPage);
       wirePerPage(container, function() { srPage = 1; refreshSRGrid(allItems, priceRange, mob); });
       wirePagination(container, 'ch-sr', function(p) { srPage = p; refreshSRGrid(allItems, priceRange, mob); });
+      wireMobileFilterPanel(container);
     }
   }
 
@@ -617,9 +650,16 @@
   function getUniqueScales(products) {
     var seen = {}, scales = [];
     products.forEach(function(p) {
-      if (p.scale && !seen[p.scale]) { seen[p.scale] = true; scales.push(p.scale); }
+      // Exclude art supplies — wire/tube gauges like "1/16" create false scale matches
+      if (p.scale && p.c !== 'art' && !seen[p.scale]) { seen[p.scale] = true; scales.push(p.scale); }
     });
     return scales.sort(function(a, b) { return parseInt(a.slice(2)) - parseInt(b.slice(2)); });
+  }
+
+  function getActiveCollectionKeys(products) {
+    var seen = {};
+    products.forEach(function(p) { seen[p.c] = true; });
+    return seen;
   }
 
   function getPriceRange(products) {
@@ -648,7 +688,7 @@
     function checklist(items, cls, activeMap) {
       if (!items.length) return '';
       return '<div>' +
-        items.slice(0, 60).map(function(v) {
+        items.map(function(v) {
           return '<label class="ch-fo"><input type="checkbox" class="' + cls + '" value="' + esc(v) + '"' + (activeMap[v] ? ' checked' : '') + '> ' + esc(v) + '</label>';
         }).join('') + '</div>';
     }
@@ -672,6 +712,8 @@
       : '';
 
     return '<div id="ch-sf">' +
+      // Mobile close button (hidden on desktop via CSS)
+      '<div class="ch-sf-close" id="ch-sf-close-bar"><button id="ch-sf-close" style="background:none;border:none;font-family:\'Work Sans\',sans-serif;font-size:14px;font-weight:600;color:#1f1c18;cursor:pointer;padding:0">Filters ×</button><button class="ch-clr" style="font-size:11px;padding:0">Clear all</button></div>' +
       // Availability — not collapsible
       '<div class="ch-fg"><div class="ch-fg-hd" style="cursor:default"><h3 style="flex:1">Availability</h3></div><div class="ch-fg-bd">' +
       '<label class="ch-it"><label class="ch-tg"><input type="checkbox" id="ch-instock"' + (filters.inStockOnly ? ' checked' : '') + '><span class="ch-ts"></span></label> In stock only</label>' +
@@ -681,7 +723,9 @@
       priceSection +
 
       // Department (search page only) — collapsed
-      (opts.showDept ? section('Department', COLLECTIONS.map(function(col) {
+      (opts.showDept ? section('Department', COLLECTIONS.filter(function(col) {
+          return !opts.activeCols || opts.activeCols[col.key];
+        }).map(function(col) {
           return '<label class="ch-fo"><input type="checkbox" class="fc-col" value="' + col.key + '"' + (filters.collections[col.key] ? ' checked' : '') + '> ' + esc(col.name) + '</label>';
         }).join('')) : '') +
 
@@ -815,13 +859,93 @@
     });
   }
 
+  function getActiveFilterCount() {
+    var n = (filters.inStockOnly ? 1 : 0) + (filters.priceMin !== null ? 1 : 0) + (filters.priceMax !== null ? 1 : 0);
+    ['brands','categories','scales','collections'].forEach(function(k) {
+      n += Object.keys(filters[k]).filter(function(v){ return filters[k][v]; }).length;
+    });
+    return n;
+  }
+
   function renderPerPage(isMobile) {
     var opts = isMobile ? [6, 12, 18, 24] : [12, 24, 36, 48];
-    return '<div class="ch-sg-toolbar"><span class="ch-pp-label">Show per page:</span>' +
+    var fc = getActiveFilterCount();
+    var badge = fc > 0 ? '<span class="ch-filter-badge">' + fc + '</span>' : '';
+    return '<div class="ch-sg-toolbar">' +
+      '<button class="ch-filter-btn" id="ch-filter-btn">⊟ Filters' + badge + '</button>' +
+      '<span class="ch-pp-label">Show per page:</span>' +
       opts.map(function(n) {
         return '<button class="ch-pp-btn' + (n === perPage ? ' active' : '') + '" data-pp="' + n + '">' + n + '</button>';
       }).join('') +
     '</div>';
+  }
+
+  var _sfOrigHost = null; // remembers where #ch-sf lived before moving to mobile panel
+
+  function wireMobileFilterPanel(container) {
+    if (window.innerWidth > 720) return;
+
+    // Scrim
+    var scrim = document.getElementById('ch-filter-scrim');
+    if (!scrim) {
+      scrim = document.createElement('div');
+      scrim.id = 'ch-filter-scrim';
+      scrim.className = 'ch-filter-scrim';
+      document.body.appendChild(scrim);
+    }
+
+    // Fixed wrapper at body level — sidesteps any stacking context from grid containers
+    var panel = document.getElementById('ch-mobile-filter');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'ch-mobile-filter';
+      document.body.appendChild(panel);
+    }
+
+    var btn = container.querySelector('#ch-filter-btn');
+
+    function openPanel() {
+      var sf = document.getElementById('ch-sf');
+      if (sf && sf.parentNode !== panel) {
+        _sfOrigHost = sf.parentNode;
+        panel.appendChild(sf); // move into fixed body-level wrapper
+      }
+      panel.classList.add('open');
+      scrim.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Wire close button inside panel
+      var closeBtn = panel.querySelector('#ch-sf-close');
+      if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); }
+      // Wire clear-all inside panel close bar (filters reset + close)
+      var clearBar = panel.querySelector('#ch-sf-close-bar .ch-clr');
+      if (clearBar) { clearBar.addEventListener('click', function() {
+        filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+        closePanel();
+      }); }
+    }
+
+    function closePanel() {
+      panel.classList.remove('open');
+      scrim.classList.remove('open');
+      document.body.style.overflow = '';
+      // Move #ch-sf back to its original home in the layout
+      var sf = document.getElementById('ch-sf');
+      if (sf && _sfOrigHost && sf.parentNode === panel) {
+        _sfOrigHost.insertBefore(sf, _sfOrigHost.querySelector('#ch-sg') || null);
+      }
+    }
+
+    // Replace button to avoid stacking listeners
+    if (btn) {
+      var newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      newBtn.addEventListener('click', openPanel);
+    }
+    // Replace scrim listener too
+    var newScrim = scrim.cloneNode(false);
+    scrim.parentNode.replaceChild(newScrim, scrim);
+    newScrim.className = 'ch-filter-scrim';
+    newScrim.addEventListener('click', closePanel);
   }
 
   function wirePerPage(container, onChangePerPage) {
@@ -928,6 +1052,7 @@
       if (sg) sg.innerHTML = renderPerPage(isMobile) + renderCards(pg) + renderPagination(filt.length, colPage);
       wirePerPage(container, function() { colPage = 1; refreshColGrid(); });
       wirePagination(container, 'ch-col', function(p) { colPage = p; refreshColGrid(); });
+      wireMobileFilterPanel(container);
     }
 
     // Build sidebar once colProducts has real data; only refresh grid on filter/page changes
