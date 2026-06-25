@@ -325,6 +325,7 @@
   }
 
   function buildIndex() {
+    var cacheLoaded = false;
     try {
       var raw = localStorage.getItem(CACHE_KEY);
       if (raw) {
@@ -339,13 +340,17 @@
           });
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
+          cacheLoaded  = true;
           console.log('[CH Search] Cache hit:', allProducts.length, 'products');
-          if (isSearchPage()) renderSearchResults();
-          if (isCollectionPage()) renderCollectionPage();
-          return Promise.resolve();
         }
       }
-    } catch(e) {}
+    } catch(e) { console.warn('[CH Search] Cache read error:', e); }
+
+    if (cacheLoaded) {
+      if (isSearchPage()) renderSearchResults();
+      if (isCollectionPage()) renderCollectionPage();
+      return Promise.resolve();
+    }
 
     // Clean up old cache versions to free localStorage space before writing new one
     ['ch_search_v1', 'ch_search_v2'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
