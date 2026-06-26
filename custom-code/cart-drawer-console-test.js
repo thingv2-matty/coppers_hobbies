@@ -311,6 +311,64 @@
     }).observe(badge, { childList: true, characterData: true, subtree: true });
   }
 
+  // ── Geo-restriction (Canadian orders only) ──────────────
+  var _geoCountry = sessionStorage.getItem('ch_geo_country') || null;
+
+  // Inject geo modal HTML
+  var geoTmp = document.createElement('div');
+  geoTmp.innerHTML = '<div id="ch-geo-block" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:9100;align-items:center;justify-content:center">' +
+    '<div id="ch-geo-scrim" style="position:absolute;inset:0;background:rgba(28,24,18,.6)"></div>' +
+    '<div id="ch-geo-panel" style="position:relative;background:#fff;border-radius:12px;padding:32px;max-width:440px;width:calc(100% - 40px);z-index:1">' +
+      '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:500;color:#1f1c18;margin:0 0 14px">Canadian Orders Only</h2>' +
+      '<p style="font-family:\'Work Sans\',sans-serif;font-size:14px;color:#1f1c18;line-height:1.6;margin:0 0 10px">Copper\'s Hobbies is a local shop in Kitchener, Ontario, Canada. We\'re unable to process orders outside Canada — we don\'t ship internationally, and in-store pickup is only available at our Kitchener location.</p>' +
+      '<p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#8a8273;line-height:1.55;margin:0">Planning a trip to Kitchener? Feel free to keep building your cart — we\'d love to see you when you arrive!</p>' +
+      '<button id="ch-geo-btn" style="display:block;width:100%;background:#1f1c18;color:#faf7f1;border:none;padding:14px;border-radius:6px;font-family:\'Work Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:24px">Got it</button>' +
+    '</div>' +
+  '</div>';
+  document.body.appendChild(geoTmp.firstElementChild);
+
+  var GEO_BLOCK = document.getElementById('ch-geo-block');
+  var ON_CHECKOUT = window.location.pathname === '/checkout' || window.location.pathname.indexOf('/checkout/') === 0;
+
+  function isCanadian() { return !_geoCountry || _geoCountry === 'CA'; }
+
+  function showGeoBlock() {
+    closeDrawer();
+    var btn = document.getElementById('ch-geo-btn');
+    btn.textContent = ON_CHECKOUT ? 'Go to Homepage' : 'Got it';
+    GEO_BLOCK.style.display = 'flex';
+    GEO_BLOCK.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function dismissGeoBlock() {
+    if (ON_CHECKOUT) { window.location.replace('/'); return; }
+    GEO_BLOCK.style.display = 'none';
+    GEO_BLOCK.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('ch-geo-btn').addEventListener('click', dismissGeoBlock);
+  document.getElementById('ch-geo-scrim').addEventListener('click', dismissGeoBlock);
+
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[href^="/checkout"]');
+    if (link && !isCanadian()) { e.preventDefault(); e.stopPropagation(); showGeoBlock(); }
+  });
+
+  if (!_geoCountry) {
+    fetch('https://ipinfo.io/lite?token=b32d41bcb9bac9')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        _geoCountry = d.country || '';
+        try { sessionStorage.setItem('ch_geo_country', _geoCountry); } catch(e) {}
+        if (ON_CHECKOUT && !isCanadian()) showGeoBlock();
+      })
+      .catch(function() { _geoCountry = ''; });
+  } else if (ON_CHECKOUT && !isCanadian()) {
+    showGeoBlock();
+  }
+
   interceptAddToCart();
   hookCartLinks();
   watchCartBadge();
