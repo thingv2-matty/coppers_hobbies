@@ -39,7 +39,17 @@
     '#ch-cart-checkout-btn:hover{background:#a9772a}',
     '#ch-cart-continue-btn{display:block;width:100%;background:none;border:1.5px solid #2c2820;color:#2c2820;padding:13px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:14px;cursor:pointer;transition:background .2s}',
     '#ch-cart-continue-btn:hover{background:#f5f0e8}',
-    '.yui-popup-container-node,[class*="commerce-mini-cart"]{display:none!important;visibility:hidden!important;pointer-events:none!important}'
+    '.yui-popup-container-node,[class*="commerce-mini-cart"]{display:none!important;visibility:hidden!important;pointer-events:none!important}',
+    // Geo-restriction modal
+    '#ch-geo-block{display:none;position:fixed;inset:0;z-index:9100}',
+    '#ch-geo-block.open{display:flex;align-items:center;justify-content:center}',
+    '#ch-geo-scrim{position:absolute;inset:0;background:rgba(28,24,18,.6)}',
+    '#ch-geo-panel{position:relative;background:#fff;border-radius:12px;padding:32px;max-width:440px;width:calc(100% - 40px);z-index:1}',
+    '#ch-geo-title{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;color:#1f1c18;margin:0 0 14px}',
+    '#ch-geo-body{font-family:"Work Sans",sans-serif;font-size:14px;color:#1f1c18;line-height:1.6;margin:0 0 10px}',
+    '#ch-geo-note{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;line-height:1.55;margin:0}',
+    '#ch-geo-btn{display:block;width:100%;background:#1f1c18;color:#faf7f1;border:none;padding:14px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:24px}',
+    '#ch-geo-btn:hover{background:#2c2820}'
   ].join('');
   document.head.appendChild(style);
 
@@ -62,6 +72,19 @@
     '</div>' +
   '</div>';
   document.body.appendChild(tmp.firstElementChild);
+
+  // ── Geo-restriction modal ───────────────────────────────
+  var geoTmp = document.createElement('div');
+  geoTmp.innerHTML = '<div id="ch-geo-block" aria-hidden="true">' +
+    '<div id="ch-geo-scrim"></div>' +
+    '<div id="ch-geo-panel" role="dialog" aria-label="Canadian orders only">' +
+      '<h2 id="ch-geo-title">Canadian Orders Only</h2>' +
+      '<p id="ch-geo-body">Copper\'s Hobbies is a local shop in Kitchener, Ontario, Canada. We\'re unable to process orders outside Canada — we don\'t ship internationally, and in-store pickup is only available at our Kitchener location.</p>' +
+      '<p id="ch-geo-note">Planning a trip to Kitchener? Feel free to keep building your cart — we\'d love to see you when you arrive!</p>' +
+      '<button id="ch-geo-btn">Got it</button>' +
+    '</div>' +
+  '</div>';
+  document.body.appendChild(geoTmp.firstElementChild);
 
   // ── Cart logic ──────────────────────────────────────────
   'use strict';
@@ -285,6 +308,55 @@
   function suppressCartPopup() {
     // Catch any popup inserted into the DOM
     new MutationObserver(hidePopup).observe(document.body, { childList: true, subtree: true });
+  }
+
+  // ── Geo-restriction (Canadian orders only) ──────────────
+  var _geoCountry = sessionStorage.getItem('ch_geo_country') || null;
+  var GEO_BLOCK   = document.getElementById('ch-geo-block');
+  var GEO_BTN     = document.getElementById('ch-geo-btn');
+  var GEO_SCRIM   = document.getElementById('ch-geo-scrim');
+  var ON_CHECKOUT  = window.location.pathname === '/checkout' || window.location.pathname.indexOf('/checkout/') === 0;
+
+  function isCanadian() { return !_geoCountry || _geoCountry === 'CA'; }
+
+  function showGeoBlock() {
+    closeDrawer();
+    // On checkout page the button redirects home; elsewhere it just closes
+    GEO_BTN.textContent = ON_CHECKOUT ? 'Go to Homepage' : 'Got it';
+    GEO_BLOCK.classList.add('open');
+    GEO_BLOCK.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function dismissGeoBlock() {
+    if (ON_CHECKOUT) { window.location.replace('/'); return; }
+    GEO_BLOCK.classList.remove('open');
+    GEO_BLOCK.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  GEO_BTN.addEventListener('click', dismissGeoBlock);
+  GEO_SCRIM.addEventListener('click', dismissGeoBlock);
+  GEO_SCRIM.addEventListener('touchend', function(e) { e.preventDefault(); dismissGeoBlock(); });
+
+  // Intercept all checkout navigation (drawer button + native /cart page links)
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[href^="/checkout"]');
+    if (link && !isCanadian()) { e.preventDefault(); e.stopPropagation(); showGeoBlock(); }
+  });
+
+  // Fetch visitor country once per session; also triggers modal if landing directly on /checkout
+  if (!_geoCountry) {
+    fetch('https://ipinfo.io/lite?token=b32d41bcb9bac9')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        _geoCountry = d.country || '';
+        try { sessionStorage.setItem('ch_geo_country', _geoCountry); } catch(e) {}
+        if (ON_CHECKOUT && !isCanadian()) showGeoBlock();
+      })
+      .catch(function() { _geoCountry = ''; }); // fail open — never block on API error
+  } else if (ON_CHECKOUT && !isCanadian()) {
+    showGeoBlock();
   }
 
   interceptAddToCart();
