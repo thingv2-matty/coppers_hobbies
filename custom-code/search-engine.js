@@ -32,10 +32,7 @@
     'd&d'            : 'Dungeons'
   };
 
-  // Known brand names — matched against product categories to extract brand field.
-  // Add new brands here as the shop expands.
   var KNOWN_BRANDS = [
-    // Model kit manufacturers
     'Abteilung502','Academy','AFV','AFV Club','AK','AK Interactive','Albion Alloys','All Game Terrain and Woodland Scenics',
     'Alpha Abrasives','AMT','Amusing Hobby','Aoshima','Arma','Arma Hobby','Army Painter','Asuka',
     'Bandai','Bare Metal Foil','Bob Smith Industries','Border','Border Model','Bronco','Bud Nosen Wood',
@@ -53,10 +50,8 @@
     'Salvinos','Scale75','SMS','SNAA','Suyata',
     'Takom','Tamiya','Testors','Trumpeter',
     'Ultra Pro','ZM','Zoukei-Mura',
-    // Paints & weathering
     'Ammo by MIG','Fine Molds','Minicraft','Monogram','Atlantis','Round 2',
     'Vallejo',
-    // Art supply brands
     'Andrea Color','Apollon','Arches','Armadillo Art','Armour Products','Art Alternatives',
     'ATI',
     'Beam Paints',
@@ -76,11 +71,8 @@
     'Uniball',
     'Vallejo','W R Memory Keepers','Winsor & Newton','WOW',
     'Yasutomo',
-    // Diecasts
     'Greenlight','Johnny Lightning',
-    // Gaming
     'Privateer Press',
-    // Duplicate-safe extras (alternate casings that may appear in Squarespace)
     'Airfix','AMT','GSI Creos','Gunze'
   ];
 
@@ -92,7 +84,6 @@
     return null;
   }
 
-  // Common hobby scale denominators
   var SCALE_DENOMS = [6,8,9,10,12,14,16,18,20,22,24,25,32,35,43,48,50,54,56,64,72,76,87,96,
                       100,108,120,125,144,160,200,250,285,300,350,400,450,500,600,700,720,800,
                       1000,1200,1250,1700,2400,3000,3200];
@@ -141,7 +132,6 @@
   // ── CSS ─────────────────────────────────────────────────────────────────────
   var styleEl = document.createElement('style');
   styleEl.textContent = [
-    // Flyout
     '.sqs-search-ui-text-input{position:relative!important}',
     '#ch-flyout{position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:9998;background:#fff;border:1px solid #ece4d6;border-radius:0 0 8px 8px;box-shadow:0 8px 24px rgba(31,28,24,.12);max-height:440px;overflow-y:auto;display:none}',
     '#ch-flyout.on{display:block}',
@@ -155,7 +145,6 @@
     '.ch-fso{color:#c9943a;font-size:10px;font-family:"Work Sans",sans-serif;letter-spacing:.04em}',
     '.ch-fall{padding:10px 16px;text-align:center;border-top:1px solid #ece4d6;font-family:"Work Sans",sans-serif;font-size:13px;color:#c9943a;cursor:pointer;display:block}',
     '.ch-fall:hover{background:#faf7f1}',
-    // Search results page
     '#ch-sr{max-width:1200px;margin:0 auto;padding:16px 8px 40px}',
     '#ch-sr h1{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:500;color:#1f1c18;margin:0 0 6px}',
     '.ch-rc{font-family:"Work Sans",sans-serif;font-size:13px;color:#8a8273;margin:0 0 24px}',
@@ -168,11 +157,11 @@
     '#ch-mobile-filter.open{transform:translateY(0);pointer-events:all}',
     '#ch-mobile-filter #ch-sf{display:block!important;padding:20px 16px;max-height:none!important;overflow-y:visible!important}',
     '.ch-filter-scrim{display:none;position:fixed;inset:0;background:rgba(28,24,18,.45);z-index:9989}',
-    '.ch-filter-scrim.open{display:block}',
+    '.ch-filter-scrim.open{display:block;cursor:pointer}',
     '#ch-sf-close-bar{display:none}',
     '@media(max-width:720px){#ch-sf-close-bar{display:flex;width:100%;justify-content:space-between;align-items:center;padding:0 0 16px;border-bottom:1px solid #ece4d6;margin-bottom:16px}}',
     '.ch-filter-btn{display:none}',
-    '@media(max-width:720px){.ch-filter-btn{display:flex;align-items:center;gap:6px;background:none;border:1.5px solid #2c2820;color:#1f1c18;padding:7px 14px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:13px;cursor:pointer;margin-right:auto}}',
+    '@media(max-width:720px){.ch-filter-btn{display:flex;align-items:center;gap:6px;background:none;border:1.5px solid #2c2820;color:#1f1c18;padding:7px 14px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:13px;cursor:pointer}}',
     '.ch-filter-badge{background:#c9943a;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:2px}',
     '.ch-fg-hd{cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;margin:0 0 10px}',
     '.ch-fg-hd h3{margin:0}',
@@ -251,9 +240,9 @@
     '.ch-pill-x:hover{opacity:1}',
     '.ch-pill-clear{background:none;border:none;font-family:"Work Sans",sans-serif;font-size:11px;color:#8a8273;cursor:pointer;padding:4px 6px;text-decoration:underline;align-self:center;flex-shrink:0}',
     '.ch-sort-label{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;white-space:nowrap}',
-    '@media(max-width:720px){.ch-sort-label{display:none}}',
+    '@media(max-width:720px){.ch-sort-label{font-size:12px;color:#8a8273}}',
     '.ch-sort-sel{font-family:"Work Sans",sans-serif;font-size:12px;color:#5e5850;border:1px solid #ece4d6;border-radius:4px;padding:3px 8px;background:#fff;cursor:pointer}',
-    '@media(max-width:720px){.ch-sort-sel{border:1.5px solid #2c2820;color:#1f1c18;padding:7px 12px;border-radius:6px;font-size:13px}}'
+    '@media(max-width:720px){.ch-sort-sel{border:1.5px solid #2c2820;color:#1f1c18;padding:8px 12px;border-radius:6px;font-size:13px}}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -788,11 +777,9 @@
   function renderPagination(total, currentPage) {
     var pages = Math.ceil(total / perPage);
     if (pages <= 1) return '';
-
     var numsMap = {}; numsMap[1] = true; numsMap[pages] = true;
     for (var i = Math.max(2, currentPage - 2); i <= Math.min(pages - 1, currentPage + 2); i++) numsMap[i] = true;
     var nums = Object.keys(numsMap).map(Number).sort(function(a,b){return a-b;});
-
     var html = '<div class="ch-pages">';
     html += '<button class="ch-pg-btn ch-pg-nav" data-pg="' + (currentPage - 1) + '"' + (currentPage <= 1 ? ' disabled' : '') + '>← Prev</button>';
     var prev = 0;
@@ -871,8 +858,8 @@
       }).join('') + '</select>';
     return (isMobile ? '' : '<div id="ch-pills">' + renderFilterPills(true) + '</div>') +
       '<div class="ch-sg-toolbar">' +
-      '<button class="ch-filter-btn" id="ch-filter-btn">⊟ Filters' + badge + '</button>' +
       sortHtml +
+      '<button class="ch-filter-btn" id="ch-filter-btn">⊟ Filters' + badge + '</button>' +
       '<div class="ch-pp-row">' +
       '<span class="ch-pp-label">Show per page:</span>' +
       opts.map(function(n) {
@@ -914,7 +901,7 @@
       scrim.classList.add('open');
       document.body.style.overflow = 'hidden';
       var closeBtn = panel.querySelector('#ch-sf-close');
-      if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); }
+      if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); cb.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); }); }
       var clearBar = panel.querySelector('#ch-sf-close-bar .ch-clr');
       if (clearBar) { clearBar.addEventListener('click', function() {
         filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
@@ -939,8 +926,10 @@
     }
     var newScrim = scrim.cloneNode(false);
     scrim.parentNode.replaceChild(newScrim, scrim);
-    newScrim.className = 'ch-filter-scrim';
-    newScrim.addEventListener('click', closePanel);
+    scrim = newScrim;
+    scrim.className = 'ch-filter-scrim';
+    scrim.addEventListener('click', closePanel);
+    scrim.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); });
   }
 
   function syncSidebarCheckboxes() {

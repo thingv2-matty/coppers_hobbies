@@ -145,7 +145,9 @@
   var debounce     = null;
   var activeIndex  = -1;
 
-  var filters   = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+  var filters         = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+  var _filterOnChange = null; // set by wireFilters so pill × buttons can trigger the same onChange
+  var sortBy          = 'default';
   var colSearch = '';
   var srPage    = 1;
   var colPage   = 1;
@@ -186,7 +188,7 @@
     '#ch-mobile-filter.open{transform:translateY(0);pointer-events:all}',
     '#ch-mobile-filter #ch-sf{display:block!important;padding:20px 16px;max-height:none!important;overflow-y:visible!important}',
     '.ch-filter-scrim{display:none;position:fixed;inset:0;background:rgba(28,24,18,.45);z-index:9989}',
-    '.ch-filter-scrim.open{display:block}',
+    '.ch-filter-scrim.open{display:block;cursor:pointer}',
     '#ch-sf-close-bar{display:none}',
     '@media(max-width:720px){#ch-sf-close-bar{display:flex;width:100%;justify-content:space-between;align-items:center;padding:0 0 16px;border-bottom:1px solid #ece4d6;margin-bottom:16px}}',
     '.ch-filter-btn{display:none}',
@@ -258,7 +260,9 @@
     '.ch-pg-nav{padding:6px 14px;border-color:#2c2820;color:#1f1c18}',
     '.ch-pg-ellipsis{font-family:"Work Sans",sans-serif;font-size:13px;color:#8a8273;padding:0 4px}',
     // Grid toolbar (per-page selector)
-    '.ch-sg-toolbar{grid-column:1/-1;display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px}',
+    '.ch-sg-toolbar{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px}',
+    '.ch-pp-row{display:flex;align-items:center;gap:8px}',
+    '@media(max-width:720px){.ch-pp-row{width:100%;justify-content:flex-end}}',
     '.ch-pp-label{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273}',
     '.ch-pp-btn{background:none;border:1px solid #ece4d6;color:#8a8273;padding:3px 9px;border-radius:4px;font-family:"Work Sans",sans-serif;font-size:12px;cursor:pointer}',
     '.ch-pp-btn.active{background:#1f1c18;border-color:#1f1c18;color:#fff}',
@@ -266,7 +270,22 @@
     // Collection search bar
     '.ch-col-search{display:flex;gap:10px;margin-bottom:20px}',
     '.ch-col-search input{flex:1;border:1px solid #ece4d6;border-radius:8px;padding:10px 16px;font-family:"Work Sans",sans-serif;font-size:14px;color:#1f1c18;outline:none}',
-    '.ch-col-search input:focus{border-color:#c9943a}'
+    '.ch-col-search input:focus{border-color:#c9943a}',
+    // Filter pills
+    '#ch-pills{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:10px;grid-column:1/-1}',
+    '@media(max-width:720px){#ch-pills{display:none!important}}',
+    '#ch-pills-mobile{display:none}',
+    '#ch-mobile-filter #ch-pills-mobile{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;padding-bottom:14px;border-bottom:1px solid #ece4d6}',
+    '#ch-mobile-filter #ch-pills-mobile:empty{display:none!important;margin:0;padding:0;border:none}',
+    '.ch-pill{display:inline-flex;align-items:center;gap:4px;background:#1f1c18;color:#faf7f1;padding:4px 8px 4px 12px;border-radius:20px;font-family:"Work Sans",sans-serif;font-size:11px;font-weight:500;letter-spacing:.02em;line-height:1.3}',
+    '.ch-pill-x{background:none;border:none;color:#faf7f1;cursor:pointer;font-size:14px;line-height:1;padding:0 2px;opacity:.6;flex-shrink:0;display:flex;align-items:center}',
+    '.ch-pill-x:hover{opacity:1}',
+    '.ch-pill-clear{background:none;border:none;font-family:"Work Sans",sans-serif;font-size:11px;color:#8a8273;cursor:pointer;padding:4px 6px;text-decoration:underline;align-self:center;flex-shrink:0}',
+    // Sort controls
+    '.ch-sort-label{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;white-space:nowrap}',
+    '@media(max-width:720px){.ch-sort-label{font-size:12px;color:#8a8273}}',
+    '.ch-sort-sel{font-family:"Work Sans",sans-serif;font-size:12px;color:#5e5850;border:1px solid #ece4d6;border-radius:4px;padding:3px 8px;background:#fff;cursor:pointer}',
+    '@media(max-width:720px){.ch-sort-sel{border:1.5px solid #2c2820;color:#1f1c18;padding:8px 12px;border-radius:6px;font-size:13px}}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -601,16 +620,19 @@
     }
 
     function refreshSRGrid(allItems, priceRange, mob) {
-      var filt = applyFilters(allItems);
-      var tp = Math.ceil(filt.length / perPage);
+      var filt   = applyFilters(allItems);
+      var sorted = applySort(filt);
+      var tp = Math.ceil(sorted.length / perPage);
       if (srPage > tp) srPage = 1;
-      var pg = filt.slice((srPage - 1) * perPage, srPage * perPage);
-      var cnt = filt.length + ' result' + (filt.length !== 1 ? 's' : '');
-      if (allItems.length !== filt.length) cnt += ' (filtered from ' + allItems.length + ')';
+      var pg = sorted.slice((srPage - 1) * perPage, srPage * perPage);
+      var cnt = sorted.length + ' result' + (sorted.length !== 1 ? 's' : '');
+      if (allItems.length !== sorted.length) cnt += ' (filtered from ' + allItems.length + ')';
       var countEl = document.getElementById('ch-sr-count');
       if (countEl) countEl.textContent = cnt;
       var sg = document.getElementById('ch-sg');
-      if (sg) sg.innerHTML = renderPerPage(mob) + renderCards(pg) + renderPagination(filt.length, srPage);
+      if (sg) sg.innerHTML = renderPerPage(mob) + renderCards(pg) + renderPagination(sorted.length, srPage);
+      wirePillButtons(function() { srPage = 1; refreshSRGrid(allItems, priceRange, mob); });
+      wireSortSelect(function() { srPage = 1; refreshSRGrid(allItems, priceRange, mob); });
       wirePerPage(container, function() { srPage = 1; refreshSRGrid(allItems, priceRange, mob); });
       wirePagination(container, 'ch-sr', function(p) { srPage = p; refreshSRGrid(allItems, priceRange, mob); });
       wireMobileFilterPanel(container);
@@ -632,6 +654,20 @@
       if (filters.priceMax !== null && (parseFloat(p.p) || 0) > filters.priceMax) return false;
       return true;
     });
+  }
+
+  function applySort(products) {
+    if (sortBy === 'default') return products;
+    var s = products.slice();
+    switch (sortBy) {
+      case 'price-asc':  s.sort(function(a,b){ return (parseFloat(a.p)||0)-(parseFloat(b.p)||0); }); break;
+      case 'price-desc': s.sort(function(a,b){ return (parseFloat(b.p)||0)-(parseFloat(a.p)||0); }); break;
+      case 'name-asc':   s.sort(function(a,b){ return a.t.localeCompare(b.t); }); break;
+      case 'name-desc':  s.sort(function(a,b){ return b.t.localeCompare(a.t); }); break;
+      case 'brand-asc':  s.sort(function(a,b){ return (getBrand(a)||'').localeCompare(getBrand(b)||''); }); break;
+      case 'brand-desc': s.sort(function(a,b){ return (getBrand(b)||'').localeCompare(getBrand(a)||''); }); break;
+    }
+    return s;
   }
 
   function getUniqueBrands(products) {
@@ -721,6 +757,8 @@
     return '<div id="ch-sf">' +
       // Mobile close button (hidden on desktop via CSS)
       '<div class="ch-sf-close" id="ch-sf-close-bar"><button id="ch-sf-close" style="background:none;border:none;font-family:\'Work Sans\',sans-serif;font-size:14px;font-weight:600;color:#1f1c18;cursor:pointer;padding:0">Filters ×</button><button class="ch-clr" style="font-size:11px;padding:0">Clear all</button></div>' +
+      // Active filter pills (shown in mobile panel, hidden in sidebar on desktop)
+      '<div id="ch-pills-mobile"></div>' +
       // Availability — not collapsible
       '<div class="ch-fg"><div class="ch-fg-hd" style="cursor:default"><h3 style="flex:1">Availability</h3></div><div class="ch-fg-bd">' +
       '<label class="ch-it"><label class="ch-tg"><input type="checkbox" id="ch-instock"' + (filters.inStockOnly ? ' checked' : '') + '><span class="ch-ts"></span></label> In stock only</label>' +
@@ -745,16 +783,21 @@
       // Scale — collapsed
       (scales.length ? section('Scale', checklist(scales, 'fc-scale', filters.scales)) : '') +
 
-      '<button id="ch-clr-all" class="ch-clr" style="margin-top:8px;font-size:11px;display:none">Clear all filters</button>' +
     '</div>';
   }
 
   function wireFilters(container, priceRange, onFilterChange) {
-    function syncClearBtn() {
-      var btn = container.querySelector('#ch-clr-all');
-      if (btn) btn.style.display = getActiveFilterCount() > 0 ? 'block' : 'none';
+    function syncPills() {
+      // #ch-pills is inside #ch-sg which refreshSRGrid fully re-renders — wirePillButtons handles wiring there
+      // Only update #ch-pills-mobile here (it lives in #ch-sf which is never re-rendered)
+      var mobileEl = document.getElementById('ch-pills-mobile');
+      if (mobileEl) {
+        mobileEl.innerHTML = renderFilterPills(false);
+        wirePillButtons(onFilterChange, mobileEl);
+      }
     }
-    function onChange() { onFilterChange(); syncClearBtn(); }
+    function onChange() { onFilterChange(); syncPills(); }
+    _filterOnChange = onChange;
 
     // Availability
     var instockCb = container.querySelector('#ch-instock');
@@ -880,16 +923,59 @@
     return n;
   }
 
+  function renderFilterPills(withClearAll) {
+    var pills = [];
+    if (filters.inStockOnly) pills.push({ label: 'In stock', type: 'instock', key: '' });
+    Object.keys(filters.collections).forEach(function(k) {
+      if (!filters.collections[k]) return;
+      for (var i = 0; i < COLLECTIONS.length; i++) {
+        if (COLLECTIONS[i].key === k) { pills.push({ label: COLLECTIONS[i].name, type: 'collections', key: k }); break; }
+      }
+    });
+    Object.keys(filters.brands).forEach(function(k) { if (filters.brands[k]) pills.push({ label: k, type: 'brands', key: k }); });
+    Object.keys(filters.categories).forEach(function(k) { if (filters.categories[k]) pills.push({ label: k, type: 'categories', key: k }); });
+    Object.keys(filters.scales).forEach(function(k) { if (filters.scales[k]) pills.push({ label: k, type: 'scales', key: k }); });
+    if (filters.priceMin !== null || filters.priceMax !== null) {
+      var priceLabel;
+      if (filters.priceMin !== null && filters.priceMax !== null) priceLabel = '$' + filters.priceMin + ' – $' + filters.priceMax;
+      else if (filters.priceMax !== null) priceLabel = 'Under $' + filters.priceMax;
+      else priceLabel = 'Over $' + filters.priceMin;
+      pills.push({ label: priceLabel, type: 'price', key: '' });
+    }
+    if (!pills.length) return '';
+    var html = pills.map(function(pill) {
+      return '<span class="ch-pill" data-type="' + pill.type + '" data-key="' + esc(pill.key) + '">' +
+        esc(pill.label) + '<button class="ch-pill-x" aria-label="Remove filter">×</button>' +
+      '</span>';
+    }).join('');
+    if (withClearAll) html += '<button class="ch-pill-clear">Clear all</button>';
+    return html;
+  }
+
   function renderPerPage(isMobile) {
     var opts = isMobile ? [6, 12, 18, 24] : [12, 24, 36, 48];
     var fc = getActiveFilterCount();
     var badge = fc > 0 ? '<span class="ch-filter-badge">' + fc + '</span>' : '';
-    return '<div class="ch-sg-toolbar">' +
+    var sortOpts = [
+      ['default','Default'],['price-asc','Price: Low → High'],['price-desc','Price: High → Low'],
+      ['name-asc','Name: A → Z'],['name-desc','Name: Z → A'],
+      ['brand-asc','Brand: A → Z'],['brand-desc','Brand: Z → A']
+    ];
+    var sortHtml = '<span class="ch-sort-label">Sort:</span>' +
+      '<select id="ch-sort" class="ch-sort-sel">' +
+      sortOpts.map(function(o) {
+        return '<option value="' + o[0] + '"' + (sortBy === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+      }).join('') + '</select>';
+    return (isMobile ? '' : '<div id="ch-pills">' + renderFilterPills(true) + '</div>') +
+      '<div class="ch-sg-toolbar">' +
+      sortHtml +
       '<button class="ch-filter-btn" id="ch-filter-btn">⊟ Filters' + badge + '</button>' +
+      '<div class="ch-pp-row">' +
       '<span class="ch-pp-label">Show per page:</span>' +
       opts.map(function(n) {
         return '<button class="ch-pp-btn' + (n === perPage ? ' active' : '') + '" data-pp="' + n + '">' + n + '</button>';
       }).join('') +
+      '</div>' +
     '</div>';
   }
 
@@ -928,7 +1014,7 @@
       document.body.style.overflow = 'hidden';
       // Wire close button inside panel
       var closeBtn = panel.querySelector('#ch-sf-close');
-      if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); }
+      if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); cb.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); }); }
       // Wire clear-all inside panel close bar (filters reset + close)
       var clearBar = panel.querySelector('#ch-sf-close-bar .ch-clr');
       if (clearBar) { clearBar.addEventListener('click', function() {
@@ -954,11 +1040,74 @@
       btn.parentNode.replaceChild(newBtn, btn);
       newBtn.addEventListener('click', openPanel);
     }
-    // Replace scrim listener too
+    // Clone scrim and reassign the variable so openPanel/closePanel closures see the live element
     var newScrim = scrim.cloneNode(false);
     scrim.parentNode.replaceChild(newScrim, scrim);
-    newScrim.className = 'ch-filter-scrim';
-    newScrim.addEventListener('click', closePanel);
+    scrim = newScrim; // ← critical: update reference so classList.add/remove hits the DOM node
+    scrim.className = 'ch-filter-scrim';
+    scrim.addEventListener('click', closePanel);
+    scrim.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); });
+  }
+
+  function syncSidebarCheckboxes() {
+    var sf = document.getElementById('ch-sf');
+    if (!sf) return;
+    var instockCb = sf.querySelector('#ch-instock');
+    if (instockCb) instockCb.checked = filters.inStockOnly;
+    sf.querySelectorAll('.fc-brand').forEach(function(cb) { cb.checked = !!filters.brands[cb.value]; });
+    sf.querySelectorAll('.fc-cat').forEach(function(cb) { cb.checked = !!filters.categories[cb.value]; });
+    sf.querySelectorAll('.fc-scale').forEach(function(cb) { cb.checked = !!filters.scales[cb.value]; });
+    sf.querySelectorAll('.fc-col').forEach(function(cb) { cb.checked = !!filters.collections[cb.value]; });
+    // Reset price slider to match current filter state
+    var rangeMin = sf.querySelector('#ch-range-min');
+    var rangeMax = sf.querySelector('#ch-range-max');
+    var inputMin = sf.querySelector('#ch-price-min');
+    var inputMax = sf.querySelector('#ch-price-max');
+    var fill     = sf.querySelector('#ch-slider-fill');
+    if (rangeMin && rangeMax) {
+      var absMin = parseFloat(rangeMin.min) || 0;
+      var absMax = parseFloat(rangeMax.max) || 0;
+      var prMin  = filters.priceMin !== null ? filters.priceMin : absMin;
+      var prMax  = filters.priceMax !== null ? filters.priceMax : absMax;
+      rangeMin.value = prMin; rangeMax.value = prMax;
+      if (inputMin) inputMin.value = prMin;
+      if (inputMax) inputMax.value = prMax;
+      if (fill && absMax > absMin) {
+        var lo = ((prMin - absMin) / (absMax - absMin)) * 100;
+        var hi = ((prMax - absMin) / (absMax - absMin)) * 100;
+        fill.style.left = lo + '%'; fill.style.width = (hi - lo) + '%';
+      }
+    }
+  }
+
+  function wirePillButtons(onGridRefresh, el) {
+    var pillsEl = el || document.getElementById('ch-pills');
+    if (!pillsEl) return;
+    pillsEl.querySelectorAll('.ch-pill').forEach(function(pill) {
+      pill.querySelector('.ch-pill-x').addEventListener('click', function(e) {
+        e.stopPropagation();
+        var type = pill.dataset.type, key = pill.dataset.key;
+        if (type === 'instock') filters.inStockOnly = false;
+        else if (type === 'price') { filters.priceMin = null; filters.priceMax = null; }
+        else if (filters[type]) filters[type][key] = false;
+        syncSidebarCheckboxes();
+        if (_filterOnChange) _filterOnChange();
+        else onGridRefresh();
+      });
+    });
+    var clearBtn = pillsEl.querySelector('.ch-pill-clear');
+    if (clearBtn) clearBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+      syncSidebarCheckboxes();
+      if (_filterOnChange) _filterOnChange();
+      else onGridRefresh();
+    });
+  }
+
+  function wireSortSelect(onSortChange) {
+    var sel = document.getElementById('ch-sort');
+    if (sel) sel.addEventListener('change', function() { sortBy = sel.value; onSortChange(); });
   }
 
   function wirePerPage(container, onChangePerPage) {
@@ -986,7 +1135,7 @@
         : '';
       var brandRow = brand
         ? '<div class="ch-card-brand"><b>Brand</b>' + esc(brand) + '</div>'
-        : '';
+        : '<div class="ch-card-brand">&nbsp;</div>';
       return '<a class="ch-card' + oosClass + '" href="' + esc(p.u) + '">' +
         '<div class="ch-cw"><div class="ch-ci"' + imgStyle + '></div>' + overlay + '</div>' +
         '<div class="ch-card-body">' +
@@ -1053,16 +1202,19 @@
     }
 
     function refreshColGrid() {
-      var filt = getColFiltered();
-      var tp = Math.ceil(filt.length / perPage);
+      var filt   = getColFiltered();
+      var sorted = applySort(filt);
+      var tp = Math.ceil(sorted.length / perPage);
       if (colPage > tp) colPage = 1;
-      var pg = filt.slice((colPage - 1) * perPage, colPage * perPage);
-      var cnt = filt.length + ' product' + (filt.length !== 1 ? 's' : '');
-      if (colProducts.length !== filt.length) cnt += ' (filtered from ' + colProducts.length + ')';
+      var pg = sorted.slice((colPage - 1) * perPage, colPage * perPage);
+      var cnt = sorted.length + ' product' + (sorted.length !== 1 ? 's' : '');
+      if (colProducts.length !== sorted.length) cnt += ' (filtered from ' + colProducts.length + ')';
       var countEl = document.getElementById('ch-col-count');
       if (countEl) countEl.textContent = cnt;
       var sg = document.getElementById('ch-sg');
-      if (sg) sg.innerHTML = renderPerPage(isMobile) + renderCards(pg) + renderPagination(filt.length, colPage);
+      if (sg) sg.innerHTML = renderPerPage(isMobile) + renderCards(pg) + renderPagination(sorted.length, colPage);
+      wirePillButtons(function() { colPage = 1; refreshColGrid(); });
+      wireSortSelect(function() { colPage = 1; refreshColGrid(); });
       wirePerPage(container, function() { colPage = 1; refreshColGrid(); });
       wirePagination(container, 'ch-col', function(p) { colPage = p; refreshColGrid(); });
       wireMobileFilterPanel(container);
