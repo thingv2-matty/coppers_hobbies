@@ -1157,7 +1157,11 @@
   function getCollectionForPage() {
     var path = window.location.pathname.replace(/\/$/, '');
     for (var i = 0; i < COLLECTIONS.length; i++) {
-      if (path === COLLECTIONS[i].url || path.indexOf(COLLECTIONS[i].url + '/') === 0) {
+      var colUrl = COLLECTIONS[i].url;
+      if (path === colUrl) return COLLECTIONS[i];
+      if (path.indexOf(colUrl + '/') === 0) {
+        var firstSegment = path.slice(colUrl.length + 1).split('/')[0];
+        if (firstSegment === 'p') return null; // product page, not collection
         return COLLECTIONS[i];
       }
     }
