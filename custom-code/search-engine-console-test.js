@@ -132,7 +132,7 @@
     return null;
   }
 
-  var CACHE_KEY = 'ch_search_v3';
+  var CACHE_KEY = 'ch_search_v4';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
   var CACHE_STORE = window.sessionStorage; // sessionStorage: ~10MB limit, cleared on tab close → images always show
 
@@ -316,7 +316,9 @@
     }
     return (data.items || []).map(function(item) {
       var v     = item.variants && item.variants[0];
-      var stock = !v || v.unlimited || (v.qtyInStock > 0);
+      var stock = !item.variants || !item.variants.length || item.variants.some(function(variant) {
+        return variant.unlimited || (variant.qtyInStock > 0);
+      });
       // item.priceMoney.value is "0.00" (truthy) for physical products — must check non-zero
       var topPrice = item.priceMoney && parseFloat(item.priceMoney.value) > 0 ? item.priceMoney.value : null;
       var varPrice = v && v.priceMoney && parseFloat(v.priceMoney.value) > 0 ? v.priceMoney.value : null;
