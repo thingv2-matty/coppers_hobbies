@@ -1427,7 +1427,7 @@
             '<iframe src="https://maps.google.com/maps?q=935+Frederick+Street+Kitchener+ON+Canada&output=embed&z=16" loading="lazy" title="Copper\'s Hobbies location"></iframe>' +
           '</div>' +
           '<h2 class="ch-hp-store-h2">Come see us</h2>' +
-          '<p class="ch-hp-store-p">We're always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
+          '<p class="ch-hp-store-p">We\'re always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
           '<div class="ch-hp-store-details">' +
             '<div>' +
               '<p class="ch-hp-store-label">Hours</p>' +
