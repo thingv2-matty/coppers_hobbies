@@ -246,6 +246,87 @@
   ].join('');
   document.head.appendChild(styleEl);
 
+  var hpStyle = document.createElement('style');
+  hpStyle.textContent = [
+    // Homepage skeleton
+    '#ch-home{font-family:"Work Sans",sans-serif;line-height:1}',
+    // Hero
+    '.ch-hp-hero{background:#faf7f1;padding:0}',
+    '.ch-hp-hero-inner{max-width:1200px;margin:0 auto;padding:60px 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}',
+    '@media(max-width:820px){.ch-hp-hero-inner{grid-template-columns:1fr;gap:36px;padding:40px 20px}}',
+    '.ch-hp-h1{font-family:"Cormorant Garamond",serif;font-size:clamp(36px,5vw,60px);font-weight:500;color:#1f1c18;line-height:1.1;margin:0 0 20px;text-wrap:balance}',
+    '.ch-hp-sub{font-size:16.5px;color:#5e5850;line-height:1.65;margin:0 0 32px;max-width:460px}',
+    '.ch-hp-hero-btns{display:flex;gap:12px;flex-wrap:wrap}',
+    '.ch-hp-btn-primary{display:inline-flex;align-items:center;background:#c9943a;color:#fff;padding:12px 24px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;transition:background .2s}',
+    '.ch-hp-btn-primary:hover{background:#b5832e}',
+    '.ch-hp-btn-outline{display:inline-flex;align-items:center;border:1.5px solid #2c2820;color:#2c2820;padding:11px 24px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;transition:background .15s,color .15s}',
+    '.ch-hp-btn-outline:hover{background:#2c2820;color:#faf7f1}',
+    '.ch-hp-hero-img-wrap{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:#f0e6d3}',
+    '.ch-hp-hero-img{width:100%;height:100%;background-size:cover;background-position:center;background-color:#ede3d2}',
+    '.ch-hp-hero-badge{position:absolute;bottom:20px;left:20px;background:rgba(31,28,24,.82);color:#f6f1e7;padding:12px 16px;border-radius:8px}',
+    '.ch-hp-badge-addr{display:block;font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600}',
+    '.ch-hp-badge-sub{display:block;font-size:11px;color:#c9b98f;margin-top:3px}',
+    // Category section
+    '.ch-hp-cats{padding:56px 0;background:#fff;border-top:1px solid #ece4d6;border-bottom:1px solid #ece4d6}',
+    '.ch-hp-cats-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-cats-inner{padding:0 20px}}',
+    '.ch-hp-cats-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px}',
+    '.ch-hp-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0}',
+    '.ch-hp-link{font-size:13px;color:#a9772a;text-decoration:none;font-weight:500;white-space:nowrap}',
+    '.ch-hp-link:hover{color:#c9943a}',
+    '.ch-hp-cats-grid{display:flex;flex-wrap:wrap;gap:20px 36px;justify-content:center}',
+    '.ch-hp-cat{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#39342c;gap:10px;cursor:pointer}',
+    '.ch-hp-cat:hover .ch-hp-cat-circle{transform:scale(1.06);box-shadow:0 4px 18px rgba(31,28,24,.13)}',
+    '.ch-hp-cat-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#f5ede0,#e8d9c4);border:1.5px solid #e0d4bc;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;flex-shrink:0}',
+    '.ch-hp-cat-circle svg{width:30px;height:30px}',
+    '.ch-hp-cat-label{font-size:12px;font-weight:600;color:#39342c;text-align:center;line-height:1.35;max-width:80px}',
+    // Featured section
+    '.ch-hp-feat{padding:56px 0;background:#faf7f1}',
+    '.ch-hp-feat-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-feat-inner{padding:0 20px}}',
+    '.ch-hp-feat-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}',
+    '.ch-hp-feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}',
+    '@media(max-width:900px){.ch-hp-feat-grid{grid-template-columns:repeat(2,1fr)}}',
+    '@media(max-width:480px){.ch-hp-feat-grid{grid-template-columns:1fr}}',
+    '.ch-hp-pcard{text-decoration:none;color:inherit;display:flex;flex-direction:column;border:1px solid #ece4d6;border-radius:10px;overflow:hidden;background:#fff;transition:transform .2s,box-shadow .2s}',
+    '.ch-hp-pcard:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(31,28,24,.1)}',
+    '.ch-hp-pcard-img{aspect-ratio:1;background-size:cover;background-position:center;background-color:#f5f0e8}',
+    '.ch-hp-pcard-body{padding:14px}',
+    '.ch-hp-pcard-name{font-size:13px;color:#1f1c18;line-height:1.4;margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}',
+    '.ch-hp-pcard-price{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:#1f1c18}',
+    // Community section
+    '.ch-hp-community{padding:72px 0;background:linear-gradient(180deg,#f6ecd8,#f0e4c7)}',
+    '.ch-hp-comm-inner{max-width:960px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-comm-inner{padding:0 20px}}',
+    '.ch-hp-comm-intro{text-align:center;margin-bottom:48px}',
+    '.ch-hp-comm-h2{font-family:"Cormorant Garamond",serif;font-size:clamp(30px,4.5vw,44px);font-weight:500;color:#1f1c18;margin:0 0 18px;text-wrap:balance;line-height:1.15}',
+    '.ch-hp-comm-sub{font-size:16px;color:#6a5f49;line-height:1.65;margin:0 auto;max-width:560px}',
+    '.ch-hp-comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px}',
+    '@media(max-width:640px){.ch-hp-comm-cards{grid-template-columns:1fr}}',
+    '.ch-hp-comm-card{background:#fff;border-radius:12px;border:1px solid #ecdcc0;overflow:hidden}',
+    '.ch-hp-comm-card-img{height:200px;background-size:cover;background-position:center;background-color:#ede3d2}',
+    '.ch-hp-comm-card-body{padding:24px}',
+    '.ch-hp-comm-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.02em;margin-bottom:14px}',
+    '.ch-hp-comm-badge-gold{background:#c9943a;color:#fff}',
+    '.ch-hp-comm-badge-cream{background:#f0e7d6;border:1px solid #e2d4ba;color:#39342c}',
+    '.ch-hp-comm-card-h3{font-family:"Cormorant Garamond",serif;font-size:27px;font-weight:600;color:#1f1c18;margin:0 0 12px;line-height:1.2}',
+    '.ch-hp-comm-card-p{font-size:14.5px;color:#5e5850;line-height:1.65;margin:0 0 16px}',
+    '.ch-hp-comm-card-link{font-size:14px;color:#a9772a;font-weight:600;text-decoration:none}',
+    '.ch-hp-comm-card-link:hover{color:#c9943a}',
+    // Store info section
+    '.ch-hp-store{padding:64px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
+    '.ch-hp-store-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}',
+    '@media(max-width:820px){.ch-hp-store-inner{grid-template-columns:1fr;padding:0 20px}}',
+    '.ch-hp-map-wrap{height:320px;border-radius:10px;overflow:hidden;background:#e8e0d4;border:1px solid #ece4d6}',
+    '.ch-hp-map-wrap iframe{width:100%;height:100%;display:block;border:none}',
+    '.ch-hp-store-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 14px}',
+    '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0 0 28px}',
+    '.ch-hp-store-label{font-size:12px;font-weight:600;color:#a9772a;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px}',
+    '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0 0 24px;font-variant-numeric:tabular-nums}',
+    '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}'
+  ].join('');
+  document.head.appendChild(hpStyle);
+
   // ── Status bar (no-op in production) ────────────────────────────────────────
   function showStatus(msg) {}
   function hideStatus() {}
@@ -329,6 +410,7 @@
     if (cacheLoaded) {
       if (isSearchPage()) renderSearchResults();
       if (isCollectionPage()) renderCollectionPage();
+      if (isShopAllPage()) renderShopAll();
       return Promise.resolve();
     }
 
@@ -344,6 +426,7 @@
         }
         if (isSearchPage() && getQuery() && document.getElementById('ch-sr')) renderSearchResults();
         if (isCollectionPage() && document.getElementById('ch-col')) renderCollectionPage();
+        if (isShopAllPage() && document.getElementById('ch-shopall')) renderShopAll();
       });
     });
 
@@ -356,6 +439,7 @@
         } catch(e) {}
         if (isSearchPage()) renderSearchResults();
         if (isCollectionPage()) renderCollectionPage();
+        if (isShopAllPage()) renderShopAll();
       })
       .catch(function(err) { hideStatus(); console.error('[CH Search] Build failed:', err); });
   }
@@ -1163,6 +1247,265 @@
     }
   }
 
+  // ── Homepage ─────────────────────────────────────────────────────────────────
+  // Paste your Squarespace CDN image URLs here after uploading photos
+  var HP_IMG = {
+    hero       : '',   // storefront photo
+    buildNight : '',   // Sunday Build Night photo
+    richard    : ''    // Richard painting photo
+  };
+
+  var HP_CATS = [
+    { label: 'Cars',            href: '/coppers-hobbies-szOJ2/cars',             icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15h14v-3L17 7H7L5 12v3z"/><circle cx="8.5" cy="18.5" r="1.5"/><circle cx="15.5" cy="18.5" r="1.5"/><path d="M8 10h8"/></svg>' },
+    { label: 'Military',        href: '/coppers-hobbies-szOJ2/military',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17.5 6 21.5l2.5-7.5L2 9.5h7.5z"/></svg>' },
+    { label: 'Aircraft',        href: '/coppers-hobbies-szOJ2/aircraft',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14l-9-8-9 8 3-.5 1.5 3.5L12 16l4.5 1 1.5-3.5z"/><line x1="12" y1="6" x2="12" y2="20"/></svg>' },
+    { label: 'Ships',           href: '/coppers-hobbies-szOJ2/ships',            icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M5 13h14M7 17a5 5 0 0010 0"/></svg>' },
+    { label: 'Gundam & Mecha',  href: '/coppers-hobbies-szOJ2/sci-fi-and-space', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="7" rx="1.5"/><rect x="5" y="10" width="14" height="9" rx="1.5"/><path d="M9 19l-2 3m8-3l2 3M3 13.5h2m14 0h2"/><circle cx="10.5" cy="14" r="1" fill="#8a6535"/><circle cx="13.5" cy="14" r="1" fill="#8a6535"/></svg>' },
+    { label: 'Figures',         href: '/coppers-hobbies-szOJ2/figures',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v7m-4 1.5l-2 5m6-5v5m4-5l2 5m-6-9l-4 2m8-2l-4 2"/></svg>' },
+    { label: 'Paints',          href: '/art-supplies/painting-supplies',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="8" height="14" rx="1.5"/><path d="M11 5V3h2v2m-3 4h4m-4 3.5h4"/><path d="M12 19v2"/></svg>' },
+    { label: 'Brushes',         href: '/art-supplies/brushes',                   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 3-11 11a4 4 0 01-5-5L17 4z"/><path d="M5 20c0 1.5 2 2.5 3 1.5"/><line x1="13.5" y1="7.5" x2="16.5" y2="10.5"/></svg>' }
+  ];
+
+  function isHomePage() { return window.location.pathname === '/'; }
+  function isShopAllPage() { return window.location.pathname === '/shopall'; }
+
+  function initHomePage() {
+    if (!isHomePage()) return;
+    var main = document.querySelector('main, #page, .Site-inner') || document.body;
+    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
+    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    var container = document.createElement('div');
+    container.id = 'ch-home';
+    var firstSection = main.querySelector('section, .page-section, article');
+    if (firstSection) {
+      main.insertBefore(container, firstSection);
+      var sib = container.nextElementSibling;
+      while (sib) { sib.style.setProperty('display', 'none', 'important'); sib = sib.nextElementSibling; }
+    } else {
+      main.appendChild(container);
+    }
+    container.innerHTML = '<div style="padding-top:' + headerH + 'px;min-height:200px;display:flex;align-items:center;justify-content:center;font-family:\'Work Sans\',sans-serif;color:#8a8273">Loading…</div>';
+    fetch('/?format=json', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var featured = (data.items || []).slice(0, 4).map(function(item) {
+          var v = (item.variants && item.variants[0]) || (item.structuredContent && item.structuredContent.variants && item.structuredContent.variants[0]);
+          var price = v && v.priceMoney && parseFloat(v.priceMoney.value) > 0 ? v.priceMoney.value : '0.00';
+          return { t: item.title || '', u: item.fullUrl || '', img: item.assetUrl || '', p: price };
+        });
+        renderHomePage(container, headerH, featured);
+      })
+      .catch(function() { renderHomePage(container, headerH, []); });
+  }
+
+  function renderHomePage(container, headerH, featured) {
+    var heroImg = HP_IMG.hero ? 'background-image:url(' + HP_IMG.hero + ')' : 'background-color:#ede3d2';
+    var bnImg   = HP_IMG.buildNight ? ' style="background-image:url(' + HP_IMG.buildNight + ')"' : '';
+    var richImg = HP_IMG.richard   ? ' style="background-image:url(' + HP_IMG.richard   + ')"' : '';
+
+    var catTiles = HP_CATS.map(function(c) {
+      return '<a href="' + c.href + '" class="ch-hp-cat">' +
+        '<div class="ch-hp-cat-circle">' + c.icon + '</div>' +
+        '<span class="ch-hp-cat-label">' + esc(c.label) + '</span>' +
+      '</a>';
+    }).join('');
+
+    var featCards = featured.length
+      ? featured.map(function(p) {
+          var imgStyle = p.img ? 'background-image:url(' + p.img + ')' : 'background-color:#f5f0e8';
+          return '<a class="ch-hp-pcard" href="' + esc(p.u) + '">' +
+            '<div class="ch-hp-pcard-img" style="' + imgStyle + '"></div>' +
+            '<div class="ch-hp-pcard-body">' +
+              '<div class="ch-hp-pcard-name">' + esc(p.t) + '</div>' +
+              '<div class="ch-hp-pcard-price">$' + esc(String(p.p)) + '</div>' +
+            '</div>' +
+          '</a>';
+        }).join('')
+      : '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Featured products loading…</div>';
+
+    var mapSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=-80.492%2C43.450%2C-80.470%2C43.464&layer=mapnik&marker=43.457%2C-80.481';
+
+    container.innerHTML =
+      // Hero
+      '<section class="ch-hp-hero">' +
+        '<div class="ch-hp-hero-inner" style="padding-top:' + (headerH + 24) + 'px">' +
+          '<div>' +
+            '<h1 class="ch-hp-h1">The hobby shop for people who care how it turns out.</h1>' +
+            '<p class="ch-hp-sub">Scale models, paints, tools and art supplies — chosen and stocked by two people who build, paint and obsess over this hobby right alongside you, in the heart of Kitchener.</p>' +
+            '<div class="ch-hp-hero-btns">' +
+              '<a href="/shopall" class="ch-hp-btn-primary">Shop the store</a>' +
+              '<a href="#ch-hp-store" class="ch-hp-btn-outline">Visit us in Kitchener</a>' +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="ch-hp-hero-img-wrap">' +
+              '<div class="ch-hp-hero-img" style="' + heroImg + '"></div>' +
+              '<div class="ch-hp-hero-badge">' +
+                '<span class="ch-hp-badge-addr">935 Frederick St</span>' +
+                '<span class="ch-hp-badge-sub">Where Frederick meets Victoria</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      // Category tiles
+      '<section class="ch-hp-cats">' +
+        '<div class="ch-hp-cats-inner">' +
+          '<div class="ch-hp-cats-hd">' +
+            '<h2 class="ch-hp-h2">Browse by category</h2>' +
+            '<a href="/shopall" class="ch-hp-link">All categories →</a>' +
+          '</div>' +
+          '<div class="ch-hp-cats-grid">' + catTiles + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Featured products
+      '<section class="ch-hp-feat">' +
+        '<div class="ch-hp-feat-inner">' +
+          '<div class="ch-hp-feat-hd">' +
+            '<h2 class="ch-hp-h2">A few of our favourites</h2>' +
+            '<a href="/shopall" class="ch-hp-link">Browse the full shop →</a>' +
+          '</div>' +
+          '<div class="ch-hp-feat-grid">' + featCards + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Community
+      '<section class="ch-hp-community">' +
+        '<div class="ch-hp-comm-inner">' +
+          '<div class="ch-hp-comm-intro">' +
+            '<h2 class="ch-hp-comm-h2">More than a store — it’s where the hobby gets together.</h2>' +
+            '<p class="ch-hp-comm-sub">Copper’s isn’t just a shelf of boxes. It’s a table to build at, a teacher down the hall, and a room full of people happy to show you how.</p>' +
+          '</div>' +
+          '<div class="ch-hp-comm-cards">' +
+            '<div class="ch-hp-comm-card">' +
+              '<div class="ch-hp-comm-card-img"' + bnImg + '></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Free &middot; Every Sunday, 12–5pm</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Sunday Build Night</h3>' +
+                '<p class="ch-hp-comm-card-p">Bring a kit, grab a seat, and build alongside the regulars. Paints and advice on the table, every skill level welcome — completely free.</p>' +
+                '<a href="#" class="ch-hp-comm-card-link">Learn how it works →</a>' +
+              '</div>' +
+            '</div>' +
+            '<div class="ch-hp-comm-card">' +
+              '<div class="ch-hp-comm-card-img"' + richImg + '></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Private lessons &middot; All week</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Art classes with Richard</h3>' +
+                '<p class="ch-hp-comm-card-p">Co-owner Richard is a working professional artist. Book one-on-one drawing and painting lessons in the shop, scheduled throughout the week.</p>' +
+                '<a href="#" class="ch-hp-comm-card-link">Book a lesson →</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      // Store info
+      '<section class="ch-hp-store" id="ch-hp-store">' +
+        '<div class="ch-hp-store-inner">' +
+          '<div class="ch-hp-map-wrap">' +
+            '<iframe src="' + mapSrc + '" loading="lazy" title="Copper\'s Hobbies location"></iframe>' +
+          '</div>' +
+          '<div>' +
+            '<h2 class="ch-hp-store-h2">Come see us</h2>' +
+            '<p class="ch-hp-store-p">Only a fraction of what we carry is listed online — the shelves in person hold a lot more. Drop in, or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
+            '<p class="ch-hp-store-label">Hours</p>' +
+            '<p class="ch-hp-store-hours">Mon–Fri&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10–6<br>Saturday&nbsp;&nbsp;&nbsp;&nbsp;10–5<br>Sunday&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11–5</p>' +
+            '<p class="ch-hp-store-label">Find us</p>' +
+            '<p class="ch-hp-store-addr">935 Frederick Street<br>Kitchener, ON&nbsp;&nbsp;N2B 2B9<br>519-570-0001</p>' +
+          '</div>' +
+        '</div>' +
+      '</section>';
+  }
+
+  // ── Shop All ─────────────────────────────────────────────────────────────────
+  function initShopAllPage() {
+    if (!isShopAllPage()) return;
+    colSearch = ''; colPage = 1;
+    ['.products-simple', '.ProductList', '.products-flex', '.sqs-store-collection',
+     '[data-controller="ProductsController"]', '.collection-content',
+     '.products-v2', '[class*="ProductList"]'].forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        el.style.setProperty('display', 'none', 'important');
+      });
+    });
+    var main = document.querySelector('main, #page, .Site-inner') || document.body;
+    var firstSection = main.querySelector('section, .page-section, article');
+    var container = document.createElement('div');
+    container.id = 'ch-shopall';
+    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
+    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    container.style.cssText = 'max-width:1200px;margin:0 auto;padding:' + (headerH + 20) + 'px 8px 40px';
+    if (firstSection) {
+      main.insertBefore(container, firstSection);
+      var sib = container.nextElementSibling;
+      while (sib) { sib.style.setProperty('display', 'none', 'important'); sib = sib.nextElementSibling; }
+    } else {
+      main.appendChild(container);
+    }
+    if (indexReady) {
+      renderShopAll();
+    } else {
+      container.innerHTML = '<p style="text-align:center;padding:60px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Loading products…</p>';
+    }
+  }
+
+  function renderShopAll() {
+    var container = document.getElementById('ch-shopall');
+    if (!container) return;
+    var pr       = getPriceRange(allProducts);
+    var isMobile = window.innerWidth < 768;
+    var brands   = getUniqueBrands(allProducts);
+    var cats     = getUniqueNonBrandCats(allProducts);
+    var scales   = getUniqueScales(allProducts);
+    var activeCols = {};
+    allProducts.forEach(function(p) { activeCols[p.c] = true; });
+
+    function getFiltered() {
+      var base = colSearch.trim()
+        ? allProducts.filter(function(p) { return p.t.toLowerCase().indexOf(colSearch.toLowerCase()) !== -1; })
+        : allProducts;
+      return applyFilters(base);
+    }
+
+    function refreshGrid() {
+      var filt   = getFiltered();
+      var sorted = applySort(filt);
+      var tp = Math.ceil(sorted.length / perPage);
+      if (colPage > tp) colPage = 1;
+      var pg = sorted.slice((colPage - 1) * perPage, colPage * perPage);
+      var cnt = sorted.length + ' product' + (sorted.length !== 1 ? 's' : '');
+      if (allProducts.length !== sorted.length) cnt += ' (filtered from ' + allProducts.length + ')';
+      var countEl = document.getElementById('ch-sa-count');
+      if (countEl) countEl.textContent = cnt;
+      var sg = document.getElementById('ch-sg');
+      if (sg) sg.innerHTML = renderPerPage(isMobile) + renderCards(pg) + renderPagination(sorted.length, colPage);
+      wirePillButtons(function() { colPage = 1; refreshGrid(); });
+      wireSortSelect(function() { colPage = 1; refreshGrid(); });
+      wirePerPage(container, function() { colPage = 1; refreshGrid(); });
+      wirePagination(container, 'ch-shopall', function(p) { colPage = p; refreshGrid(); });
+      wireMobileFilterPanel(container);
+    }
+
+    if (!document.getElementById('ch-sf')) {
+      container.innerHTML =
+        '<h1 style="font-family:\'Cormorant Garamond\',serif;font-size:32px;font-weight:500;color:#1f1c18;margin:0 0 6px">The Full Shop</h1>' +
+        '<div class="ch-col-search"><input type="text" placeholder="Search all products…" id="ch-sa-q" value="' + esc(colSearch) + '"></div>' +
+        '<p class="ch-rc" id="ch-sa-count"></p>' +
+        '<div id="ch-sl">' +
+          renderSidebar({ brands: brands, cats: cats, scales: scales, priceRange: pr, showDept: true, activeCols: activeCols }) +
+          '<div id="ch-sg"></div>' +
+        '</div>';
+      wireFilters(container, pr, function() { colPage = 1; refreshGrid(); });
+      var saQ = container.querySelector('#ch-sa-q');
+      if (saQ) {
+        var saDebounce = null;
+        saQ.addEventListener('input', function() {
+          clearTimeout(saDebounce);
+          saDebounce = setTimeout(function() { colSearch = saQ.value; colPage = 1; refreshGrid(); }, 280);
+        });
+      }
+    }
+    refreshGrid();
+  }
+
   // ── Utility ─────────────────────────────────────────────────────────────────
   function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1174,6 +1517,8 @@
       initFlyout();
       initSearchPage();
       initCollectionPage();
+      initHomePage();
+      initShopAllPage();
       buildIndex();
     });
   }
