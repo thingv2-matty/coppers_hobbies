@@ -297,7 +297,9 @@
     '.ch-hp-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0}',
     '.ch-hp-link{font-size:13px;color:#a9772a;text-decoration:none;font-weight:500;white-space:nowrap}',
     '.ch-hp-link:hover{color:#c9943a}',
-    '.ch-hp-cats-grid{display:flex;flex-wrap:wrap;gap:20px 36px;justify-content:center}',
+    'html{scroll-behavior:smooth}',
+    '.ch-hp-cats-section{display:flex;flex-direction:column;gap:24px}',
+    '.ch-hp-cats-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px 28px}',
     '.ch-hp-cat{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#39342c;gap:10px;cursor:pointer}',
     '.ch-hp-cat:hover .ch-hp-cat-circle{transform:scale(1.06);box-shadow:0 4px 18px rgba(31,28,24,.13)}',
     '.ch-hp-cat-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#f5ede0,#e8d9c4);border:1.5px solid #e0d4bc;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;flex-shrink:0}',
@@ -336,17 +338,37 @@
     '.ch-hp-comm-card-p{font-size:14.5px;color:#5e5850;line-height:1.65;margin:0 0 16px}',
     '.ch-hp-comm-card-link{font-size:14px;color:#a9772a;font-weight:600;text-decoration:none}',
     '.ch-hp-comm-card-link:hover{color:#c9943a}',
+    // Brands bar
+    '.ch-hp-brands{padding:48px 0;background:#fff;border-top:1px solid #ece4d6}',
+    '.ch-hp-brands-inner{max-width:1100px;margin:0 auto;padding:0 32px;text-align:center}',
+    '@media(max-width:820px){.ch-hp-brands-inner{padding:0 20px}}',
+    '.ch-hp-brands-label{font-family:"Cormorant Garamond",serif;font-size:16px;font-style:italic;color:#8d8675;margin:0 0 20px}',
+    '.ch-hp-brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;row-gap:8px}',
+    '.ch-hp-brand-name{font-family:"Cormorant Garamond",serif;font-size:24px;color:#7a6e5f;padding:0 12px;white-space:nowrap}',
+    '.ch-hp-brand-sep{color:#c8bfb0;font-size:18px;line-height:1;flex-shrink:0}',
+    // Friends & Cohorts
+    '.ch-hp-friends{padding:44px 0;background:#faf7f1;border-top:1px solid #ece4d6;text-align:center}',
+    '.ch-hp-friends-inner{max-width:800px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-friends-inner{padding:0 20px}}',
+    '.ch-hp-friends-label{font-family:"Cormorant Garamond",serif;font-size:17px;font-style:italic;color:#8d8675;margin:0 0 6px}',
+    '.ch-hp-friends-sub{font-family:"Work Sans",sans-serif;font-size:12.5px;color:#8a8273;margin:0 0 20px}',
+    '.ch-hp-friends-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}',
+    '.ch-hp-friend{font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#5e5850;background:#fff;border:1px solid #e0d8cc;border-radius:20px;padding:6px 16px}',
     // Store info section
-    '.ch-hp-store{padding:64px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
-    '.ch-hp-store-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}',
-    '@media(max-width:820px){.ch-hp-store-inner{grid-template-columns:1fr;padding:0 20px}}',
-    '.ch-hp-map-wrap{height:320px;border-radius:10px;overflow:hidden;background:#e8e0d4;border:1px solid #ece4d6}',
+    '.ch-hp-store{padding:60px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
+    '.ch-hp-store-inner{max-width:900px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-store-inner{padding:0 20px}}',
+    '.ch-hp-map-wrap{height:280px;border-radius:10px;overflow:hidden;border:1px solid #ece4d6;margin-bottom:32px}',
     '.ch-hp-map-wrap iframe{width:100%;height:100%;display:block;border:none}',
     '.ch-hp-store-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 14px}',
-    '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0 0 28px}',
+    '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0}',
+    '.ch-hp-store-details{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px;padding-top:28px;border-top:1px solid #ece4d6}',
+    '@media(max-width:600px){.ch-hp-store-details{grid-template-columns:1fr}}',
     '.ch-hp-store-label{font-size:12px;font-weight:600;color:#a9772a;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px}',
-    '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0 0 24px;font-variant-numeric:tabular-nums}',
-    '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}'
+    '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0;font-variant-numeric:tabular-nums}',
+    '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}',
+    '.ch-hp-store-dir{display:inline-block;margin-top:12px;font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#a9772a;text-decoration:none}',
+    '.ch-hp-store-dir:hover{color:#c9943a}'
   ].join('');
   document.head.appendChild(hpStyle);
 
@@ -1433,9 +1455,12 @@
           '<div class="ch-hp-friends-row">' + friendsHtml + '</div>' +
         '</div>' +
       '</section>' +
-      // Store info (no map)
+      // Store info
       '<section class="ch-hp-store" id="ch-hp-store">' +
         '<div class="ch-hp-store-inner">' +
+          '<div class="ch-hp-map-wrap">' +
+            '<iframe src="https://maps.google.com/maps?q=935+Frederick+Street+Kitchener+ON+Canada&output=embed&z=16" loading="lazy" title="Copper's Hobbies location"></iframe>' +
+          '</div>' +
           '<h2 class="ch-hp-store-h2">Come see us</h2>' +
           '<p class="ch-hp-store-p">We\'re always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
           '<div class="ch-hp-store-details">' +

@@ -331,10 +331,12 @@
     '.ch-hp-friends-sub{font-family:"Work Sans",sans-serif;font-size:12.5px;color:#8a8273;margin:0 0 20px}',
     '.ch-hp-friends-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}',
     '.ch-hp-friend{font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#5e5850;background:#fff;border:1px solid #e0d8cc;border-radius:20px;padding:6px 16px}',
-    // Store info section (no map)
+    // Store info section
     '.ch-hp-store{padding:60px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
     '.ch-hp-store-inner{max-width:900px;margin:0 auto;padding:0 32px}',
     '@media(max-width:820px){.ch-hp-store-inner{padding:0 20px}}',
+    '.ch-hp-map-wrap{height:280px;border-radius:10px;overflow:hidden;border:1px solid #ece4d6;margin-bottom:32px}',
+    '.ch-hp-map-wrap iframe{width:100%;height:100%;display:block;border:none}',
     '.ch-hp-store-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 14px}',
     '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0}',
     '.ch-hp-store-details{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px;padding-top:28px;border-top:1px solid #ece4d6}',
@@ -1418,9 +1420,12 @@
           '<div class="ch-hp-friends-row">' + friendsHtml + '</div>' +
         '</div>' +
       '</section>' +
-      // Store info (no map)
+      // Store info
       '<section class="ch-hp-store" id="ch-hp-store">' +
         '<div class="ch-hp-store-inner">' +
+          '<div class="ch-hp-map-wrap">' +
+            '<iframe src="https://maps.google.com/maps?q=935+Frederick+Street+Kitchener+ON+Canada&output=embed&z=16" loading="lazy" title="Copper's Hobbies location"></iframe>' +
+          '</div>' +
           '<h2 class="ch-hp-store-h2">Come see us</h2>' +
           '<p class="ch-hp-store-p">We're always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
           '<div class="ch-hp-store-details">' +
