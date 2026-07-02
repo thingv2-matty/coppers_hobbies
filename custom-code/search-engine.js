@@ -274,7 +274,9 @@
     '.ch-hp-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0}',
     '.ch-hp-link{font-size:13px;color:#a9772a;text-decoration:none;font-weight:500;white-space:nowrap}',
     '.ch-hp-link:hover{color:#c9943a}',
-    '.ch-hp-cats-grid{display:flex;flex-wrap:wrap;gap:20px 36px;justify-content:center}',
+    'html{scroll-behavior:smooth}',
+    '.ch-hp-cats-section{display:flex;flex-direction:column;gap:24px}',
+    '.ch-hp-cats-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px 28px}',
     '.ch-hp-cat{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#39342c;gap:10px;cursor:pointer}',
     '.ch-hp-cat:hover .ch-hp-cat-circle{transform:scale(1.06);box-shadow:0 4px 18px rgba(31,28,24,.13)}',
     '.ch-hp-cat-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#f5ede0,#e8d9c4);border:1.5px solid #e0d4bc;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;flex-shrink:0}',
@@ -313,17 +315,35 @@
     '.ch-hp-comm-card-p{font-size:14.5px;color:#5e5850;line-height:1.65;margin:0 0 16px}',
     '.ch-hp-comm-card-link{font-size:14px;color:#a9772a;font-weight:600;text-decoration:none}',
     '.ch-hp-comm-card-link:hover{color:#c9943a}',
-    // Store info section
-    '.ch-hp-store{padding:64px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
-    '.ch-hp-store-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}',
-    '@media(max-width:820px){.ch-hp-store-inner{grid-template-columns:1fr;padding:0 20px}}',
-    '.ch-hp-map-wrap{height:320px;border-radius:10px;overflow:hidden;background:#e8e0d4;border:1px solid #ece4d6}',
-    '.ch-hp-map-wrap iframe{width:100%;height:100%;display:block;border:none}',
+    // Brands bar
+    '.ch-hp-brands{padding:48px 0;background:#fff;border-top:1px solid #ece4d6}',
+    '.ch-hp-brands-inner{max-width:1100px;margin:0 auto;padding:0 32px;text-align:center}',
+    '@media(max-width:820px){.ch-hp-brands-inner{padding:0 20px}}',
+    '.ch-hp-brands-label{font-family:"Cormorant Garamond",serif;font-size:16px;font-style:italic;color:#8d8675;margin:0 0 20px}',
+    '.ch-hp-brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;row-gap:8px}',
+    '.ch-hp-brand-name{font-family:"Cormorant Garamond",serif;font-size:24px;color:#7a6e5f;padding:0 12px;white-space:nowrap}',
+    '.ch-hp-brand-sep{color:#c8bfb0;font-size:18px;line-height:1;flex-shrink:0}',
+    // Friends & Cohorts
+    '.ch-hp-friends{padding:44px 0;background:#faf7f1;border-top:1px solid #ece4d6;text-align:center}',
+    '.ch-hp-friends-inner{max-width:800px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-friends-inner{padding:0 20px}}',
+    '.ch-hp-friends-label{font-family:"Cormorant Garamond",serif;font-size:17px;font-style:italic;color:#8d8675;margin:0 0 6px}',
+    '.ch-hp-friends-sub{font-family:"Work Sans",sans-serif;font-size:12.5px;color:#8a8273;margin:0 0 20px}',
+    '.ch-hp-friends-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}',
+    '.ch-hp-friend{font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#5e5850;background:#fff;border:1px solid #e0d8cc;border-radius:20px;padding:6px 16px}',
+    // Store info section (no map)
+    '.ch-hp-store{padding:60px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
+    '.ch-hp-store-inner{max-width:900px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-store-inner{padding:0 20px}}',
     '.ch-hp-store-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 14px}',
-    '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0 0 28px}',
+    '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0}',
+    '.ch-hp-store-details{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px;padding-top:28px;border-top:1px solid #ece4d6}',
+    '@media(max-width:600px){.ch-hp-store-details{grid-template-columns:1fr}}',
     '.ch-hp-store-label{font-size:12px;font-weight:600;color:#a9772a;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px}',
-    '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0 0 24px;font-variant-numeric:tabular-nums}',
-    '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}'
+    '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0;font-variant-numeric:tabular-nums}',
+    '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}',
+    '.ch-hp-store-dir{display:inline-block;margin-top:12px;font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#a9772a;text-decoration:none}',
+    '.ch-hp-store-dir:hover{color:#c9943a}'
   ].join('');
   document.head.appendChild(hpStyle);
 
@@ -1255,15 +1275,20 @@
     richard    : ''    // Richard painting photo
   };
 
-  var HP_CATS = [
-    { label: 'Cars',            href: '/coppers-hobbies-szOJ2/cars',             icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15h14v-3L17 7H7L5 12v3z"/><circle cx="8.5" cy="18.5" r="1.5"/><circle cx="15.5" cy="18.5" r="1.5"/><path d="M8 10h8"/></svg>' },
-    { label: 'Military',        href: '/coppers-hobbies-szOJ2/military',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17.5 6 21.5l2.5-7.5L2 9.5h7.5z"/></svg>' },
-    { label: 'Aircraft',        href: '/coppers-hobbies-szOJ2/aircraft',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14l-9-8-9 8 3-.5 1.5 3.5L12 16l4.5 1 1.5-3.5z"/><line x1="12" y1="6" x2="12" y2="20"/></svg>' },
-    { label: 'Ships',           href: '/coppers-hobbies-szOJ2/ships',            icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M5 13h14M7 17a5 5 0 0010 0"/></svg>' },
-    { label: 'Gundam & Mecha',  href: '/coppers-hobbies-szOJ2/sci-fi-and-space', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="7" rx="1.5"/><rect x="5" y="10" width="14" height="9" rx="1.5"/><path d="M9 19l-2 3m8-3l2 3M3 13.5h2m14 0h2"/><circle cx="10.5" cy="14" r="1" fill="#8a6535"/><circle cx="13.5" cy="14" r="1" fill="#8a6535"/></svg>' },
-    { label: 'Figures',         href: '/coppers-hobbies-szOJ2/figures',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v7m-4 1.5l-2 5m6-5v5m4-5l2 5m-6-9l-4 2m8-2l-4 2"/></svg>' },
-    { label: 'Paints',          href: '/art-supplies/painting-supplies',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="8" height="14" rx="1.5"/><path d="M11 5V3h2v2m-3 4h4m-4 3.5h4"/><path d="M12 19v2"/></svg>' },
-    { label: 'Brushes',         href: '/art-supplies/brushes',                   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 3-11 11a4 4 0 01-5-5L17 4z"/><path d="M5 20c0 1.5 2 2.5 3 1.5"/><line x1="13.5" y1="7.5" x2="16.5" y2="10.5"/></svg>' }
+  // Top row: 5 model kit categories
+  var HP_CATS_MODELS = [
+    { label: 'Cars',            href: '/coppers-hobbies-szOJ2/cars',              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15h14v-3L17 7H7L5 12v3z"/><circle cx="8.5" cy="18.5" r="1.5"/><circle cx="15.5" cy="18.5" r="1.5"/><path d="M8 10h8"/></svg>' },
+    { label: 'Military',        href: '/coppers-hobbies-szOJ2/military',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17.5 6 21.5l2.5-7.5L2 9.5h7.5z"/></svg>' },
+    { label: 'Aircraft',        href: '/coppers-hobbies-szOJ2/aircraft',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14l-9-8-9 8 3-.5 1.5 3.5L12 16l4.5 1 1.5-3.5z"/><line x1="12" y1="6" x2="12" y2="20"/></svg>' },
+    { label: 'Ships',           href: '/coppers-hobbies-szOJ2/ships',             icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M5 13h14M7 17a5 5 0 0010 0"/></svg>' },
+    { label: 'Gundam & Mecha',  href: '/coppers-hobbies-szOJ2/sci-fi-and-space',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="7" rx="1.5"/><rect x="5" y="10" width="14" height="9" rx="1.5"/><path d="M9 19l-2 3m8-3l2 3M3 13.5h2m14 0h2"/><circle cx="10.5" cy="14" r="1" fill="#8a6535"/><circle cx="13.5" cy="14" r="1" fill="#8a6535"/></svg>' }
+  ];
+  // Bottom row: 4 art supply categories
+  var HP_CATS_ART = [
+    { label: 'Paints',          href: '/art-supplies/painting-supplies',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="8" height="14" rx="1.5"/><path d="M11 5V3h2v2m-3 4h4m-4 3.5h4"/><path d="M12 19v2"/></svg>' },
+    { label: 'Brushes',         href: '/art-supplies/brushes',                    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 3-11 11a4 4 0 01-5-5L17 4z"/><path d="M5 20c0 1.5 2 2.5 3 1.5"/><line x1="13.5" y1="7.5" x2="16.5" y2="10.5"/></svg>' },
+    { label: 'Drawing',         href: '/art-supplies/drawing-supplies',           icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4L8 20l-5 1 1-5L17 3z"/><line x1="14.5" y1="5.5" x2="18.5" y2="9.5"/></svg>' },
+    { label: 'Paper & Canvas',  href: '/art-supplies/paintingdrawing-surfaces',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14a1 1 0 011 1v16a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>' }
   ];
 
   function isHomePage() { return window.location.pathname === '/'; }
@@ -1300,15 +1325,13 @@
 
   function renderHomePage(container, headerH, featured) {
     var heroImg = HP_IMG.hero ? 'background-image:url(' + HP_IMG.hero + ')' : 'background-color:#ede3d2';
-    var bnImg   = HP_IMG.buildNight ? ' style="background-image:url(' + HP_IMG.buildNight + ')"' : '';
-    var richImg = HP_IMG.richard   ? ' style="background-image:url(' + HP_IMG.richard   + ')"' : '';
 
-    var catTiles = HP_CATS.map(function(c) {
+    function makeTile(c) {
       return '<a href="' + c.href + '" class="ch-hp-cat">' +
         '<div class="ch-hp-cat-circle">' + c.icon + '</div>' +
         '<span class="ch-hp-cat-label">' + esc(c.label) + '</span>' +
       '</a>';
-    }).join('');
+    }
 
     var featCards = featured.length
       ? featured.map(function(p) {
@@ -1323,7 +1346,16 @@
         }).join('')
       : '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Featured products loading…</div>';
 
-    var mapSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=-80.492%2C43.450%2C-80.470%2C43.464&layer=mapnik&marker=43.457%2C-80.481';
+    var BRANDS = ['Tamiya', 'Bandai', 'Revell', 'Hasegawa', 'Italeri', 'Winsor & Newton', 'Liquitex', 'Vallejo'];
+    var brandsHtml = BRANDS.map(function(b, i) {
+      return '<span class="ch-hp-brand-name">' + esc(b) + '</span>' +
+        (i < BRANDS.length - 1 ? '<span class="ch-hp-brand-sep">&middot;</span>' : '');
+    }).join('');
+
+    var FRIENDS = ['Richard Zajac Art', 'Little Shop of Heroes', 'IPMS Hamilton', 'IPMS Canada'];
+    var friendsHtml = FRIENDS.map(function(f) {
+      return '<span class="ch-hp-friend">' + esc(f) + '</span>';
+    }).join('');
 
     container.innerHTML =
       // Hero
@@ -1348,14 +1380,17 @@
           '</div>' +
         '</div>' +
       '</section>' +
-      // Category tiles
+      // Category tiles — two staggered rows (5 model kit + 4 art)
       '<section class="ch-hp-cats">' +
         '<div class="ch-hp-cats-inner">' +
           '<div class="ch-hp-cats-hd">' +
             '<h2 class="ch-hp-h2">Browse by category</h2>' +
             '<a href="/shopall" class="ch-hp-link">All categories →</a>' +
           '</div>' +
-          '<div class="ch-hp-cats-grid">' + catTiles + '</div>' +
+          '<div class="ch-hp-cats-section">' +
+            '<div class="ch-hp-cats-row">' + HP_CATS_MODELS.map(makeTile).join('') + '</div>' +
+            '<div class="ch-hp-cats-row">' + HP_CATS_ART.map(makeTile).join('') + '</div>' +
+          '</div>' +
         '</div>' +
       '</section>' +
       // Featured products
@@ -1368,48 +1403,36 @@
           '<div class="ch-hp-feat-grid">' + featCards + '</div>' +
         '</div>' +
       '</section>' +
-      // Community
-      '<section class="ch-hp-community">' +
-        '<div class="ch-hp-comm-inner">' +
-          '<div class="ch-hp-comm-intro">' +
-            '<h2 class="ch-hp-comm-h2">More than a store — it’s where the hobby gets together.</h2>' +
-            '<p class="ch-hp-comm-sub">Copper’s isn’t just a shelf of boxes. It’s a table to build at, a teacher down the hall, and a room full of people happy to show you how.</p>' +
-          '</div>' +
-          '<div class="ch-hp-comm-cards">' +
-            '<div class="ch-hp-comm-card">' +
-              '<div class="ch-hp-comm-card-img"' + bnImg + '></div>' +
-              '<div class="ch-hp-comm-card-body">' +
-                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Free &middot; Every Sunday, 12–5pm</span>' +
-                '<h3 class="ch-hp-comm-card-h3">Sunday Build Night</h3>' +
-                '<p class="ch-hp-comm-card-p">Bring a kit, grab a seat, and build alongside the regulars. Paints and advice on the table, every skill level welcome — completely free.</p>' +
-                '<a href="#" class="ch-hp-comm-card-link">Learn how it works →</a>' +
-              '</div>' +
-            '</div>' +
-            '<div class="ch-hp-comm-card">' +
-              '<div class="ch-hp-comm-card-img"' + richImg + '></div>' +
-              '<div class="ch-hp-comm-card-body">' +
-                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Private lessons &middot; All week</span>' +
-                '<h3 class="ch-hp-comm-card-h3">Art classes with Richard</h3>' +
-                '<p class="ch-hp-comm-card-p">Co-owner Richard is a working professional artist. Book one-on-one drawing and painting lessons in the shop, scheduled throughout the week.</p>' +
-                '<a href="#" class="ch-hp-comm-card-link">Book a lesson →</a>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
+      // Brands we carry
+      '<section class="ch-hp-brands">' +
+        '<div class="ch-hp-brands-inner">' +
+          '<p class="ch-hp-brands-label">Brands we carry</p>' +
+          '<div class="ch-hp-brands-row">' + brandsHtml + '</div>' +
         '</div>' +
       '</section>' +
-      // Store info
+      // Friends & Cohorts
+      '<section class="ch-hp-friends">' +
+        '<div class="ch-hp-friends-inner">' +
+          '<p class="ch-hp-friends-label">Friends & Cohorts</p>' +
+          '<p class="ch-hp-friends-sub">A small business that supports other local small businesses</p>' +
+          '<div class="ch-hp-friends-row">' + friendsHtml + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Store info (no map)
       '<section class="ch-hp-store" id="ch-hp-store">' +
         '<div class="ch-hp-store-inner">' +
-          '<div class="ch-hp-map-wrap">' +
-            '<iframe src="' + mapSrc + '" loading="lazy" title="Copper\'s Hobbies location"></iframe>' +
-          '</div>' +
-          '<div>' +
-            '<h2 class="ch-hp-store-h2">Come see us</h2>' +
-            '<p class="ch-hp-store-p">Only a fraction of what we carry is listed online — the shelves in person hold a lot more. Drop in, or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
-            '<p class="ch-hp-store-label">Hours</p>' +
-            '<p class="ch-hp-store-hours">Mon–Fri&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10–6<br>Saturday&nbsp;&nbsp;&nbsp;&nbsp;10–5<br>Sunday&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11–5</p>' +
-            '<p class="ch-hp-store-label">Find us</p>' +
-            '<p class="ch-hp-store-addr">935 Frederick Street<br>Kitchener, ON&nbsp;&nbsp;N2B 2B9<br>519-570-0001</p>' +
+          '<h2 class="ch-hp-store-h2">Come see us</h2>' +
+          '<p class="ch-hp-store-p">We're always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
+          '<div class="ch-hp-store-details">' +
+            '<div>' +
+              '<p class="ch-hp-store-label">Hours</p>' +
+              '<p class="ch-hp-store-hours">Mon–Fri&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10–6<br>Saturday&nbsp;&nbsp;&nbsp;&nbsp;10–5<br>Sunday&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11–5</p>' +
+            '</div>' +
+            '<div>' +
+              '<p class="ch-hp-store-label">Find us</p>' +
+              '<p class="ch-hp-store-addr">935 Frederick Street<br>Kitchener, ON&nbsp;&nbsp;N2B 2B9<br>519-570-0001</p>' +
+              '<a href="https://maps.google.com/?q=935+Frederick+Street+Kitchener+ON+Canada" target="_blank" rel="noopener" class="ch-hp-store-dir">Get directions →</a>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</section>';
@@ -1421,7 +1444,7 @@
     colSearch = ''; colPage = 1;
     ['.products-simple', '.ProductList', '.products-flex', '.sqs-store-collection',
      '[data-controller="ProductsController"]', '.collection-content',
-     '.products-v2', '[class*="ProductList"]'].forEach(function(sel) {
+     '.products-v2', '[class*="ProductList"]', '.system-page'].forEach(function(sel) {
       document.querySelectorAll(sel).forEach(function(el) {
         el.style.setProperty('display', 'none', 'important');
       });

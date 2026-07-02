@@ -2,17 +2,26 @@
 // ==============================================
 // Use this to test on the LIVE site without committing anything permanent.
 //
-// HOW TO USE:
-// 1. Open coppershobbies.com in your browser (any page)
-// 2. Open DevTools > Console tab
-// 3. Paste this ENTIRE file and press Enter
-// 4. First run builds the index — takes 15-30s, status shown bottom-right
-// 5. Once built: type in the search bar to test the flyout
-// 6. Press Enter to go to the search results page
-// 7. Refresh to remove everything — nothing is saved permanently
+// HOW TO USE (Search / Collection pages):
+//   1. Open coppershobbies.com in your browser (any page)
+//   2. Open DevTools → Console tab
+//   3. Paste this ENTIRE file and press Enter
+//   4. Index builds in 15-30s — progress shown bottom-right
+//   5. Refresh to remove everything
 //
-// If everything works, paste search-engine.html into Code Injection > Footer.
-
+// HOW TO USE (Homepage):
+//   1. Go to coppershobbies.com (the homepage)
+//   2. Open DevTools → Console tab
+//   3. Paste this ENTIRE file and press Enter
+//   4. Homepage sections should replace the native Squarespace content
+//
+// HOW TO USE (/shopall):
+//   1. Go to coppershobbies.com/shopall (shows a 404 — that is fine)
+//   2. Open DevTools → Console tab
+//   3. Paste this ENTIRE file and press Enter
+//   4. Full product grid should appear
+//
+// If everything looks right: push to GitHub and update the injection hash.
 (function () {
   'use strict';
 
@@ -46,10 +55,7 @@
     'd&d'            : 'Dungeons'
   };
 
-  // Known brand names — matched against product categories to extract brand field.
-  // Add new brands here as the shop expands.
   var KNOWN_BRANDS = [
-    // Model kit manufacturers
     'Abteilung502','Academy','AFV','AFV Club','AK','AK Interactive','Albion Alloys','All Game Terrain and Woodland Scenics',
     'Alpha Abrasives','AMT','Amusing Hobby','Aoshima','Arma','Arma Hobby','Army Painter','Asuka',
     'Bandai','Bare Metal Foil','Bob Smith Industries','Border','Border Model','Bronco','Bud Nosen Wood',
@@ -67,10 +73,8 @@
     'Salvinos','Scale75','SMS','SNAA','Suyata',
     'Takom','Tamiya','Testors','Trumpeter',
     'Ultra Pro','ZM','Zoukei-Mura',
-    // Paints & weathering
     'Ammo by MIG','Fine Molds','Minicraft','Monogram','Atlantis','Round 2',
     'Vallejo',
-    // Art supply brands
     'Andrea Color','Apollon','Arches','Armadillo Art','Armour Products','Art Alternatives',
     'ATI',
     'Beam Paints',
@@ -90,11 +94,8 @@
     'Uniball',
     'Vallejo','W R Memory Keepers','Winsor & Newton','WOW',
     'Yasutomo',
-    // Diecasts
     'Greenlight','Johnny Lightning',
-    // Gaming
     'Privateer Press',
-    // Duplicate-safe extras (alternate casings that may appear in Squarespace)
     'Airfix','AMT','GSI Creos','Gunze'
   ];
 
@@ -106,14 +107,12 @@
     return null;
   }
 
-  // Common hobby scale denominators
   var SCALE_DENOMS = [6,8,9,10,12,14,16,18,20,22,24,25,32,35,43,48,50,54,56,64,72,76,87,96,
                       100,108,120,125,144,160,200,250,285,300,350,400,450,500,600,700,720,800,
                       1000,1200,1250,1700,2400,3000,3200];
 
   function extractScale(text) {
     if (!text) return null;
-    // Try various separator formats: 1/35, 1:35, 1-35, "1 35", "(1/35)"
     var patterns = [
       /\b1[\/:](\d{1,4})\b/,
       /\b1\s(\d{1,4})\b/,
@@ -134,7 +133,7 @@
 
   var CACHE_KEY = 'ch_search_v4';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
-  var CACHE_STORE = window.sessionStorage; // sessionStorage: ~10MB limit, cleared on tab close → images always show
+  var CACHE_STORE = window.sessionStorage;
 
   // ── State ───────────────────────────────────────────────────────────────────
   var allProducts  = [];
@@ -146,7 +145,7 @@
   var activeIndex  = -1;
 
   var filters         = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
-  var _filterOnChange = null; // set by wireFilters so pill × buttons can trigger the same onChange
+  var _filterOnChange = null;
   var sortBy          = 'default';
   var colSearch = '';
   var srPage    = 1;
@@ -156,10 +155,6 @@
   // ── CSS ─────────────────────────────────────────────────────────────────────
   var styleEl = document.createElement('style');
   styleEl.textContent = [
-    // Index build status
-    '#ch-idx-status{position:fixed;bottom:20px;right:20px;background:#1f1c18;color:#faf7f1;padding:10px 16px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:12px;z-index:99999;opacity:0;transition:opacity .3s;pointer-events:none}',
-    '#ch-idx-status.on{opacity:1}',
-    // Flyout
     '.sqs-search-ui-text-input{position:relative!important}',
     '#ch-flyout{position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:9998;background:#fff;border:1px solid #ece4d6;border-radius:0 0 8px 8px;box-shadow:0 8px 24px rgba(31,28,24,.12);max-height:440px;overflow-y:auto;display:none}',
     '#ch-flyout.on{display:block}',
@@ -173,17 +168,14 @@
     '.ch-fso{color:#c9943a;font-size:10px;font-family:"Work Sans",sans-serif;letter-spacing:.04em}',
     '.ch-fall{padding:10px 16px;text-align:center;border-top:1px solid #ece4d6;font-family:"Work Sans",sans-serif;font-size:13px;color:#c9943a;cursor:pointer;display:block}',
     '.ch-fall:hover{background:#faf7f1}',
-    // Search results page
     '#ch-sr{max-width:1200px;margin:0 auto;padding:16px 8px 40px}',
     '#ch-sr h1{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:500;color:#1f1c18;margin:0 0 6px}',
     '.ch-rc{font-family:"Work Sans",sans-serif;font-size:13px;color:#8a8273;margin:0 0 24px}',
     '#ch-sl{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}',
     '@media(max-width:720px){#ch-sl{grid-template-columns:1fr}}',
     '#ch-sf{position:sticky;top:24px;max-height:calc(100vh - 80px);overflow-y:auto;padding-right:4px;scrollbar-width:thin}',
-    // Mobile: sidebar hidden in layout; shown via fixed body-level wrapper
     '@media(max-width:720px){#ch-sf{display:none!important}}',
     '@media(max-width:720px){#ch-sl{grid-template-columns:1fr}}',
-    // Mobile filter wrapper — always at body level so z-index is root stacking context
     '#ch-mobile-filter{position:fixed;bottom:0;left:0;right:0;max-height:85dvh;z-index:9990;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 30px rgba(31,28,24,.15);overflow-y:auto;transform:translateY(100%);transition:transform .3s ease;pointer-events:none}',
     '#ch-mobile-filter.open{transform:translateY(0);pointer-events:all}',
     '#ch-mobile-filter #ch-sf{display:block!important;padding:20px 16px;max-height:none!important;overflow-y:visible!important}',
@@ -210,21 +202,15 @@
     '.ch-tg input:checked+.ch-ts{background:#c9943a}',
     '.ch-ts:before{content:"";position:absolute;width:16px;height:16px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:.2s}',
     '.ch-tg input:checked+.ch-ts:before{transform:translateX(16px)}',
-    // Product grid
     '#ch-sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:20px}',
-    // Card frame + lift
     '.ch-card{text-decoration:none;color:inherit;display:flex;flex-direction:column;border:1px solid #ece4d6;border-radius:10px;overflow:hidden;background:#fff;transition:transform .2s ease,box-shadow .2s ease}',
     '.ch-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(31,28,24,.1)}',
-    // Out-of-stock greying
     '.ch-oos{opacity:.55}',
     '.ch-oos:hover{opacity:.7}',
-    // Image section
     '.ch-cw{aspect-ratio:1;overflow:hidden;background:#faf7f1;flex-shrink:0;position:relative}',
     '.ch-ci{width:100%;height:100%;background-size:cover;background-position:center}',
-    // Sold-out overlay on image
     '.ch-sold-ov{position:absolute;inset:0;background:rgba(250,247,241,.4);display:flex;align-items:center;justify-content:center}',
     '.ch-sold-ov span{background:rgba(31,28,24,.72);color:#faf7f1;padding:5px 12px;font-family:"Work Sans",sans-serif;font-size:10px;font-weight:500;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}',
-    // Card body
     '.ch-card-body{padding:12px;display:flex;flex-direction:column;flex:1}',
     '.ch-card-dept{font-family:"Work Sans",sans-serif;font-size:10px;color:#8a8273;text-transform:uppercase;letter-spacing:.07em;padding-bottom:9px;border-bottom:1px solid #ece4d6;margin-bottom:9px}',
     '.ch-card-info{padding-bottom:9px;border-bottom:1px solid #ece4d6;margin-bottom:9px}',
@@ -238,7 +224,6 @@
     '.ch-bdg-out{background:#fdf5ec;color:#c9943a}',
     '.ch-none{text-align:center;padding:60px 20px;font-family:"Work Sans",sans-serif;color:#8a8273;grid-column:1/-1}',
     '.ch-clr{background:none;border:none;color:#c9943a;cursor:pointer;text-decoration:underline;font-family:"Work Sans",sans-serif;font-size:inherit}',
-    // Price slider
     '.ch-price-row{display:flex;align-items:center;gap:6px;margin-bottom:14px}',
     '.ch-price-box{display:flex;align-items:center;gap:2px;border:1px solid #ece4d6;border-radius:6px;padding:4px 7px;min-width:0;flex:1}',
     '.ch-price-box span{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;flex-shrink:0}',
@@ -251,7 +236,6 @@
     '.ch-range-input{position:absolute;width:100%;height:4px;background:none;-webkit-appearance:none;appearance:none;pointer-events:none;top:50%;transform:translateY(-50%);margin:0}',
     '.ch-range-input::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#c9943a;border:2px solid #fff;box-shadow:0 1px 4px rgba(31,28,24,.2);pointer-events:all;cursor:pointer}',
     '.ch-range-input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#c9943a;border:2px solid #fff;box-shadow:0 1px 4px rgba(31,28,24,.2);pointer-events:all;cursor:pointer;border:none}',
-    // Pagination
     '.ch-pages{display:flex;align-items:center;justify-content:center;gap:4px;padding:32px 0 8px;grid-column:1/-1;flex-wrap:wrap}',
     '.ch-pg-btn{background:none;border:1.5px solid #ece4d6;color:#5e5850;padding:6px 11px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:13px;cursor:pointer;transition:background .15s,border-color .15s;min-width:36px}',
     '.ch-pg-btn:hover:not([disabled]):not(.ch-pg-cur){border-color:#c9943a;color:#c9943a}',
@@ -259,7 +243,6 @@
     '.ch-pg-cur{background:#1f1c18!important;border-color:#1f1c18!important;color:#fff!important;font-weight:600}',
     '.ch-pg-nav{padding:6px 14px;border-color:#2c2820;color:#1f1c18}',
     '.ch-pg-ellipsis{font-family:"Work Sans",sans-serif;font-size:13px;color:#8a8273;padding:0 4px}',
-    // Grid toolbar (per-page selector)
     '.ch-sg-toolbar{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px}',
     '.ch-pp-row{display:flex;align-items:center;gap:8px}',
     '@media(max-width:720px){.ch-pp-row{width:100%;justify-content:flex-end}}',
@@ -267,11 +250,9 @@
     '.ch-pp-btn{background:none;border:1px solid #ece4d6;color:#8a8273;padding:3px 9px;border-radius:4px;font-family:"Work Sans",sans-serif;font-size:12px;cursor:pointer}',
     '.ch-pp-btn.active{background:#1f1c18;border-color:#1f1c18;color:#fff}',
     '.ch-pp-btn:hover:not(.active){border-color:#c9943a;color:#c9943a}',
-    // Collection search bar
     '.ch-col-search{display:flex;gap:10px;margin-bottom:20px}',
     '.ch-col-search input{flex:1;border:1px solid #ece4d6;border-radius:8px;padding:10px 16px;font-family:"Work Sans",sans-serif;font-size:14px;color:#1f1c18;outline:none}',
     '.ch-col-search input:focus{border-color:#c9943a}',
-    // Filter pills
     '#ch-pills{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:10px;grid-column:1/-1}',
     '@media(max-width:720px){#ch-pills{display:none!important}}',
     '#ch-pills-mobile{display:none}',
@@ -281,7 +262,6 @@
     '.ch-pill-x{background:none;border:none;color:#faf7f1;cursor:pointer;font-size:14px;line-height:1;padding:0 2px;opacity:.6;flex-shrink:0;display:flex;align-items:center}',
     '.ch-pill-x:hover{opacity:1}',
     '.ch-pill-clear{background:none;border:none;font-family:"Work Sans",sans-serif;font-size:11px;color:#8a8273;cursor:pointer;padding:4px 6px;text-decoration:underline;align-self:center;flex-shrink:0}',
-    // Sort controls
     '.ch-sort-label{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;white-space:nowrap}',
     '@media(max-width:720px){.ch-sort-label{font-size:12px;color:#8a8273}}',
     '.ch-sort-sel{font-family:"Work Sans",sans-serif;font-size:12px;color:#5e5850;border:1px solid #ece4d6;border-radius:4px;padding:3px 8px;background:#fff;cursor:pointer}',
@@ -289,10 +269,98 @@
   ].join('');
   document.head.appendChild(styleEl);
 
-  // ── Status bar ──────────────────────────────────────────────────────────────
+  var hpStyle = document.createElement('style');
+  hpStyle.textContent = [
+    // Homepage skeleton
+    '#ch-home{font-family:"Work Sans",sans-serif;line-height:1}',
+    // Hero
+    '.ch-hp-hero{background:#faf7f1;padding:0}',
+    '.ch-hp-hero-inner{max-width:1200px;margin:0 auto;padding:60px 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}',
+    '@media(max-width:820px){.ch-hp-hero-inner{grid-template-columns:1fr;gap:36px;padding:40px 20px}}',
+    '.ch-hp-h1{font-family:"Cormorant Garamond",serif;font-size:clamp(36px,5vw,60px);font-weight:500;color:#1f1c18;line-height:1.1;margin:0 0 20px;text-wrap:balance}',
+    '.ch-hp-sub{font-size:16.5px;color:#5e5850;line-height:1.65;margin:0 0 32px;max-width:460px}',
+    '.ch-hp-hero-btns{display:flex;gap:12px;flex-wrap:wrap}',
+    '.ch-hp-btn-primary{display:inline-flex;align-items:center;background:#c9943a;color:#fff;padding:12px 24px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;transition:background .2s}',
+    '.ch-hp-btn-primary:hover{background:#b5832e}',
+    '.ch-hp-btn-outline{display:inline-flex;align-items:center;border:1.5px solid #2c2820;color:#2c2820;padding:11px 24px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;transition:background .15s,color .15s}',
+    '.ch-hp-btn-outline:hover{background:#2c2820;color:#faf7f1}',
+    '.ch-hp-hero-img-wrap{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:#f0e6d3}',
+    '.ch-hp-hero-img{width:100%;height:100%;background-size:cover;background-position:center;background-color:#ede3d2}',
+    '.ch-hp-hero-badge{position:absolute;bottom:20px;left:20px;background:rgba(31,28,24,.82);color:#f6f1e7;padding:12px 16px;border-radius:8px}',
+    '.ch-hp-badge-addr{display:block;font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600}',
+    '.ch-hp-badge-sub{display:block;font-size:11px;color:#c9b98f;margin-top:3px}',
+    // Category section
+    '.ch-hp-cats{padding:56px 0;background:#fff;border-top:1px solid #ece4d6;border-bottom:1px solid #ece4d6}',
+    '.ch-hp-cats-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-cats-inner{padding:0 20px}}',
+    '.ch-hp-cats-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px}',
+    '.ch-hp-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0}',
+    '.ch-hp-link{font-size:13px;color:#a9772a;text-decoration:none;font-weight:500;white-space:nowrap}',
+    '.ch-hp-link:hover{color:#c9943a}',
+    '.ch-hp-cats-grid{display:flex;flex-wrap:wrap;gap:20px 36px;justify-content:center}',
+    '.ch-hp-cat{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#39342c;gap:10px;cursor:pointer}',
+    '.ch-hp-cat:hover .ch-hp-cat-circle{transform:scale(1.06);box-shadow:0 4px 18px rgba(31,28,24,.13)}',
+    '.ch-hp-cat-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#f5ede0,#e8d9c4);border:1.5px solid #e0d4bc;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;flex-shrink:0}',
+    '.ch-hp-cat-circle svg{width:30px;height:30px}',
+    '.ch-hp-cat-label{font-size:12px;font-weight:600;color:#39342c;text-align:center;line-height:1.35;max-width:80px}',
+    // Featured section
+    '.ch-hp-feat{padding:56px 0;background:#faf7f1}',
+    '.ch-hp-feat-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-feat-inner{padding:0 20px}}',
+    '.ch-hp-feat-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}',
+    '.ch-hp-feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}',
+    '@media(max-width:900px){.ch-hp-feat-grid{grid-template-columns:repeat(2,1fr)}}',
+    '@media(max-width:480px){.ch-hp-feat-grid{grid-template-columns:1fr}}',
+    '.ch-hp-pcard{text-decoration:none;color:inherit;display:flex;flex-direction:column;border:1px solid #ece4d6;border-radius:10px;overflow:hidden;background:#fff;transition:transform .2s,box-shadow .2s}',
+    '.ch-hp-pcard:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(31,28,24,.1)}',
+    '.ch-hp-pcard-img{aspect-ratio:1;background-size:cover;background-position:center;background-color:#f5f0e8}',
+    '.ch-hp-pcard-body{padding:14px}',
+    '.ch-hp-pcard-name{font-size:13px;color:#1f1c18;line-height:1.4;margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}',
+    '.ch-hp-pcard-price{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:#1f1c18}',
+    // Community section
+    '.ch-hp-community{padding:72px 0;background:linear-gradient(180deg,#f6ecd8,#f0e4c7)}',
+    '.ch-hp-comm-inner{max-width:960px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:820px){.ch-hp-comm-inner{padding:0 20px}}',
+    '.ch-hp-comm-intro{text-align:center;margin-bottom:48px}',
+    '.ch-hp-comm-h2{font-family:"Cormorant Garamond",serif;font-size:clamp(30px,4.5vw,44px);font-weight:500;color:#1f1c18;margin:0 0 18px;text-wrap:balance;line-height:1.15}',
+    '.ch-hp-comm-sub{font-size:16px;color:#6a5f49;line-height:1.65;margin:0 auto;max-width:560px}',
+    '.ch-hp-comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px}',
+    '@media(max-width:640px){.ch-hp-comm-cards{grid-template-columns:1fr}}',
+    '.ch-hp-comm-card{background:#fff;border-radius:12px;border:1px solid #ecdcc0;overflow:hidden}',
+    '.ch-hp-comm-card-img{height:200px;background-size:cover;background-position:center;background-color:#ede3d2}',
+    '.ch-hp-comm-card-body{padding:24px}',
+    '.ch-hp-comm-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.02em;margin-bottom:14px}',
+    '.ch-hp-comm-badge-gold{background:#c9943a;color:#fff}',
+    '.ch-hp-comm-badge-cream{background:#f0e7d6;border:1px solid #e2d4ba;color:#39342c}',
+    '.ch-hp-comm-card-h3{font-family:"Cormorant Garamond",serif;font-size:27px;font-weight:600;color:#1f1c18;margin:0 0 12px;line-height:1.2}',
+    '.ch-hp-comm-card-p{font-size:14.5px;color:#5e5850;line-height:1.65;margin:0 0 16px}',
+    '.ch-hp-comm-card-link{font-size:14px;color:#a9772a;font-weight:600;text-decoration:none}',
+    '.ch-hp-comm-card-link:hover{color:#c9943a}',
+    // Store info section
+    '.ch-hp-store{padding:64px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
+    '.ch-hp-store-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}',
+    '@media(max-width:820px){.ch-hp-store-inner{grid-template-columns:1fr;padding:0 20px}}',
+    '.ch-hp-map-wrap{height:320px;border-radius:10px;overflow:hidden;background:#e8e0d4;border:1px solid #ece4d6}',
+    '.ch-hp-map-wrap iframe{width:100%;height:100%;display:block;border:none}',
+    '.ch-hp-store-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 14px}',
+    '.ch-hp-store-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0 0 28px}',
+    '.ch-hp-store-label{font-size:12px;font-weight:600;color:#a9772a;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px}',
+    '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0 0 24px;font-variant-numeric:tabular-nums}',
+    '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}'
+  ].join('');
+  document.head.appendChild(hpStyle);
+
+  // ── Status bar (visible in console test) ────────────────────────────────────
   var statusEl = null;
   function showStatus(msg) {
-    if (!statusEl) { statusEl = document.createElement('div'); statusEl.id = 'ch-idx-status'; document.body.appendChild(statusEl); }
+    if (!statusEl) {
+      var s = document.createElement('style');
+      s.textContent = '#ch-idx-status{position:fixed;bottom:20px;right:20px;background:#1f1c18;color:#faf7f1;padding:10px 16px;border-radius:6px;font-family:"Work Sans",sans-serif;font-size:12px;z-index:99999;opacity:0;transition:opacity .3s;pointer-events:none}#ch-idx-status.on{opacity:1}';
+      document.head.appendChild(s);
+      statusEl = document.createElement('div');
+      statusEl.id = 'ch-idx-status';
+      document.body.appendChild(statusEl);
+    }
     statusEl.textContent = msg;
     statusEl.classList.add('on');
   }
@@ -319,7 +387,6 @@
       var stock = !item.variants || !item.variants.length || item.variants.some(function(variant) {
         return variant.unlimited || (variant.qtyInStock > 0);
       });
-      // item.priceMoney.value is "0.00" (truthy) for physical products — must check non-zero
       var topPrice = item.priceMoney && parseFloat(item.priceMoney.value) > 0 ? item.priceMoney.value : null;
       var varPrice = v && v.priceMoney && parseFloat(v.priceMoney.value) > 0 ? v.priceMoney.value : null;
       var varCents = v && v.price > 0 ? (v.price / 100).toFixed(2) : null;
@@ -371,49 +438,43 @@
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
           cacheLoaded  = true;
-          console.log('[CH Search] Cache hit:', allProducts.length, 'products');
         }
       }
-    } catch(e) { console.warn('[CH Search] Cache read error:', e); }
+    } catch(e) {}
 
-    // Render calls are outside try/catch so errors surface in console
     if (cacheLoaded) {
       if (isSearchPage()) renderSearchResults();
       if (isCollectionPage()) renderCollectionPage();
+      if (isShopAllPage()) renderShopAll();
       return Promise.resolve();
     }
 
-    // Clean up old cache versions to free localStorage space before writing new one
     ['ch_search_v1', 'ch_search_v2'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
 
-    showStatus('Building search index…');
-
-    // Each collection merges into the index as it finishes — search is available
-    // from the fastest (smallest) collections almost immediately.
     var promises = COLLECTIONS.map(function(col) {
       return fetchCollection(col).then(function(products) {
         allProducts  = allProducts.concat(products);
         fuseInstance = makeFuse(allProducts);
         indexReady   = true;
-        // Refresh whatever is currently open
         if (searchInput && searchInput.value.trim() && flyout && flyout.classList.contains('on')) {
           refreshFlyout(searchInput.value);
         }
         if (isSearchPage() && getQuery() && document.getElementById('ch-sr')) renderSearchResults();
         if (isCollectionPage() && document.getElementById('ch-col')) renderCollectionPage();
+        if (isShopAllPage() && document.getElementById('ch-shopall')) renderShopAll();
       });
     });
 
     return Promise.all(promises)
       .then(function() {
-        fuseInstance = makeFuse(allProducts); // final rebuild with everything
+        fuseInstance = makeFuse(allProducts);
         hideStatus();
-        console.log('[CH Search] Full index ready:', allProducts.length, 'products');
         try {
           CACHE_STORE.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: allProducts }));
-        } catch(e) { console.warn('[CH Search] Cache write failed:', e); }
+        } catch(e) {}
         if (isSearchPage()) renderSearchResults();
         if (isCollectionPage()) renderCollectionPage();
+        if (isShopAllPage()) renderShopAll();
       })
       .catch(function(err) { hideStatus(); console.error('[CH Search] Build failed:', err); });
   }
@@ -436,7 +497,6 @@
       if (q.indexOf(k) !== -1) q = q.replace(k, SYNONYMS[k]);
     });
     var results = fuseInstance.search(q, { limit: limit || 200 });
-    // Sort: in-stock first, then by relevance score within each group
     results.sort(function(a, b) {
       if (a.item.s && !b.item.s) return -1;
       if (!a.item.s && b.item.s) return 1;
@@ -450,7 +510,6 @@
     searchInput = document.querySelector('input.search-input');
     if (!searchInput) return;
 
-    // Suppress Squarespace's own preview
     var sqPre = document.querySelector('.sqs-search-preview-ui');
     if (sqPre) sqPre.style.setProperty('display', 'none', 'important');
 
@@ -471,9 +530,6 @@
       if (e.key === 'Enter')     { onEnter(e); }
     });
 
-    // Squarespace's search container intercepts clicks and navigates to /search.
-    // mousedown preventDefault stops input blur; click handler stops propagation
-    // and navigates manually so Squarespace's listener never fires.
     flyout.addEventListener('mousedown', function(e) { e.preventDefault(); });
     flyout.addEventListener('click', function(e) {
       var link = e.target.closest('a.ch-fr');
@@ -529,7 +585,6 @@
       e.preventDefault();
       window.location.href = items[activeIndex].href;
     }
-    // Otherwise let Squarespace handle the form submit → navigates to /search?q=...
   }
 
   function closeFlyout() {
@@ -547,7 +602,6 @@
     _srLastQuery = ''; _srSidebarBuilt = false;
     if (searchInput) searchInput.value = getQuery();
 
-    // Inject our container before native content
     var container = document.createElement('div');
     container.id = 'ch-sr';
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
@@ -558,11 +612,9 @@
       main.appendChild(container);
     }
 
-    // Hide all sibling elements after our container (catches native results, Show More buttons, etc.)
     var sib = container.nextElementSibling;
     while (sib) { sib.style.setProperty('display', 'none', 'important'); sib = sib.nextElementSibling; }
 
-    // Hide Squarespace's native search output (results + "See more" button)
     ['.sqs-search-page-output', '.sqs-search-page-more-wrapper',
      '[data-controller="SearchResultsController"]', '.search-results-inner',
      '.search-collection', '.search-results', '[class*="search-results"]'].forEach(function(sel) {
@@ -598,7 +650,6 @@
     var scales   = getUniqueScales(all);
     var isMobile = window.innerWidth < 768;
 
-    // Only build the sidebar once we have real data — partial index may have no brands/cats yet
     var hasRealData = all.length > 0 && (brands.length > 0 || cats.length > 0 || pr.max > 0);
 
     if (!_srSidebarBuilt && hasRealData) {
@@ -695,7 +746,6 @@
   function getUniqueScales(products) {
     var seen = {}, scales = [];
     products.forEach(function(p) {
-      // Exclude art supplies — wire/tube gauges like "1/16" create false scale matches
       if (p.scale && p.c !== 'art' && !seen[p.scale]) { seen[p.scale] = true; scales.push(p.scale); }
     });
     return scales.sort(function(a, b) { return parseInt(a.slice(2)) - parseInt(b.slice(2)); });
@@ -717,18 +767,10 @@
   }
 
   function renderSidebar(opts) {
-    // opts: { brands, cats, scales, priceRange, showDept, all }
     var brands = opts.brands || [];
     var cats   = opts.cats   || [];
     var scales = opts.scales || [];
     var pr     = opts.priceRange || { min: 0, max: 500 };
-
-    var hasFilters = filters.inStockOnly ||
-      Object.keys(filters.brands).some(function(k){ return filters.brands[k]; }) ||
-      Object.keys(filters.collections).some(function(k){ return filters.collections[k]; }) ||
-      Object.keys(filters.categories).some(function(k){ return filters.categories[k]; }) ||
-      Object.keys(filters.scales).some(function(k){ return filters.scales[k]; }) ||
-      filters.priceMin !== null || filters.priceMax !== null;
 
     function checklist(items, cls, activeMap) {
       if (!items.length) return '';
@@ -738,7 +780,6 @@
         }).join('') + '</div>';
     }
 
-    // All collapsible sections start collapsed
     function section(label, content) {
       return '<div class="ch-fg collapsible collapsed"><div class="ch-fg-hd"><h3>' + label + '</h3></div><div class="ch-fg-bd">' + content + '</div></div>';
     }
@@ -757,41 +798,25 @@
       : '';
 
     return '<div id="ch-sf">' +
-      // Mobile close button (hidden on desktop via CSS)
       '<div class="ch-sf-close" id="ch-sf-close-bar"><button id="ch-sf-close" style="background:none;border:none;font-family:\'Work Sans\',sans-serif;font-size:14px;font-weight:600;color:#1f1c18;cursor:pointer;padding:0">Filters ×</button><button class="ch-clr" style="font-size:11px;padding:0">Clear all</button></div>' +
-      // Active filter pills (shown in mobile panel, hidden in sidebar on desktop)
       '<div id="ch-pills-mobile"></div>' +
-      // Availability — not collapsible
       '<div class="ch-fg"><div class="ch-fg-hd" style="cursor:default"><h3 style="flex:1">Availability</h3></div><div class="ch-fg-bd">' +
       '<label class="ch-it"><label class="ch-tg"><input type="checkbox" id="ch-instock"' + (filters.inStockOnly ? ' checked' : '') + '><span class="ch-ts"></span></label> In stock only</label>' +
       '</div></div>' +
-
-      // Price — immediately after in-stock, not collapsible
       priceSection +
-
-      // Department (search page only) — collapsed
       (opts.showDept ? section('Department', COLLECTIONS.filter(function(col) {
           return !opts.activeCols || opts.activeCols[col.key];
         }).map(function(col) {
           return '<label class="ch-fo"><input type="checkbox" class="fc-col" value="' + col.key + '"' + (filters.collections[col.key] ? ' checked' : '') + '> ' + esc(col.name) + '</label>';
         }).join('')) : '') +
-
-      // Brand — collapsed
       (brands.length ? section('Brand', checklist(brands, 'fc-brand', filters.brands)) : '') +
-
-      // Category — collapsed
       (cats.length ? section('Category', checklist(cats, 'fc-cat', filters.categories)) : '') +
-
-      // Scale — collapsed
       (scales.length ? section('Scale', checklist(scales, 'fc-scale', filters.scales)) : '') +
-
     '</div>';
   }
 
   function wireFilters(container, priceRange, onFilterChange) {
     function syncPills() {
-      // #ch-pills is inside #ch-sg which refreshSRGrid fully re-renders — wirePillButtons handles wiring there
-      // Only update #ch-pills-mobile here (it lives in #ch-sf which is never re-rendered)
       var mobileEl = document.getElementById('ch-pills-mobile');
       if (mobileEl) {
         mobileEl.innerHTML = renderFilterPills(false);
@@ -801,44 +826,31 @@
     function onChange() { onFilterChange(); syncPills(); }
     _filterOnChange = onChange;
 
-    // Availability
     var instockCb = container.querySelector('#ch-instock');
     if (instockCb) instockCb.addEventListener('change', function() { filters.inStockOnly = this.checked; onChange(); });
 
-    // Department
     container.querySelectorAll('.fc-col').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.collections[cb.value] = cb.checked; onChange(); });
     });
-
-    // Brand
     container.querySelectorAll('.fc-brand').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.brands[cb.value] = cb.checked; onChange(); });
     });
-
-    // Category
     container.querySelectorAll('.fc-cat').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.categories[cb.value] = cb.checked; onChange(); });
     });
-
-    // Scale
     container.querySelectorAll('.fc-scale').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.scales[cb.value] = cb.checked; onChange(); });
     });
-
-    // Clear buttons (ch-clr wired to clear all; syncClearBtn hides the desktop one after clear)
     container.querySelectorAll('.ch-clr').forEach(function(btn) {
       btn.addEventListener('click', function() {
         filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
         onChange();
       });
     });
-
-    // Collapsible section toggles
     container.querySelectorAll('.ch-fg.collapsible .ch-fg-hd').forEach(function(hd) {
       hd.addEventListener('click', function() { hd.parentElement.classList.toggle('collapsed'); });
     });
 
-    // Price slider
     var rangeMin = container.querySelector('#ch-range-min');
     var rangeMax = container.querySelector('#ch-range-max');
     var inputMin = container.querySelector('#ch-price-min');
@@ -886,12 +898,9 @@
   function renderPagination(total, currentPage) {
     var pages = Math.ceil(total / perPage);
     if (pages <= 1) return '';
-
-    // Build page number list: always include first, last, and ±2 around current
     var numsMap = {}; numsMap[1] = true; numsMap[pages] = true;
     for (var i = Math.max(2, currentPage - 2); i <= Math.min(pages - 1, currentPage + 2); i++) numsMap[i] = true;
     var nums = Object.keys(numsMap).map(Number).sort(function(a,b){return a-b;});
-
     var html = '<div class="ch-pages">';
     html += '<button class="ch-pg-btn ch-pg-nav" data-pg="' + (currentPage - 1) + '"' + (currentPage <= 1 ? ' disabled' : '') + '>← Prev</button>';
     var prev = 0;
@@ -981,12 +990,11 @@
     '</div>';
   }
 
-  var _sfOrigHost = null; // remembers where #ch-sf lived before moving to mobile panel
+  var _sfOrigHost = null;
 
   function wireMobileFilterPanel(container) {
     if (window.innerWidth > 720) return;
 
-    // Scrim
     var scrim = document.getElementById('ch-filter-scrim');
     if (!scrim) {
       scrim = document.createElement('div');
@@ -995,7 +1003,6 @@
       document.body.appendChild(scrim);
     }
 
-    // Fixed wrapper at body level — sidesteps any stacking context from grid containers
     var panel = document.getElementById('ch-mobile-filter');
     if (!panel) {
       panel = document.createElement('div');
@@ -1009,15 +1016,13 @@
       var sf = document.getElementById('ch-sf');
       if (sf && sf.parentNode !== panel) {
         _sfOrigHost = sf.parentNode;
-        panel.appendChild(sf); // move into fixed body-level wrapper
+        panel.appendChild(sf);
       }
       panel.classList.add('open');
       scrim.classList.add('open');
       document.body.style.overflow = 'hidden';
-      // Wire close button inside panel
       var closeBtn = panel.querySelector('#ch-sf-close');
       if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); cb.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); }); }
-      // Wire clear-all inside panel close bar (filters reset + close)
       var clearBar = panel.querySelector('#ch-sf-close-bar .ch-clr');
       if (clearBar) { clearBar.addEventListener('click', function() {
         filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
@@ -1029,23 +1034,20 @@
       panel.classList.remove('open');
       scrim.classList.remove('open');
       document.body.style.overflow = '';
-      // Move #ch-sf back to its original home in the layout
       var sf = document.getElementById('ch-sf');
       if (sf && _sfOrigHost && sf.parentNode === panel) {
         _sfOrigHost.insertBefore(sf, _sfOrigHost.querySelector('#ch-sg') || null);
       }
     }
 
-    // Replace button to avoid stacking listeners
     if (btn) {
       var newBtn = btn.cloneNode(true);
       btn.parentNode.replaceChild(newBtn, btn);
       newBtn.addEventListener('click', openPanel);
     }
-    // Clone scrim and reassign the variable so openPanel/closePanel closures see the live element
     var newScrim = scrim.cloneNode(false);
     scrim.parentNode.replaceChild(newScrim, scrim);
-    scrim = newScrim; // ← critical: update reference so classList.add/remove hits the DOM node
+    scrim = newScrim;
     scrim.className = 'ch-filter-scrim';
     scrim.addEventListener('click', closePanel);
     scrim.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); });
@@ -1060,7 +1062,6 @@
     sf.querySelectorAll('.fc-cat').forEach(function(cb) { cb.checked = !!filters.categories[cb.value]; });
     sf.querySelectorAll('.fc-scale').forEach(function(cb) { cb.checked = !!filters.scales[cb.value]; });
     sf.querySelectorAll('.fc-col').forEach(function(cb) { cb.checked = !!filters.collections[cb.value]; });
-    // Reset price slider to match current filter state
     var rangeMin = sf.querySelector('#ch-range-min');
     var rangeMax = sf.querySelector('#ch-range-max');
     var inputMin = sf.querySelector('#ch-price-min');
@@ -1175,7 +1176,6 @@
   function getCollectionCatFromUrl(col) {
     var remainder = window.location.pathname.slice(col.url.length).replace(/^\//, '');
     var slug = remainder.split('/')[0];
-    // Exclude product pages (/p/...) and pagination
     return (slug && slug !== 'p' && !/^\d+$/.test(slug)) ? slug : null;
   }
 
@@ -1185,10 +1185,8 @@
     var col = getCollectionForPage();
     if (!col) return;
 
-    // Get products for this collection from the index
     var colProducts = allProducts.filter(function(p) { return p.c === col.key; });
 
-    // If there's a subcategory in the URL, pre-filter
     var urlCat = getCollectionCatFromUrl(col);
     if (urlCat) {
       var urlCatNorm = urlCat.replace(/-/g, ' ').toLowerCase();
@@ -1226,7 +1224,6 @@
       wireMobileFilterPanel(container);
     }
 
-    // Build sidebar once colProducts has real data; only refresh grid on filter/page changes
     var hasColData = colProducts.length > 0;
     if (!document.getElementById('ch-sf') && hasColData) {
       container.innerHTML =
@@ -1246,7 +1243,7 @@
         });
       }
     } else if (!hasColData) {
-      return; // index not ready for this collection yet — buildIndex will call us again
+      return;
     }
     refreshColGrid();
   }
@@ -1255,7 +1252,6 @@
     if (!isCollectionPage()) return;
     colSearch = ''; colPage = 1;
 
-    // Hide Squarespace's native product grid
     ['.products-simple', '.ProductList', '.products-flex', '.sqs-store-collection',
      '[data-controller="ProductsController"]', '.collection-content',
      '.products-v2', '[class*="ProductList"]'].forEach(function(sel) {
@@ -1264,12 +1260,10 @@
       });
     });
 
-    // Also hide all page sections below the first (in case native grid is in a section)
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
     var firstSection = main.querySelector('section, .page-section, article');
     var container = document.createElement('div');
     container.id = 'ch-col';
-    // Detect sticky header height so our grid doesn't start behind it
     var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
     var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
     container.style.cssText = 'max-width:1200px;margin:0 auto;padding:' + (headerH + 20) + 'px 8px 40px';
@@ -1288,6 +1282,268 @@
     }
   }
 
+  // ── Homepage ─────────────────────────────────────────────────────────────────
+  // Paste your Squarespace CDN image URLs here after uploading photos
+  var HP_IMG = {
+    hero       : '',   // storefront photo
+    buildNight : '',   // Sunday Build Night photo
+    richard    : ''    // Richard painting photo
+  };
+
+  // Top row: 5 model kit categories
+  var HP_CATS_MODELS = [
+    { label: 'Cars',            href: '/coppers-hobbies-szOJ2/cars',              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15h14v-3L17 7H7L5 12v3z"/><circle cx="8.5" cy="18.5" r="1.5"/><circle cx="15.5" cy="18.5" r="1.5"/><path d="M8 10h8"/></svg>' },
+    { label: 'Military',        href: '/coppers-hobbies-szOJ2/military',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17.5 6 21.5l2.5-7.5L2 9.5h7.5z"/></svg>' },
+    { label: 'Aircraft',        href: '/coppers-hobbies-szOJ2/aircraft',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14l-9-8-9 8 3-.5 1.5 3.5L12 16l4.5 1 1.5-3.5z"/><line x1="12" y1="6" x2="12" y2="20"/></svg>' },
+    { label: 'Ships',           href: '/coppers-hobbies-szOJ2/ships',             icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M5 13h14M7 17a5 5 0 0010 0"/></svg>' },
+    { label: 'Gundam & Mecha',  href: '/coppers-hobbies-szOJ2/sci-fi-and-space',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="7" rx="1.5"/><rect x="5" y="10" width="14" height="9" rx="1.5"/><path d="M9 19l-2 3m8-3l2 3M3 13.5h2m14 0h2"/><circle cx="10.5" cy="14" r="1" fill="#8a6535"/><circle cx="13.5" cy="14" r="1" fill="#8a6535"/></svg>' }
+  ];
+  // Bottom row: 4 art supply categories
+  var HP_CATS_ART = [
+    { label: 'Paints',          href: '/art-supplies/painting-supplies',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="8" height="14" rx="1.5"/><path d="M11 5V3h2v2m-3 4h4m-4 3.5h4"/><path d="M12 19v2"/></svg>' },
+    { label: 'Brushes',         href: '/art-supplies/brushes',                    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 3-11 11a4 4 0 01-5-5L17 4z"/><path d="M5 20c0 1.5 2 2.5 3 1.5"/><line x1="13.5" y1="7.5" x2="16.5" y2="10.5"/></svg>' },
+    { label: 'Drawing',         href: '/art-supplies/drawing-supplies',           icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4L8 20l-5 1 1-5L17 3z"/><line x1="14.5" y1="5.5" x2="18.5" y2="9.5"/></svg>' },
+    { label: 'Paper & Canvas',  href: '/art-supplies/paintingdrawing-surfaces',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a6535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14a1 1 0 011 1v16a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>' }
+  ];
+
+  function isHomePage() { return window.location.pathname === '/'; }
+  function isShopAllPage() { return window.location.pathname === '/shopall'; }
+
+  function initHomePage() {
+    if (!isHomePage()) return;
+    var main = document.querySelector('main, #page, .Site-inner') || document.body;
+    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
+    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    var container = document.createElement('div');
+    container.id = 'ch-home';
+    var firstSection = main.querySelector('section, .page-section, article');
+    if (firstSection) {
+      main.insertBefore(container, firstSection);
+      var sib = container.nextElementSibling;
+      while (sib) { sib.style.setProperty('display', 'none', 'important'); sib = sib.nextElementSibling; }
+    } else {
+      main.appendChild(container);
+    }
+    container.innerHTML = '<div style="padding-top:' + headerH + 'px;min-height:200px;display:flex;align-items:center;justify-content:center;font-family:\'Work Sans\',sans-serif;color:#8a8273">Loading…</div>';
+    fetch('/?format=json', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var featured = (data.items || []).slice(0, 4).map(function(item) {
+          var v = (item.variants && item.variants[0]) || (item.structuredContent && item.structuredContent.variants && item.structuredContent.variants[0]);
+          var price = v && v.priceMoney && parseFloat(v.priceMoney.value) > 0 ? v.priceMoney.value : '0.00';
+          return { t: item.title || '', u: item.fullUrl || '', img: item.assetUrl || '', p: price };
+        });
+        renderHomePage(container, headerH, featured);
+      })
+      .catch(function() { renderHomePage(container, headerH, []); });
+  }
+
+  function renderHomePage(container, headerH, featured) {
+    var heroImg = HP_IMG.hero ? 'background-image:url(' + HP_IMG.hero + ')' : 'background-color:#ede3d2';
+
+    function makeTile(c) {
+      return '<a href="' + c.href + '" class="ch-hp-cat">' +
+        '<div class="ch-hp-cat-circle">' + c.icon + '</div>' +
+        '<span class="ch-hp-cat-label">' + esc(c.label) + '</span>' +
+      '</a>';
+    }
+
+    var featCards = featured.length
+      ? featured.map(function(p) {
+          var imgStyle = p.img ? 'background-image:url(' + p.img + ')' : 'background-color:#f5f0e8';
+          return '<a class="ch-hp-pcard" href="' + esc(p.u) + '">' +
+            '<div class="ch-hp-pcard-img" style="' + imgStyle + '"></div>' +
+            '<div class="ch-hp-pcard-body">' +
+              '<div class="ch-hp-pcard-name">' + esc(p.t) + '</div>' +
+              '<div class="ch-hp-pcard-price">$' + esc(String(p.p)) + '</div>' +
+            '</div>' +
+          '</a>';
+        }).join('')
+      : '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Featured products loading…</div>';
+
+    var BRANDS = ['Tamiya', 'Bandai', 'Revell', 'Hasegawa', 'Italeri', 'Winsor & Newton', 'Liquitex', 'Vallejo'];
+    var brandsHtml = BRANDS.map(function(b, i) {
+      return '<span class="ch-hp-brand-name">' + esc(b) + '</span>' +
+        (i < BRANDS.length - 1 ? '<span class="ch-hp-brand-sep">&middot;</span>' : '');
+    }).join('');
+
+    var FRIENDS = ['Richard Zajac Art', 'Little Shop of Heroes', 'IPMS Hamilton', 'IPMS Canada'];
+    var friendsHtml = FRIENDS.map(function(f) {
+      return '<span class="ch-hp-friend">' + esc(f) + '</span>';
+    }).join('');
+
+    container.innerHTML =
+      // Hero
+      '<section class="ch-hp-hero">' +
+        '<div class="ch-hp-hero-inner" style="padding-top:' + (headerH + 24) + 'px">' +
+          '<div>' +
+            '<h1 class="ch-hp-h1">The hobby shop for people who care how it turns out.</h1>' +
+            '<p class="ch-hp-sub">Scale models, paints, tools and art supplies — chosen and stocked by two people who build, paint and obsess over this hobby right alongside you, in the heart of Kitchener.</p>' +
+            '<div class="ch-hp-hero-btns">' +
+              '<a href="/shopall" class="ch-hp-btn-primary">Shop the store</a>' +
+              '<a href="#ch-hp-store" class="ch-hp-btn-outline">Visit us in Kitchener</a>' +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="ch-hp-hero-img-wrap">' +
+              '<div class="ch-hp-hero-img" style="' + heroImg + '"></div>' +
+              '<div class="ch-hp-hero-badge">' +
+                '<span class="ch-hp-badge-addr">935 Frederick St</span>' +
+                '<span class="ch-hp-badge-sub">Where Frederick meets Victoria</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      // Category tiles — two staggered rows (5 model kit + 4 art)
+      '<section class="ch-hp-cats">' +
+        '<div class="ch-hp-cats-inner">' +
+          '<div class="ch-hp-cats-hd">' +
+            '<h2 class="ch-hp-h2">Browse by category</h2>' +
+            '<a href="/shopall" class="ch-hp-link">All categories →</a>' +
+          '</div>' +
+          '<div class="ch-hp-cats-section">' +
+            '<div class="ch-hp-cats-row">' + HP_CATS_MODELS.map(makeTile).join('') + '</div>' +
+            '<div class="ch-hp-cats-row">' + HP_CATS_ART.map(makeTile).join('') + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      // Featured products
+      '<section class="ch-hp-feat">' +
+        '<div class="ch-hp-feat-inner">' +
+          '<div class="ch-hp-feat-hd">' +
+            '<h2 class="ch-hp-h2">A few of our favourites</h2>' +
+            '<a href="/shopall" class="ch-hp-link">Browse the full shop →</a>' +
+          '</div>' +
+          '<div class="ch-hp-feat-grid">' + featCards + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Brands we carry
+      '<section class="ch-hp-brands">' +
+        '<div class="ch-hp-brands-inner">' +
+          '<p class="ch-hp-brands-label">Brands we carry</p>' +
+          '<div class="ch-hp-brands-row">' + brandsHtml + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Friends & Cohorts
+      '<section class="ch-hp-friends">' +
+        '<div class="ch-hp-friends-inner">' +
+          '<p class="ch-hp-friends-label">Friends & Cohorts</p>' +
+          '<p class="ch-hp-friends-sub">A small business that supports other local small businesses</p>' +
+          '<div class="ch-hp-friends-row">' + friendsHtml + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Store info (no map)
+      '<section class="ch-hp-store" id="ch-hp-store">' +
+        '<div class="ch-hp-store-inner">' +
+          '<h2 class="ch-hp-store-h2">Come see us</h2>' +
+          '<p class="ch-hp-store-p">We\'re always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
+          '<div class="ch-hp-store-details">' +
+            '<div>' +
+              '<p class="ch-hp-store-label">Hours</p>' +
+              '<p class="ch-hp-store-hours">Mon–Fri&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10–6<br>Saturday&nbsp;&nbsp;&nbsp;&nbsp;10–5<br>Sunday&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11–5</p>' +
+            '</div>' +
+            '<div>' +
+              '<p class="ch-hp-store-label">Find us</p>' +
+              '<p class="ch-hp-store-addr">935 Frederick Street<br>Kitchener, ON&nbsp;&nbsp;N2B 2B9<br>519-570-0001</p>' +
+              '<a href="https://maps.google.com/?q=935+Frederick+Street+Kitchener+ON+Canada" target="_blank" rel="noopener" class="ch-hp-store-dir">Get directions →</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>';
+  }
+
+  // ── Shop All ─────────────────────────────────────────────────────────────────
+  function initShopAllPage() {
+    if (!isShopAllPage()) return;
+    colSearch = ''; colPage = 1;
+    ['.products-simple', '.ProductList', '.products-flex', '.sqs-store-collection',
+     '[data-controller="ProductsController"]', '.collection-content',
+     '.products-v2', '[class*="ProductList"]', '.system-page'].forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        el.style.setProperty('display', 'none', 'important');
+      });
+    });
+    var main = document.querySelector('main, #page, .Site-inner') || document.body;
+    var firstSection = main.querySelector('section, .page-section, article');
+    var container = document.createElement('div');
+    container.id = 'ch-shopall';
+    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
+    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    container.style.cssText = 'max-width:1200px;margin:0 auto;padding:' + (headerH + 20) + 'px 8px 40px';
+    if (firstSection) {
+      main.insertBefore(container, firstSection);
+      var sib = container.nextElementSibling;
+      while (sib) { sib.style.setProperty('display', 'none', 'important'); sib = sib.nextElementSibling; }
+    } else {
+      main.appendChild(container);
+    }
+    if (indexReady) {
+      renderShopAll();
+    } else {
+      container.innerHTML = '<p style="text-align:center;padding:60px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Loading products…</p>';
+    }
+  }
+
+  function renderShopAll() {
+    var container = document.getElementById('ch-shopall');
+    if (!container) return;
+    var pr       = getPriceRange(allProducts);
+    var isMobile = window.innerWidth < 768;
+    var brands   = getUniqueBrands(allProducts);
+    var cats     = getUniqueNonBrandCats(allProducts);
+    var scales   = getUniqueScales(allProducts);
+    var activeCols = {};
+    allProducts.forEach(function(p) { activeCols[p.c] = true; });
+
+    function getFiltered() {
+      var base = colSearch.trim()
+        ? allProducts.filter(function(p) { return p.t.toLowerCase().indexOf(colSearch.toLowerCase()) !== -1; })
+        : allProducts;
+      return applyFilters(base);
+    }
+
+    function refreshGrid() {
+      var filt   = getFiltered();
+      var sorted = applySort(filt);
+      var tp = Math.ceil(sorted.length / perPage);
+      if (colPage > tp) colPage = 1;
+      var pg = sorted.slice((colPage - 1) * perPage, colPage * perPage);
+      var cnt = sorted.length + ' product' + (sorted.length !== 1 ? 's' : '');
+      if (allProducts.length !== sorted.length) cnt += ' (filtered from ' + allProducts.length + ')';
+      var countEl = document.getElementById('ch-sa-count');
+      if (countEl) countEl.textContent = cnt;
+      var sg = document.getElementById('ch-sg');
+      if (sg) sg.innerHTML = renderPerPage(isMobile) + renderCards(pg) + renderPagination(sorted.length, colPage);
+      wirePillButtons(function() { colPage = 1; refreshGrid(); });
+      wireSortSelect(function() { colPage = 1; refreshGrid(); });
+      wirePerPage(container, function() { colPage = 1; refreshGrid(); });
+      wirePagination(container, 'ch-shopall', function(p) { colPage = p; refreshGrid(); });
+      wireMobileFilterPanel(container);
+    }
+
+    if (!document.getElementById('ch-sf')) {
+      container.innerHTML =
+        '<h1 style="font-family:\'Cormorant Garamond\',serif;font-size:32px;font-weight:500;color:#1f1c18;margin:0 0 6px">The Full Shop</h1>' +
+        '<div class="ch-col-search"><input type="text" placeholder="Search all products…" id="ch-sa-q" value="' + esc(colSearch) + '"></div>' +
+        '<p class="ch-rc" id="ch-sa-count"></p>' +
+        '<div id="ch-sl">' +
+          renderSidebar({ brands: brands, cats: cats, scales: scales, priceRange: pr, showDept: true, activeCols: activeCols }) +
+          '<div id="ch-sg"></div>' +
+        '</div>';
+      wireFilters(container, pr, function() { colPage = 1; refreshGrid(); });
+      var saQ = container.querySelector('#ch-sa-q');
+      if (saQ) {
+        var saDebounce = null;
+        saQ.addEventListener('input', function() {
+          clearTimeout(saDebounce);
+          saDebounce = setTimeout(function() { colSearch = saQ.value; colPage = 1; refreshGrid(); }, 280);
+        });
+      }
+    }
+    refreshGrid();
+  }
+
   // ── Utility ─────────────────────────────────────────────────────────────────
   function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1299,6 +1555,8 @@
       initFlyout();
       initSearchPage();
       initCollectionPage();
+      initHomePage();
+      initShopAllPage();
       buildIndex();
     });
   }
@@ -1308,7 +1566,5 @@
   } else {
     init();
   }
-
-  console.log('%c[CH Search] Injected. Building index in background…', 'color:#c9943a;font-weight:bold');
 
 })();
