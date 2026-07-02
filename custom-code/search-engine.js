@@ -448,7 +448,6 @@
         }
         if (isSearchPage() && getQuery() && document.getElementById('ch-sr')) renderSearchResults();
         if (isCollectionPage() && document.getElementById('ch-col')) renderCollectionPage();
-        if (isShopAllPage() && document.getElementById('ch-shopall')) renderShopAll();
       });
     });
 
