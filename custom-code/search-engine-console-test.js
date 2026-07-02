@@ -1307,7 +1307,7 @@
   // ── Homepage ─────────────────────────────────────────────────────────────────
   // Paste your Squarespace CDN image URLs here after uploading photos
   var HP_IMG = {
-    hero       : '',   // storefront photo
+    hero       : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/4dd756d5-74ed-4832-a2d5-8ce2fb2eac2a/storefront.jpg?content-type=image%2Fjpeg',   // storefront photo
     buildNight : '',   // Sunday Build Night photo
     richard    : ''    // Richard painting photo
   };
