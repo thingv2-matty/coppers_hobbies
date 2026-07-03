@@ -136,15 +136,11 @@
             '<h2 class="ch-loc-here-h2">Getting here</h2>' +
             '<div class="ch-loc-here-item">' +
               '<div class="ch-loc-here-pip"></div>' +
-              '<div class="ch-loc-here-text"><strong>Parking</strong>Street parking available on Frederick Street and the surrounding side streets.</div>' +
+              '<div class="ch-loc-here-text"><strong>Parking</strong>Free parking lot on-site — entrance is off Frederick Street. The lot is visible from Victoria Street but there is no entrance from that side.</div>' +
             '</div>' +
             '<div class="ch-loc-here-item">' +
               '<div class="ch-loc-here-pip"></div>' +
               '<div class="ch-loc-here-text"><strong>Transit</strong>Take GRT Route 20 and get off at <strong>Victoria St N @ Frederick St</strong> — we\'re right there.</div>' +
-            '</div>' +
-            '<div class="ch-loc-here-item">' +
-              '<div class="ch-loc-here-pip"></div>' +
-              '<div class="ch-loc-here-text"><strong>Landmark</strong>We’re right at the corner of Frederick and Victoria Streets in Kitchener.</div>' +
             '</div>' +
           '</div>' +
           '<div class="ch-loc-storefront-wrap">' +
