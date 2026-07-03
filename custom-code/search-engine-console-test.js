@@ -265,7 +265,9 @@
     '.ch-sort-label{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;white-space:nowrap}',
     '@media(max-width:720px){.ch-sort-label{font-size:12px;color:#8a8273}}',
     '.ch-sort-sel{font-family:"Work Sans",sans-serif;font-size:12px;color:#5e5850;border:1px solid #ece4d6;border-radius:4px;padding:3px 8px;background:#fff;cursor:pointer}',
-    '@media(max-width:720px){.ch-sort-sel{border:1.5px solid #2c2820;color:#1f1c18;padding:8px 12px;border-radius:6px;font-size:13px}}'
+    '@media(max-width:720px){.ch-sort-sel{border:1.5px solid #2c2820;color:#1f1c18;padding:8px 12px;border-radius:6px;font-size:13px}}',
+    '.ch-oos-banner{margin-top:20px;background:#faf7f1;border:1px solid #ece4d6;border-left:3px solid #c9943a;border-radius:6px;padding:14px 16px;font-family:"Work Sans",sans-serif;font-size:14px;color:#5e5850;line-height:1.6}',
+    '.ch-oos-banner strong{color:#1f1c18;font-weight:600}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -1598,6 +1600,35 @@
     refreshGrid();
   }
 
+  // ── Product pages ────────────────────────────────────────────────────────────
+  function isProductPage() {
+    return /\/p\/[^/]+/.test(window.location.pathname);
+  }
+
+  function initProductPage() {
+    if (!isProductPage()) return;
+    fetch(window.location.pathname + '?format=json', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var item = data.item || {};
+        var variants = item.variants || [];
+        var inStock = !variants.length || variants.some(function(v) {
+          return v.unlimited || (v.qtyInStock > 0);
+        });
+        if (inStock) return;
+        var banner = document.createElement('div');
+        banner.className = 'ch-oos-banner';
+        banner.innerHTML = 'We refresh our shelves and online inventory regularly \u2014 check back soon, or come browse at <strong>935 Frederick Street</strong> to see what\u2019s just arrived.';
+        var target = document.querySelector('.ProductItem-details, [class*="ProductItem-details"]');
+        if (target) {
+          target.appendChild(banner);
+        } else {
+          (document.querySelector('main, #page, .Site-inner') || document.body).appendChild(banner);
+        }
+      })
+      .catch(function() {});
+  }
+
   // ── Utility ─────────────────────────────────────────────────────────────────
   function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1611,6 +1642,7 @@
       initCollectionPage();
       initHomePage();
       initShopAllPage();
+      initProductPage();
       buildIndex();
     });
   }
