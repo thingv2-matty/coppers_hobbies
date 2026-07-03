@@ -340,24 +340,24 @@
     '.ch-hp-comm-card-link:hover{color:#c9943a}',
     // Brands bar
     '.ch-hp-brands{padding:48px 0;background:#fff;border-top:1px solid #ece4d6}',
-    '.ch-hp-brands-inner{max-width:1100px;margin:0 auto;padding:0 32px;text-align:center}',
+    '.ch-hp-brands-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
     '@media(max-width:820px){.ch-hp-brands-inner{padding:0 20px}}',
-    '.ch-hp-brands-label{font-family:"Cormorant Garamond",serif;font-size:16px;font-style:italic;color:#8d8675;margin:0 0 20px}',
+    '.ch-hp-brands-hd{display:flex;justify-content:flex-start;align-items:baseline;margin-bottom:28px}',
     '.ch-hp-brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 0}',
-    '.ch-hp-brand-logo-wrap{display:flex;align-items:center;justify-content:center;padding:8px 20px;border-right:1px solid #e8e0d4}',
+    '.ch-hp-brand-logo-wrap{display:flex;align-items:center;justify-content:center;padding:14px 28px;border-right:1px solid #e8e0d4}',
     '.ch-hp-brand-logo-wrap:last-child{border-right:none}',
-    '.ch-hp-brand-logo{height:36px;max-width:110px;object-fit:contain;display:block}',
+    '.ch-hp-brand-logo{height:72px;max-width:180px;object-fit:contain;display:block}',
     // Friends & Cohorts
     '.ch-hp-friends{padding:44px 0;background:#faf7f1;border-top:1px solid #ece4d6;text-align:center}',
     '.ch-hp-friends-inner{max-width:800px;margin:0 auto;padding:0 32px}',
     '@media(max-width:820px){.ch-hp-friends-inner{padding:0 20px}}',
-    '.ch-hp-friends-label{font-family:"Cormorant Garamond",serif;font-size:17px;font-style:italic;color:#8d8675;margin:0 0 6px}',
-    '.ch-hp-friends-sub{font-family:"Work Sans",sans-serif;font-size:12.5px;color:#8a8273;margin:0 0 20px}',
+    '.ch-hp-friends-label{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;font-style:italic;color:#1f1c18;margin:0 0 10px}',
+    '.ch-hp-friends-sub{font-family:"Work Sans",sans-serif;font-size:15px;color:#8a8273;margin:0 0 28px}',
     '.ch-hp-friends-row{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}',
-    '.ch-hp-friend{text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;width:130px}',
-    '.ch-hp-friend-img-wrap{width:130px;height:90px;background:#fff;border:1px solid #ece4d6;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}',
+    '.ch-hp-friend{text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;width:170px}',
+    '.ch-hp-friend-img-wrap{width:170px;height:118px;background:#fff;border:1px solid #ece4d6;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;box-sizing:border-box}',
     '.ch-hp-friend-img{max-width:100%;max-height:100%;object-fit:contain;display:block}',
-    '.ch-hp-friend-name{font-family:"Work Sans",sans-serif;font-size:12px;font-weight:600;color:#5e5850;text-align:center;line-height:1.3}',
+    '.ch-hp-friend-name{font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#5e5850;text-align:center;line-height:1.3}',
     '.ch-hp-friend:hover .ch-hp-friend-img-wrap{border-color:#c9943a}',
     // Store info section
     '.ch-hp-store{padding:60px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
@@ -1463,7 +1463,7 @@
       // Brands we carry
       '<section class="ch-hp-brands">' +
         '<div class="ch-hp-brands-inner">' +
-          '<p class="ch-hp-brands-label">Brands we carry</p>' +
+          '<div class="ch-hp-brands-hd"><h2 class="ch-hp-h2">Brands we carry</h2></div>' +
           '<div class="ch-hp-brands-row">' + brandsHtml + '</div>' +
         '</div>' +
       '</section>' +
