@@ -89,6 +89,9 @@
       main.appendChild(container);
     }
 
+    // Start content below the non-sticky header
+    container.style.marginTop = headerH + 'px';
+
     // Fix inflated footer on 404-based pages
     main.style.minHeight = '0';
     main.style.paddingBottom = '0';
@@ -97,7 +100,7 @@
     });
 
     container.innerHTML =
-      '<section class="ch-ab-hero" style="background-image:url(' + IMGS.hero + ');padding-top:' + headerH + 'px">' +
+      '<section class="ch-ab-hero" style="background-image:url(' + IMGS.hero + ')">'  +
         '<div class="ch-ab-hero-scrim"></div>' +
         '<div class="ch-ab-hero-inner">' +
           '<span class="ch-ab-hero-eye">About us</span>' +
@@ -149,7 +152,7 @@
         '<div class="ch-ab-visit-inner">' +
           '<h2 class="ch-ab-visit-h2">Come see it in person</h2>' +
           '<p class="ch-ab-visit-p">Not everything is listed online — the shelves always have more. Richard and Nancy are usually in the shop and happy to talk through whatever you’re working on.</p>' +
-          '<a href="/#ch-hp-store" class="ch-ab-visit-btn">Hours & directions</a>' +
+          '<a href="/contact" class="ch-ab-visit-btn">Get in touch</a>' +
         '</div>' +
       '</section>';
   }
