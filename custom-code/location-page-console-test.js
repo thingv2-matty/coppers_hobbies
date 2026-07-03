@@ -19,7 +19,7 @@
     '#ch-loc *{box-sizing:border-box}',
 
     // Page header
-    '.ch-loc-hdr{padding:56px 0 52px;background:#faf7f1;border-bottom:1px solid #ece4d6}',
+    '.ch-loc-hdr{padding:32px 0 52px;background:#faf7f1;border-bottom:1px solid #ece4d6}',
     '.ch-loc-hdr-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
     '@media(max-width:720px){.ch-loc-hdr-inner{padding:0 20px}}',
     '.ch-loc-hdr-h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,5vw,64px);font-weight:500;color:#1f1c18;margin:0 0 10px;line-height:1.1}',
