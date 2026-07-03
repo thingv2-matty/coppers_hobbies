@@ -343,17 +343,22 @@
     '.ch-hp-brands-inner{max-width:1100px;margin:0 auto;padding:0 32px;text-align:center}',
     '@media(max-width:820px){.ch-hp-brands-inner{padding:0 20px}}',
     '.ch-hp-brands-label{font-family:"Cormorant Garamond",serif;font-size:16px;font-style:italic;color:#8d8675;margin:0 0 20px}',
-    '.ch-hp-brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;row-gap:8px}',
-    '.ch-hp-brand-name{font-family:"Cormorant Garamond",serif;font-size:24px;color:#7a6e5f;padding:0 12px;white-space:nowrap}',
-    '.ch-hp-brand-sep{color:#c8bfb0;font-size:18px;line-height:1;flex-shrink:0}',
+    '.ch-hp-brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 0}',
+    '.ch-hp-brand-logo-wrap{display:flex;align-items:center;justify-content:center;padding:8px 20px;border-right:1px solid #e8e0d4}',
+    '.ch-hp-brand-logo-wrap:last-child{border-right:none}',
+    '.ch-hp-brand-logo{height:36px;max-width:110px;object-fit:contain;display:block}',
     // Friends & Cohorts
     '.ch-hp-friends{padding:44px 0;background:#faf7f1;border-top:1px solid #ece4d6;text-align:center}',
     '.ch-hp-friends-inner{max-width:800px;margin:0 auto;padding:0 32px}',
     '@media(max-width:820px){.ch-hp-friends-inner{padding:0 20px}}',
     '.ch-hp-friends-label{font-family:"Cormorant Garamond",serif;font-size:17px;font-style:italic;color:#8d8675;margin:0 0 6px}',
     '.ch-hp-friends-sub{font-family:"Work Sans",sans-serif;font-size:12.5px;color:#8a8273;margin:0 0 20px}',
-    '.ch-hp-friends-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}',
-    '.ch-hp-friend{font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#5e5850;background:#fff;border:1px solid #e0d8cc;border-radius:20px;padding:6px 16px}',
+    '.ch-hp-friends-row{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}',
+    '.ch-hp-friend{text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;width:130px}',
+    '.ch-hp-friend-img-wrap{width:130px;height:90px;background:#fff;border:1px solid #ece4d6;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}',
+    '.ch-hp-friend-img{max-width:100%;max-height:100%;object-fit:contain;display:block}',
+    '.ch-hp-friend-name{font-family:"Work Sans",sans-serif;font-size:12px;font-weight:600;color:#5e5850;text-align:center;line-height:1.3}',
+    '.ch-hp-friend:hover .ch-hp-friend-img-wrap{border-color:#c9943a}',
     // Store info section
     '.ch-hp-store{padding:60px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
     '.ch-hp-store-inner{max-width:900px;margin:0 auto;padding:0 32px}',
@@ -1382,15 +1387,31 @@
         }).join('')
       : '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Featured products loading…</div>';
 
-    var BRANDS = ['Tamiya', 'Bandai', 'Revell', 'Hasegawa', 'Italeri', 'Winsor & Newton', 'Liquitex', 'Vallejo'];
-    var brandsHtml = BRANDS.map(function(b, i) {
-      return '<span class="ch-hp-brand-name">' + esc(b) + '</span>' +
-        (i < BRANDS.length - 1 ? '<span class="ch-hp-brand-sep">&middot;</span>' : '');
+    var BRANDS = [
+      { name: 'Tamiya',          img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/504ce903-e23a-4ed3-b248-a832debb517b/download.png?format=500w' },
+      { name: 'Bandai',          img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/a44d08b5-b066-4cd9-a738-f533b3789f32/bandailogoNew00.jpg?format=1000w' },
+      { name: 'Revell',          img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/8e3494e5-0a41-49de-bee5-18ff3d18bf7e/revell+smaller.jpg?format=500w' },
+      { name: 'Hasegawa',        img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/721314a5-a148-4617-8788-f3905d2b5587/Hasegawa.png?format=500w' },
+      { name: 'Iwata',           img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/2eee7a15-d036-42d6-bfe7-9267ea26dd45/download+%2840%29.png?format=500w' },
+      { name: 'Winsor & Newton', img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/3a94e14d-6885-48f7-afee-9c124bc34425/download+%289%29.png?format=500w' },
+      { name: 'Liquitex',        img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/724fd0c5-5df2-41fe-b4d9-c3caf216ccae/download+%2817%29.png?format=500w' },
+      { name: 'Vallejo',         img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/8930cbd5-9111-4767-bee4-1eea71633a52/download+%281%29.png?format=500w' }
+    ];
+    var brandsHtml = BRANDS.map(function(b) {
+      return '<div class="ch-hp-brand-logo-wrap"><img class="ch-hp-brand-logo" src="' + b.img + '" alt="' + esc(b.name) + '"></div>';
     }).join('');
 
-    var FRIENDS = ['Richard Zajac Art', 'Little Shop of Heroes', 'IPMS Hamilton', 'IPMS Canada'];
+    var FRIENDS = [
+      { name: 'Richard Zajac Art',     img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1646871826324-JL14ADV93R9UP5U6SSQ0/blue+jay+1.JPG?format=750w',                                                              href: 'https://www.richardzajacart.com' },
+      { name: 'Little Shop of Heroes', img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1646872352725-IY0BFEAZI7S5ULBSIUUN/lsof.jpg?format=750w',                                                                   href: 'https://www.facebook.com/people/Little-Shop-Of-Heroes/100054529897208/' },
+      { name: 'IPMS Hamilton',         img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1647388211440-DJ767HTLMFPEXD81A4V7/cwhm-logo-no-background.png?format=1000w',                                               href: 'https://www.ipmshamilton.ca' },
+      { name: 'IPMS Canada',           img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f74eb026-fecf-4333-9a96-c7b26b45fe27/IPMS.png?format=750w',                                                                 href: 'https://www.ipmscanada.com' }
+    ];
     var friendsHtml = FRIENDS.map(function(f) {
-      return '<span class="ch-hp-friend">' + esc(f) + '</span>';
+      return '<a class="ch-hp-friend" href="' + f.href + '" target="_blank" rel="noopener">' +
+        '<div class="ch-hp-friend-img-wrap"><img class="ch-hp-friend-img" src="' + f.img + '" alt="' + esc(f.name) + '"></div>' +
+        '<span class="ch-hp-friend-name">' + esc(f.name) + '</span>' +
+      '</a>';
     }).join('');
 
     container.innerHTML =
