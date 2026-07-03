@@ -350,7 +350,8 @@
     '.ch-hp-store-hours{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0;font-variant-numeric:tabular-nums}',
     '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}',
     '.ch-hp-store-dir{display:inline-block;margin-top:12px;font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#a9772a;text-decoration:none}',
-    '.ch-hp-store-dir:hover{color:#c9943a}'
+    '.ch-hp-store-dir:hover{color:#c9943a}',
+    '.ch-hp-store-note{font-size:12px;color:#8a8273;font-style:italic}'
   ].join('');
   document.head.appendChild(hpStyle);
 
@@ -1387,14 +1388,14 @@
       : '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Featured products loading…</div>';
 
     var BRANDS = [
-      { name: 'Tamiya',          img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/504ce903-e23a-4ed3-b248-a832debb517b/download.png?format=500w' },
-      { name: 'Bandai',          img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/a44d08b5-b066-4cd9-a738-f533b3789f32/bandailogoNew00.jpg?format=1000w' },
-      { name: 'Revell',          img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/8e3494e5-0a41-49de-bee5-18ff3d18bf7e/revell+smaller.jpg?format=500w' },
-      { name: 'Hasegawa',        img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/721314a5-a148-4617-8788-f3905d2b5587/Hasegawa.png?format=500w' },
-      { name: 'Iwata',           img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/2eee7a15-d036-42d6-bfe7-9267ea26dd45/download+%2840%29.png?format=500w' },
-      { name: 'Winsor & Newton', img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/3a94e14d-6885-48f7-afee-9c124bc34425/download+%289%29.png?format=500w' },
-      { name: 'Liquitex',        img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/724fd0c5-5df2-41fe-b4d9-c3caf216ccae/download+%2817%29.png?format=500w' },
-      { name: 'Vallejo',         img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/8930cbd5-9111-4767-bee4-1eea71633a52/download+%281%29.png?format=500w' }
+      { name: 'Tamiya',              img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/504ce903-e23a-4ed3-b248-a832debb517b/download.png?format=500w' },
+      { name: 'Bandai',              img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/a44d08b5-b066-4cd9-a738-f533b3789f32/bandailogoNew00.jpg?format=1000w' },
+      { name: 'Copper State Models', img: 'https://copperstatemodels.com/static/landing/csm_logo.png' },
+      { name: 'Vallejo',             img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/8930cbd5-9111-4767-bee4-1eea71633a52/download+%281%29.png?format=500w' },
+      { name: 'Iwata',               img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/2eee7a15-d036-42d6-bfe7-9267ea26dd45/download+%2840%29.png?format=500w' },
+      { name: 'Winsor & Newton',     img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/3a94e14d-6885-48f7-afee-9c124bc34425/download+%289%29.png?format=500w' },
+      { name: 'Rosemary & Co',       img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/4b3921d4-ad32-4cd9-9cc1-db1778704f8e/download+%281%29.jpg?format=500w' },
+      { name: 'Beam',                img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/461c41fb-4e8d-4dc0-9626-346fa9eef12a/Beam-Watercolours.png?format=500w' }
     ];
     var brandsHtml = BRANDS.map(function(b) {
       return '<div class="ch-hp-brand-logo-wrap"><img class="ch-hp-brand-logo" src="' + b.img + '" alt="' + esc(b.name) + '"></div>';
@@ -1481,7 +1482,7 @@
             '<iframe src="https://maps.google.com/maps?q=935+Frederick+Street+Kitchener+ON+Canada&output=embed&z=16" loading="lazy" title="Copper\'s Hobbies location"></iframe>' +
           '</div>' +
           '<h2 class="ch-hp-store-h2">Come see us</h2>' +
-          '<p class="ch-hp-store-p">We\'re always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada.</p>' +
+          '<p class="ch-hp-store-p">We\'re always growing our collection and not everything is listed online — come by in person to see the full inventory. Or order online with $20 flat-rate shipping anywhere in Canada. <span class=\'ch-hp-store-note\'>*Some exceptions apply for larger or oversized items.</span></p>' +
           '<div class="ch-hp-store-details">' +
             '<div>' +
               '<p class="ch-hp-store-label">Hours</p>' +
