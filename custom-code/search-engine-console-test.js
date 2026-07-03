@@ -1458,7 +1458,7 @@
             '<p class="ch-hp-sub">Scale models, paints, tools and art supplies — chosen and stocked by two people who build, paint and obsess over this hobby right alongside you, in the heart of Kitchener.</p>' +
             '<div class="ch-hp-hero-btns">' +
               '<a href="/shopall" class="ch-hp-btn-primary">Shop the store</a>' +
-              '<a href="#ch-hp-store" class="ch-hp-btn-outline">Visit us in Kitchener</a>' +
+              '<a href="/about" class="ch-hp-btn-outline">Our Story</a>' +
             '</div>' +
           '</div>' +
           '<div>' +

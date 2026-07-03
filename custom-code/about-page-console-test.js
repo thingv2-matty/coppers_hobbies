@@ -103,7 +103,6 @@
       '<section class="ch-ab-hero" style="background-image:url(' + IMGS.hero + ')">'  +
         '<div class="ch-ab-hero-scrim"></div>' +
         '<div class="ch-ab-hero-inner">' +
-          '<span class="ch-ab-hero-eye">About us</span>' +
           '<h1 class="ch-ab-hero-h1">Built by people who love the hobby.<br>Run the same way.</h1>' +
         '</div>' +
       '</section>' +
