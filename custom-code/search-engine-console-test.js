@@ -29,7 +29,6 @@
   var COLLECTIONS = [
     { key: 'models',   name: 'Models & Supplies', url: '/coppers-hobbies-szOJ2' },
     { key: 'art',      name: 'Art Supplies',       url: '/art-supplies' },
-    { key: 'gaming',   name: 'Gaming',             url: '/gaming-1' },
     { key: 'toys',     name: 'Toys & Puzzles',     url: '/toys-and-puzzles' }
   ];
 
