@@ -346,7 +346,7 @@
     '.ch-hp-brand-logo-wrap:last-child{border-right:none}',
     '.ch-hp-brand-logo{height:72px;max-width:100%;object-fit:contain;display:block}',
     '@media(max-width:720px){.ch-hp-brands-row{grid-template-columns:repeat(2,1fr);gap:8px}.ch-hp-brand-logo-wrap{border-right:none;border-bottom:1px solid #e8e0d4;padding:12px 8px}.ch-hp-brand-logo-wrap:nth-child(7),.ch-hp-brand-logo-wrap:nth-child(8){border-bottom:none}}',
-    // Friends & Cohorts
+    // Friends of Coppers
     '.ch-hp-friends{padding:44px 0;background:#faf7f1;border-top:1px solid #ece4d6;text-align:center}',
     '.ch-hp-friends-inner{max-width:900px;margin:0 auto;padding:0 32px}',
     '@media(max-width:820px){.ch-hp-friends-inner{padding:0 20px}}',
@@ -1437,7 +1437,7 @@
     }).join('');
 
     var FRIENDS = [
-      { name: 'Richard Zajac Art',     img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1646871826324-JL14ADV93R9UP5U6SSQ0/blue+jay+1.JPG?format=750w',                                                              href: 'https://www.richardzajacart.com' },
+      { name: 'Many Minis',            img: 'https://static.wixstatic.com/media/499667_cad0802f9b5348ac92bd167b4937182c~mv2.png/v1/fill/w_600,h_457,al_c,lg_1,q_85,enc_avif,quality_auto/499667_cad0802f9b5348ac92bd167b4937182c~mv2.png', href: 'https://www.manyminis.ca' },
       { name: 'Little Shop of Heroes', img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1646872352725-IY0BFEAZI7S5ULBSIUUN/lsof.jpg?format=750w',                                                                   href: 'https://www.facebook.com/people/Little-Shop-Of-Heroes/100054529897208/' },
       { name: 'IPMS Hamilton',         img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1647388211440-DJ767HTLMFPEXD81A4V7/cwhm-logo-no-background.png?format=1000w',                                               href: 'https://www.ipmshamilton.ca' },
       { name: 'IPMS Canada',           img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f74eb026-fecf-4333-9a96-c7b26b45fe27/IPMS.png?format=750w',                                                                 href: 'https://www.ipmscanada.com' }
@@ -1502,10 +1502,10 @@
           '<div class="ch-hp-brands-row">' + brandsHtml + '</div>' +
         '</div>' +
       '</section>' +
-      // Friends & Cohorts
+      // Friends of Coppers
       '<section class="ch-hp-friends">' +
         '<div class="ch-hp-friends-inner">' +
-          '<p class="ch-hp-friends-label">Friends & Cohorts</p>' +
+          '<p class="ch-hp-friends-label">Friends of Coppers</p>' +
           '<p class="ch-hp-friends-sub">A small business that supports other local small businesses</p>' +
           '<div class="ch-hp-friends-row">' + friendsHtml + '</div>' +
         '</div>' +
