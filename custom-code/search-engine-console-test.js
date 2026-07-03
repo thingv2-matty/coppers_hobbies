@@ -1348,7 +1348,7 @@
   var HP_IMG = {
     hero       : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/4dd756d5-74ed-4832-a2d5-8ce2fb2eac2a/storefront.jpg?content-type=image%2Fjpeg',   // storefront photo
     buildNight : '',   // Sunday Build Night photo
-    richard    : ''    // Richard painting photo
+    richard    : 'https://instagram.fyzd1-2.fna.fbcdn.net/v/t39.30808-6/484099075_679534411303685_6528236073357895154_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzQ3MTU1NjM1MzA4MjI4MTg3Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuNTAwLnNkci5yZWd1bGFyX3Bob3RvLkMzIn0%3D&_nc_ohc=YrGSS8GNBOYQ7kNvwHJk62m&_nc_oc=Adon_pgTP_FyP85fZJAIxhNlSr9XMu5kXEqymU5giuauOsXKJnG8UAwkhG9sm_kJGi0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fyzd1-2.fna&_nc_gid=qtBx3gUf1RB1Zr9Vf28qTA&_nc_ss=7a22e&oh=00_AQDLze2auaxc5jqTUVxWBhJnDd5NIiNgGKcZj69Y1rd5tg&oe=6A4DC150'    // TODO: replace — Instagram CDN, expires ~July 6 2026
   };
 
   // Top row: 5 model kit categories
@@ -1500,6 +1500,52 @@
         '<div class="ch-hp-brands-inner">' +
           '<div class="ch-hp-brands-hd"><h2 class="ch-hp-h2">Brands we carry</h2></div>' +
           '<div class="ch-hp-brands-row">' + brandsHtml + '</div>' +
+        '</div>' +
+      '</section>' +
+      // Happenings
+      '<section class="ch-hp-community">' +
+        '<div class="ch-hp-comm-inner">' +
+          '<div class="ch-hp-comm-intro">' +
+            '<h2 class="ch-hp-comm-h2">Happening at Copper\u2019s</h2>' +
+            '<p class="ch-hp-comm-sub">Events, classes, and community nights \u2014 open to everyone.</p>' +
+          '</div>' +
+          '<div class="ch-hp-comm-cards">' +
+            '<a href="/build-night" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://i0.wp.com/www.gunpla101.com/wp-content/uploads/2019/01/image1.jpg?resize=980%2C980&ssl=1)"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Weekly \u00b7 Free</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Community Build Night</h3>' +
+                '<p class="ch-hp-comm-card-p">Drop in any Sunday noon to 5 \u2014 bring your kit and join whoever shows up. All skill levels welcome.</p>' +
+                '<span class="ch-hp-comm-card-link">Find out more \u2192</span>' +
+              '</div>' +
+            '</a>' +
+            '<a href="https://www.coppershobbies.com/scale-model-happenings" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/c58c2dbd-c950-40b2-8f4a-03545e36f019/IMG_9648.JPG?format=1000w)"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Events</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Scale Model Happenings</h3>' +
+                '<p class="ch-hp-comm-card-p">Local shows, club meets, and scale model events in the area.</p>' +
+                '<span class="ch-hp-comm-card-link">See what\u2019s on \u2192</span>' +
+              '</div>' +
+            '</a>' +
+            '<div class="ch-hp-comm-card">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(' + HP_IMG.richard + ')"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Coming Soon</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Art Classes with Richard</h3>' +
+                '<p class="ch-hp-comm-card-p">Hands-on painting sessions led by Richard Zajac. Details and dates coming soon.</p>' +
+              '</div>' +
+            '</div>' +
+            '<a href="https://www.coppershobbies.com/art-classes/kwsa-kitchenerwaterloo-society-of-artists" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f6ad95ec-8a86-468c-8ae3-2dbc97626d00/_KWSA.png?format=2500w);background-size:contain;background-repeat:no-repeat;background-color:#fff"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Classes</span>' +
+                '<h3 class="ch-hp-comm-card-h3">KW Society of Artists</h3>' +
+                '<p class="ch-hp-comm-card-p">Art classes and workshops through the Kitchener-Waterloo Society of Artists.</p>' +
+                '<span class="ch-hp-comm-card-link">Learn more \u2192</span>' +
+              '</div>' +
+            '</a>' +
+          '</div>' +
         '</div>' +
       '</section>' +
       // Friends of Coppers
