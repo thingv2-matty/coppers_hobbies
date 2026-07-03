@@ -735,6 +735,40 @@
     });
   }
 
+  function syncFiltersToUrl() {
+    if (!isShopAllPage() && !isCollectionPage()) return;
+    var params = new URLSearchParams();
+    if (filters.inStockOnly) params.set('instock', '1');
+    var brands = Object.keys(filters.brands).filter(function(k) { return filters.brands[k]; });
+    if (brands.length) params.set('brands', brands.join(','));
+    var cats = Object.keys(filters.categories).filter(function(k) { return filters.categories[k]; });
+    if (cats.length) params.set('cats', cats.join(','));
+    var scales = Object.keys(filters.scales).filter(function(k) { return filters.scales[k]; });
+    if (scales.length) params.set('scales', scales.join(','));
+    var cols = Object.keys(filters.collections).filter(function(k) { return filters.collections[k]; });
+    if (cols.length) params.set('cols', cols.join(','));
+    if (filters.priceMin !== null) params.set('pmin', String(filters.priceMin));
+    if (filters.priceMax !== null) params.set('pmax', String(filters.priceMax));
+    var qs = params.toString();
+    history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
+  }
+
+  function loadFiltersFromUrl() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('instock') === '1') filters.inStockOnly = true;
+    var brands = params.get('brands');
+    if (brands) brands.split(',').forEach(function(b) { if (b) filters.brands[b] = true; });
+    var cats = params.get('cats');
+    if (cats) cats.split(',').forEach(function(c) { if (c) filters.categories[c] = true; });
+    var scales = params.get('scales');
+    if (scales) scales.split(',').forEach(function(s) { if (s) filters.scales[s] = true; });
+    var cols = params.get('cols');
+    if (cols) cols.split(',').forEach(function(c) { if (c) filters.collections[c] = true; });
+    var pmin = params.get('pmin'), pmax = params.get('pmax');
+    if (pmin) filters.priceMin = parseFloat(pmin);
+    if (pmax) filters.priceMax = parseFloat(pmax);
+  }
+
   function applySort(products) {
     if (sortBy === 'default') return products;
     var s = products.slice();
@@ -849,7 +883,7 @@
         wirePillButtons(onFilterChange, mobileEl);
       }
     }
-    function onChange() { onFilterChange(); syncPills(); }
+    function onChange() { syncFiltersToUrl(); onFilterChange(); syncPills(); }
     _filterOnChange = onChange;
 
     var instockCb = container.querySelector('#ch-instock');
@@ -1632,6 +1666,7 @@
 
   // ── Init ────────────────────────────────────────────────────────────────────
   function init() {
+    loadFiltersFromUrl();
     loadFuse(function() {
       initFlyout();
       initSearchPage();
