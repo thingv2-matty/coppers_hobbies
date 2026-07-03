@@ -150,7 +150,7 @@
         '<div class="ch-ab-visit-inner">' +
           '<h2 class="ch-ab-visit-h2">Come see it in person</h2>' +
           '<p class="ch-ab-visit-p">Not everything is listed online — the shelves always have more. Richard and Nancy are usually in the shop and happy to talk through whatever you’re working on.</p>' +
-          '<a href="/contact" class="ch-ab-visit-btn">Get in touch</a>' +
+          '<a href="/location" class="ch-ab-visit-btn">Visit the store</a>' +
         '</div>' +
       '</section>';
   }
