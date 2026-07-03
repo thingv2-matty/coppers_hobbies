@@ -140,8 +140,7 @@
             '</div>' +
             '<div class="ch-loc-here-item">' +
               '<div class="ch-loc-here-pip"></div>' +
-              // TODO: add specific GRT route number(s) that serve Frederick Street
-              '<div class="ch-loc-here-text"><strong>Transit</strong>Accessible by Grand River Transit. <a href="https://www.grt.ca" target="_blank" rel="noopener">Plan your trip at grt.ca</a></div>' +
+              '<div class="ch-loc-here-text"><strong>Transit</strong>Take GRT Route 20 and get off at <strong>Victoria St N @ Frederick St</strong> — we\'re right there.</div>' +
             '</div>' +
             '<div class="ch-loc-here-item">' +
               '<div class="ch-loc-here-pip"></div>' +
