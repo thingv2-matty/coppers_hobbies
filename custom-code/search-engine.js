@@ -6,7 +6,6 @@
   var COLLECTIONS = [
     { key: 'models',   name: 'Models & Supplies', url: '/coppers-hobbies-szOJ2' },
     { key: 'art',      name: 'Art Supplies',       url: '/art-supplies' },
-    { key: 'diecasts', name: 'Diecasts',           url: '/diecasts' },
     { key: 'gaming',   name: 'Gaming',             url: '/gaming-1' },
     { key: 'toys',     name: 'Toys & Puzzles',     url: '/toys-and-puzzles' }
   ];
@@ -28,8 +27,6 @@
     'airbrush paint' : 'airbrush',
     'tamiya kits'    : 'Tamiya',
     'bandai kits'    : 'Bandai',
-    'dnd'            : 'Dungeons',
-    'd&d'            : 'Dungeons'
   };
 
   var KNOWN_BRANDS = [
@@ -420,7 +417,7 @@
         return products;
       });
     }
-    return next(0);
+    return next(0).catch(function() { return []; });
   }
 
   function buildIndex() {
