@@ -1488,6 +1488,13 @@
     } else {
       main.appendChild(container);
     }
+    // Squarespace sets min-height on layout containers for blank/404 pages,
+    // which inflates the footer gap. Zero them out on /shopall only.
+    main.style.minHeight = '0';
+    main.style.paddingBottom = '0';
+    document.querySelectorAll('.sqs-layout,.sqs-col-wid-12,.sqs-block').forEach(function(el) {
+      el.style.minHeight = '0';
+    });
     if (indexReady) {
       renderShopAll();
     } else {
