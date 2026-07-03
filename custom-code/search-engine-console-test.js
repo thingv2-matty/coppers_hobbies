@@ -631,7 +631,7 @@
     var container = document.createElement('div');
     container.id = 'ch-sr';
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
-    var firstSection = main.querySelector('section, .page-section, article');
+    var firstSection = main.firstElementChild;
     if (firstSection) {
       main.insertBefore(container, firstSection);
     } else {
@@ -1287,7 +1287,7 @@
     });
 
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
-    var firstSection = main.querySelector('section, .page-section, article');
+    var firstSection = main.firstElementChild;
     var container = document.createElement('div');
     container.id = 'ch-col';
     var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
@@ -1342,7 +1342,7 @@
     var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
     var container = document.createElement('div');
     container.id = 'ch-home';
-    var firstSection = main.querySelector('section, .page-section, article');
+    var firstSection = main.firstElementChild;
     if (firstSection) {
       main.insertBefore(container, firstSection);
       var sib = container.nextElementSibling;
@@ -1510,7 +1510,7 @@
       });
     });
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
-    var firstSection = main.querySelector('section, .page-section, article');
+    var firstSection = main.firstElementChild;
     var container = document.createElement('div');
     container.id = 'ch-shopall';
     var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
