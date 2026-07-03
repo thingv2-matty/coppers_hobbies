@@ -1506,7 +1506,7 @@
       '<section class="ch-hp-community">' +
         '<div class="ch-hp-comm-inner">' +
           '<div class="ch-hp-comm-intro">' +
-            '<h2 class="ch-hp-comm-h2">Happening at Copper\u2019s</h2>' +
+            '<h2 class="ch-hp-comm-h2">Happening at Copper\u2019s and Beyond</h2>' +
             '<p class="ch-hp-comm-sub">Events, classes, and community nights \u2014 open to everyone.</p>' +
           '</div>' +
           '<div class="ch-hp-comm-cards">' +
