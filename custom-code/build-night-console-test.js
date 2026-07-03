@@ -92,9 +92,8 @@
       '<section class="ch-bn-hero" style="background-image:url(' + IMGS.hero + ')">' +
         '<div class="ch-bn-hero-scrim"></div>' +
         '<div class="ch-bn-hero-inner">' +
-          '<span class="ch-bn-hero-eye">Every Sunday</span>' +
           '<h1 class="ch-bn-hero-h1">Community Build Night</h1>' +
-          '<p class="ch-bn-hero-meta">Noon to 5 pm &nbsp;·&nbsp; Free &nbsp;·&nbsp; Drop in anytime &nbsp;·&nbsp; 935 Frederick Street</p>' +
+          '<p class="ch-bn-hero-meta">Every Sunday &nbsp;·&nbsp; Noon to 5 pm &nbsp;·&nbsp; Free &nbsp;·&nbsp; Drop in anytime &nbsp;·&nbsp; 935 Frederick Street</p>' +
         '</div>' +
       '</section>' +
 
