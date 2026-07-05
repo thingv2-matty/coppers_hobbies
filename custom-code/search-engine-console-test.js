@@ -65,7 +65,7 @@
     'Lifecolor','Magic Factory','Many Minis','Master Box','Master Tools','Matho Models','Mathos Models',
     'Meng','MicroScale','Microscale','Milliput','MiniArt','Mission Models','Moebius','Molotow','MPC','Mr Hobby','Mr. Hobby',
     'Pit Road','Platz','Plastruct','Polar Lights',
-    'Revell','Revell Germany','RFM','Roden','Ryefield Model',
+    'Revell','Revell Germany','RFM','Roden','ROKR','Rolife','Ryefield Model',
     'Salvinos','Scale75','SMS','SNAA','Suyata',
     'Takom','Tamiya','Testors','Trumpeter',
     'Ultra Pro','ZM','Zoukei-Mura',
@@ -1528,14 +1528,15 @@
                 '<span class="ch-hp-comm-card-link">See what\u2019s on \u2192</span>' +
               '</div>' +
             '</a>' +
-            '<div class="ch-hp-comm-card">' +
+            '<a href="/art-classes" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(' + HP_IMG.richard + ')"></div>' +
               '<div class="ch-hp-comm-card-body">' +
-                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Coming Soon</span>' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Monthly</span>' +
                 '<h3 class="ch-hp-comm-card-h3">Art Classes with Richard</h3>' +
-                '<p class="ch-hp-comm-card-p">Hands-on painting sessions led by Richard Zajac. Details and dates coming soon.</p>' +
+                '<p class="ch-hp-comm-card-p">Monthly painting workshops led by Richard Zajac. All skill levels welcome.</p>' +
+                '<span class="ch-hp-comm-card-link">See upcoming sessions →</span>' +
               '</div>' +
-            '</div>' +
+            '</a>' +
             '<a href="https://www.coppershobbies.com/art-classes/kwsa-kitchenerwaterloo-society-of-artists" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f6ad95ec-8a86-468c-8ae3-2dbc97626d00/_KWSA.png?format=2500w);background-size:contain;background-repeat:no-repeat;background-color:#fff"></div>' +
               '<div class="ch-hp-comm-card-body">' +
