@@ -121,8 +121,8 @@
           '<div>' +
             '<span class="ch-ac-eye">About the workshops</span>' +
             '<h2 class="ch-ac-h2">Learn to paint from someone who’s done it for 25 years</h2>' +
-            '<p class="ch-ac-p">Once a month, Copper’s Hobbies hosts a hands-on painting workshop open to anyone looking to develop their skills. Each session covers a different topic — from watercolour landscapes to gouache to wildlife drawing — so there’s always something new to try.</p>' +
-            '<p class="ch-ac-p">Workshops are led by Richard Zajac, a Canadian artist with over 25 years of experience. Whether you’re picking up a brush for the first time or looking to push your technique further, the sessions are designed to give you something to work with and take home.</p>' +
+            '<p class="ch-ac-p">Once a month, Copper’s Hobbies hosts a hands-on art workshop open to anyone looking to develop their skills. Each session covers a different topic — from watercolour landscapes to gouache to wildlife drawing — so there’s always something new to try.</p>' +
+            '<p class="ch-ac-p">Workshops are led by Richard Zajac, a Canadian artist with over 25 years of experience. Whether you’re picking up a brush for the first time or looking to push your technique further, the sessions will give you skills and tricks to bring home to your own work.</p>' +
             '<p class="ch-ac-p">Space is limited — spots fill up quickly, so register early.</p>' +
           '</div>' +
           '<div>' +
