@@ -11,10 +11,10 @@
   // TODO: replace all placeholder image URLs with Squarespace CDN URLs once uploaded
   // NOTE: the 'richard' URL is an Instagram CDN link and will expire — replace soon
   var IMGS = {
-    hero    : 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHEoSmEguDCXYydr5mQpqEFFdfaIAHtAAwwridumpRDZLaDGJE9W4j8NYg2xiHfFvMWX9VQX4qlqXs6S4VznWTIS7gDYgs1VKDG-skbTbiI6dR4GOk4GxGdcR76GVHrQMpibGetmQ=s1360-w1360-h1020',
-    models  : 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAE0JupubNSTWNbBYC9YMESvkutEzm4d9HddS-d5TyxfK2eGjiSuIu-BTZm7AMX2tY7tuUrT-slnP2apMFf7OjKqBDh-Ih6k-6ZkXBY9i02NYjTbOaD6KiiJwsZzKWPdbuvCPVVngg=s1360-w1360-h1020',
-    art     : 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHXcm53wLeZjuFCW9GdOTEvNqJZD2nrt0u2C4EjGNzMjmLyTddgLrNOeSS3xzuLElSCgYyvnZVT_xlresBjrSQjgFOFjHMHJaL540UHRcifWrprBqXTSBSf_WW2vatsOIVd-CFK=s1360-w1360-h1020',
-    richard : 'https://instagram.fyzd1-2.fna.fbcdn.net/v/t39.30808-6/484099075_679534411303685_6528236073357895154_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzQ3MTU1NjM1MzA4MjI4MTg3Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuNTAwLnNkci5yZWd1bGFyX3Bob3RvLkMzIn0%3D&_nc_ohc=YrGSS8GNBOYQ7kNvwHJk62m&_nc_oc=Adon_pgTP_FyP85fZJAIxhNlSr9XMu5kXEqYmU5giuauOsXKJnG8UAwkhG9sm_kJGi0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fyzd1-2.fna&_nc_gid=qtBx3gUf1RB1Zr9Vf28qTA&_nc_ss=7a22e&oh=00_AQDLze2auaxc5jqTUVxWBhJnDd5NIiNgGKcZj69Y1rd5tg&oe=6A4DC150'
+    hero    : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/516bd75a-34db-4502-ad77-2d054d73e9ae/store+aisles+1.jpg?content-type=image%2Fjpeg',
+    models  : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/bac927ac-4882-4d9c-938b-f60b88452fd7/Model+Kit+Aisle.jpg?content-type=image%2Fjpeg',
+    art     : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/21e09f3a-3bb4-4fc7-b4e7-c7e8eb7ccef8/art+supplies.jpg?content-type=image%2Fjpeg',
+    richard : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/f63955ae-40dc-43e0-a5ca-61391b4bccad/Richard+Painting.jpg?content-type=image%2Fjpeg'
   };
 
   var styleEl = document.createElement('style');

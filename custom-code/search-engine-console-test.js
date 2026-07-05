@@ -1348,7 +1348,7 @@
   var HP_IMG = {
     hero       : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/4dd756d5-74ed-4832-a2d5-8ce2fb2eac2a/storefront.jpg?content-type=image%2Fjpeg',   // storefront photo
     buildNight : '',   // Sunday Build Night photo
-    richard    : 'https://instagram.fyzd1-2.fna.fbcdn.net/v/t39.30808-6/484099075_679534411303685_6528236073357895154_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzQ3MTU1NjM1MzA4MjI4MTg3Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuNTAwLnNkci5yZWd1bGFyX3Bob3RvLkMzIn0%3D&_nc_ohc=YrGSS8GNBOYQ7kNvwHJk62m&_nc_oc=Adon_pgTP_FyP85fZJAIxhNlSr9XMu5kXEqymU5giuauOsXKJnG8UAwkhG9sm_kJGi0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fyzd1-2.fna&_nc_gid=qtBx3gUf1RB1Zr9Vf28qTA&_nc_ss=7a22e&oh=00_AQDLze2auaxc5jqTUVxWBhJnDd5NIiNgGKcZj69Y1rd5tg&oe=6A4DC150'    // TODO: replace — Instagram CDN, expires ~July 6 2026
+    richard    : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/f63955ae-40dc-43e0-a5ca-61391b4bccad/Richard+Painting.jpg?content-type=image%2Fjpeg'
   };
 
   // Top row: 5 model kit categories
@@ -1425,7 +1425,7 @@
     var BRANDS = [
       { name: 'Tamiya',              img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/504ce903-e23a-4ed3-b248-a832debb517b/download.png?format=500w' },
       { name: 'Bandai',              img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/a44d08b5-b066-4cd9-a738-f533b3789f32/bandailogoNew00.jpg?format=1000w' },
-      { name: 'Copper State Models', img: 'https://copperstatemodels.com/static/landing/csm_logo.png' },
+      { name: 'Copper State Models', img: 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/924474d2-5f63-4f8b-87d8-3d7d2f3beb58/CSM+Logo.png?content-type=image%2Fpng' },
       { name: 'Vallejo',             img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/8930cbd5-9111-4767-bee4-1eea71633a52/download+%281%29.png?format=500w' },
       { name: 'Iwata',               img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/2eee7a15-d036-42d6-bfe7-9267ea26dd45/download+%2840%29.png?format=500w' },
       { name: 'Winsor & Newton',     img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/3a94e14d-6885-48f7-afee-9c124bc34425/download+%289%29.png?format=500w' },
@@ -1437,14 +1437,14 @@
     }).join('');
 
     var FRIENDS = [
-      { name: 'Many Minis',            img: 'https://static.wixstatic.com/media/499667_cad0802f9b5348ac92bd167b4937182c~mv2.png/v1/fill/w_600,h_457,al_c,lg_1,q_85,enc_avif,quality_auto/499667_cad0802f9b5348ac92bd167b4937182c~mv2.png', href: 'https://www.manyminis.ca' },
+      { name: 'Many Minis',            img: 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/ead69217-5d2b-4017-b72e-b299163fcd25/many+minis+logo.png?content-type=image%2Fpng', href: 'https://www.manyminis.ca', bg: '#fff' },
       { name: 'Little Shop of Heroes', img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1646872352725-IY0BFEAZI7S5ULBSIUUN/lsof.jpg?format=750w',                                                                   href: 'https://www.facebook.com/people/Little-Shop-Of-Heroes/100054529897208/' },
       { name: 'IPMS Hamilton',         img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1647388211440-DJ767HTLMFPEXD81A4V7/cwhm-logo-no-background.png?format=1000w',                                               href: 'https://www.ipmshamilton.ca' },
       { name: 'IPMS Canada',           img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f74eb026-fecf-4333-9a96-c7b26b45fe27/IPMS.png?format=750w',                                                                 href: 'https://www.ipmscanada.com' }
     ];
     var friendsHtml = FRIENDS.map(function(f) {
       return '<a class="ch-hp-friend" href="' + f.href + '" target="_blank" rel="noopener">' +
-        '<div class="ch-hp-friend-img-wrap"><img class="ch-hp-friend-img" src="' + f.img + '" alt="' + esc(f.name) + '"></div>' +
+        '<div class="ch-hp-friend-img-wrap"' + (f.bg ? ' style="background:' + f.bg + ';padding:8px"' : '') + '><img class="ch-hp-friend-img" src="' + f.img + '" alt="' + esc(f.name) + '"></div>' +
         '<span class="ch-hp-friend-name">' + esc(f.name) + '</span>' +
       '</a>';
     }).join('');
