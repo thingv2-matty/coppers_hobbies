@@ -95,6 +95,15 @@
     'Airfix','AMT','GSI Creos','Gunze'
   ];
 
+  var CAT_NORMALIZE = { 'paints': 'paint' };
+  function normalizeCat(c) { return CAT_NORMALIZE[c] || c; }
+
+  var PAINT_TYPES = [
+    { label: 'Acrylic',     tags: ['acrylic', 'acrylics'] },
+    { label: 'Oil',         tags: ['oil', 'oils', 'oil paint', 'oil paints'] },
+    { label: 'Watercolour', tags: ['watercolour', 'watercolours', 'watercolor', 'watercolors'] }
+  ];
+
   function getBrand(product) {
     var cats = product.cats || [];
     for (var i = 0; i < cats.length; i++) {
@@ -140,7 +149,7 @@
   var debounce     = null;
   var activeIndex  = -1;
 
-  var filters         = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+  var filters         = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, paintTypes: {}, priceMin: null, priceMax: null };
   var _filterOnChange = null;
   var sortBy          = 'default';
   var colSearch = '';
@@ -728,7 +737,17 @@
       if (filters.inStockOnly && !p.s) return false;
       if (activeCols.length && activeCols.indexOf(p.c) === -1) return false;
       if (activeBrands.length && !activeBrands.some(function(b) { return (p.cats||[]).indexOf(b) !== -1; })) return false;
-      if (activeCats.length && !activeCats.some(function(c) { return (p.cats||[]).indexOf(c) !== -1; })) return false;
+      if (activeCats.length && !activeCats.some(function(c) { return (p.cats||[]).some(function(pc) { return normalizeCat(pc) === c; }); })) return false;
+      var activePaintTypes = Object.keys(filters.paintTypes).filter(function(k) { return filters.paintTypes[k]; });
+      if (activePaintTypes.length) {
+        var hasPT = activePaintTypes.some(function(ptLabel) {
+          var ptConf = null;
+          for (var pi = 0; pi < PAINT_TYPES.length; pi++) { if (PAINT_TYPES[pi].label === ptLabel) { ptConf = PAINT_TYPES[pi]; break; } }
+          if (!ptConf) return false;
+          return (p.cats||[]).some(function(pc) { return ptConf.tags.indexOf(pc.toLowerCase()) !== -1; });
+        });
+        if (!hasPT) return false;
+      }
       if (activeScales.length && activeScales.indexOf(p.scale || '') === -1) return false;
       if (filters.priceMin !== null && (parseFloat(p.p) || 0) < filters.priceMin) return false;
       if (filters.priceMax !== null && (parseFloat(p.p) || 0) > filters.priceMax) return false;
@@ -746,6 +765,8 @@
     if (cats.length) params.set('cats', cats.join(','));
     var scales = Object.keys(filters.scales).filter(function(k) { return filters.scales[k]; });
     if (scales.length) params.set('scales', scales.join(','));
+    var ptypes = Object.keys(filters.paintTypes).filter(function(k) { return filters.paintTypes[k]; });
+    if (ptypes.length) params.set('ptypes', ptypes.join(','));
     var cols = Object.keys(filters.collections).filter(function(k) { return filters.collections[k]; });
     if (cols.length) params.set('cols', cols.join(','));
     if (filters.priceMin !== null) params.set('pmin', String(filters.priceMin));
@@ -763,6 +784,8 @@
     if (cats) cats.split(',').forEach(function(c) { if (c) filters.categories[c] = true; });
     var scales = params.get('scales');
     if (scales) scales.split(',').forEach(function(s) { if (s) filters.scales[s] = true; });
+    var ptypes = params.get('ptypes');
+    if (ptypes) ptypes.split(',').forEach(function(pt) { if (pt) filters.paintTypes[pt] = true; });
     var cols = params.get('cols');
     if (cols) cols.split(',').forEach(function(c) { if (c) filters.collections[c] = true; });
     var pmin = params.get('pmin'), pmax = params.get('pmax');
@@ -798,7 +821,8 @@
     var seen = {}, cats = [];
     products.forEach(function(p) {
       (p.cats||[]).forEach(function(c) {
-        if (c && KNOWN_BRANDS.indexOf(c) === -1 && !seen[c]) { seen[c] = true; cats.push(c); }
+        var norm = normalizeCat(c);
+        if (norm && KNOWN_BRANDS.indexOf(c) === -1 && !seen[norm]) { seen[norm] = true; cats.push(norm); }
       });
     });
     return cats.sort();
@@ -872,6 +896,9 @@
         }).join('')) : '') +
       (brands.length ? section('Brand', checklist(brands, 'fc-brand', filters.brands)) : '') +
       (cats.length ? section('Category', checklist(cats, 'fc-cat', filters.categories)) : '') +
+      '<div id="ch-paint-types"' + (filters.categories['paint'] ? '' : ' style="display:none"') + '>' +
+        section('Paint Type', checklist(PAINT_TYPES.map(function(pt) { return pt.label; }), 'fc-paint-type', filters.paintTypes)) +
+      '</div>' +
       (scales.length ? section('Scale', checklist(scales, 'fc-scale', filters.scales)) : '') +
     '</div>';
   }
@@ -897,14 +924,25 @@
       cb.addEventListener('change', function() { filters.brands[cb.value] = cb.checked; onChange(); });
     });
     container.querySelectorAll('.fc-cat').forEach(function(cb) {
-      cb.addEventListener('change', function() { filters.categories[cb.value] = cb.checked; onChange(); });
+      cb.addEventListener('change', function() {
+        filters.categories[cb.value] = cb.checked;
+        if (cb.value === 'paint') {
+          var ptSection = document.getElementById('ch-paint-types');
+          if (ptSection) ptSection.style.display = cb.checked ? '' : 'none';
+          if (!cb.checked) filters.paintTypes = {};
+        }
+        onChange();
+      });
+    });
+    container.querySelectorAll('.fc-paint-type').forEach(function(cb) {
+      cb.addEventListener('change', function() { filters.paintTypes[cb.value] = cb.checked; onChange(); });
     });
     container.querySelectorAll('.fc-scale').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.scales[cb.value] = cb.checked; onChange(); });
     });
     container.querySelectorAll('.ch-clr').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+        filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, paintTypes: {}, priceMin: null, priceMax: null };
         onChange();
       });
     });
@@ -989,7 +1027,7 @@
 
   function getActiveFilterCount() {
     var n = (filters.inStockOnly ? 1 : 0) + (filters.priceMin !== null ? 1 : 0) + (filters.priceMax !== null ? 1 : 0);
-    ['brands','categories','scales','collections'].forEach(function(k) {
+    ['brands','categories','scales','collections','paintTypes'].forEach(function(k) {
       n += Object.keys(filters[k]).filter(function(v){ return filters[k][v]; }).length;
     });
     return n;
@@ -1006,6 +1044,7 @@
     });
     Object.keys(filters.brands).forEach(function(k) { if (filters.brands[k]) pills.push({ label: k, type: 'brands', key: k }); });
     Object.keys(filters.categories).forEach(function(k) { if (filters.categories[k]) pills.push({ label: k, type: 'categories', key: k }); });
+    Object.keys(filters.paintTypes).forEach(function(k) { if (filters.paintTypes[k]) pills.push({ label: k, type: 'paintTypes', key: k }); });
     Object.keys(filters.scales).forEach(function(k) { if (filters.scales[k]) pills.push({ label: k, type: 'scales', key: k }); });
     if (filters.priceMin !== null || filters.priceMax !== null) {
       var priceLabel;
@@ -1086,7 +1125,7 @@
       if (closeBtn) { var cb = closeBtn.cloneNode(true); closeBtn.parentNode.replaceChild(cb, closeBtn); cb.addEventListener('click', closePanel); cb.addEventListener('touchend', function(e) { e.preventDefault(); closePanel(); }); }
       var clearBar = panel.querySelector('#ch-sf-close-bar .ch-clr');
       if (clearBar) { clearBar.addEventListener('click', function() {
-        filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+        filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, paintTypes: {}, priceMin: null, priceMax: null };
         closePanel();
       }); }
     }
@@ -1123,6 +1162,9 @@
     sf.querySelectorAll('.fc-cat').forEach(function(cb) { cb.checked = !!filters.categories[cb.value]; });
     sf.querySelectorAll('.fc-scale').forEach(function(cb) { cb.checked = !!filters.scales[cb.value]; });
     sf.querySelectorAll('.fc-col').forEach(function(cb) { cb.checked = !!filters.collections[cb.value]; });
+    sf.querySelectorAll('.fc-paint-type').forEach(function(cb) { cb.checked = !!filters.paintTypes[cb.value]; });
+    var ptSection = sf.querySelector('#ch-paint-types');
+    if (ptSection) ptSection.style.display = filters.categories['paint'] ? '' : 'none';
     var rangeMin = sf.querySelector('#ch-range-min');
     var rangeMax = sf.querySelector('#ch-range-max');
     var inputMin = sf.querySelector('#ch-price-min');
@@ -1162,7 +1204,7 @@
     var clearBtn = pillsEl.querySelector('.ch-pill-clear');
     if (clearBtn) clearBtn.addEventListener('click', function(e) {
       e.stopPropagation();
-      filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
+      filters = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, paintTypes: {}, priceMin: null, priceMax: null };
       syncSidebarCheckboxes();
       if (_filterOnChange) _filterOnChange();
       else onGridRefresh();
