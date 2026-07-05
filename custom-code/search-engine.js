@@ -379,11 +379,22 @@
 
   // ── Index builder ───────────────────────────────────────────────────────────
   function extractItems(data, col) {
-    var catMap = {};
-    var nested = data.nestedCategories;
-    if (nested && nested.categories) {
-      nested.categories.forEach(function(c) { catMap[c.id] = c.displayName; });
+    var catMap    = {};  // id → displayName
+    var catAncMap = {};  // id → [ancestor displayNames]
+
+    function buildCatLookup(categories, ancestors) {
+      categories.forEach(function(c) {
+        catMap[c.id] = c.displayName;
+        if (ancestors.length) catAncMap[c.id] = ancestors.slice();
+        if (c.subcategories && c.subcategories.length) {
+          buildCatLookup(c.subcategories, ancestors.concat(c.displayName));
+        }
+      });
     }
+
+    var nested = data.nestedCategories;
+    if (nested && nested.categories) buildCatLookup(nested.categories, []);
+
     return (data.items || []).map(function(item) {
       var v     = item.variants && item.variants[0];
       var stock = !item.variants || !item.variants.length || item.variants.some(function(variant) {
@@ -403,7 +414,13 @@
         s    : stock,
         c    : col.key,
         cn   : col.name,
-        cats : (item.categoryIds || []).map(function(id) { return catMap[id]; }).filter(Boolean),
+        cats : (item.categoryIds || []).reduce(function(acc, id) {
+          var name = catMap[id];
+          if (!name) return acc;
+          if (acc.indexOf(name) === -1) acc.push(name);
+          (catAncMap[id] || []).forEach(function(a) { if (acc.indexOf(a) === -1) acc.push(a); });
+          return acc;
+        }, []),
         scale: extractScale(title)
       };
     });
