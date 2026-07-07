@@ -10,8 +10,7 @@
 
   var IMGS = {
     hero    : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/f993ca87-a231-4bbb-adb0-c7669f64069d/headerbuildnight.jpg?content-type=image%2Fjpeg',
-    general : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/ee5517d9-1ccd-47fb-ba60-b8e843cfaece/buildnight-general.jpg?content-type=image%2Fjpeg',
-    table   : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/0bdeb0fc-e9ab-4925-9e58-acc2e671cc77/buildnight-table.jpg?content-type=image%2Fjpeg'
+    general : 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/ee5517d9-1ccd-47fb-ba60-b8e843cfaece/buildnight-general.jpg?content-type=image%2Fjpeg'
   };
 
   var styleEl = document.createElement('style');
@@ -37,9 +36,9 @@
     '.ch-bn-about-h2{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:500;color:#1f1c18;margin:0 0 24px;line-height:1.2}',
     '.ch-bn-about-p{font-size:15px;color:#5e5850;line-height:1.8;margin:0 0 18px}',
     '.ch-bn-about-p:last-child{margin-bottom:0}',
-    '.ch-bn-about-imgs{display:grid;grid-template-columns:1fr 1fr;gap:12px}',
     '.ch-bn-about-img-wrap{border-radius:10px;overflow:hidden;aspect-ratio:1/1;background:#ede3d2}',
     '.ch-bn-about-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}',
+    '@media(max-width:960px){.ch-bn-about-img-wrap{aspect-ratio:16/9}}',
 
     // Practical
     '.ch-bn-practical{padding:72px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
@@ -106,9 +105,8 @@
             '<p class="ch-bn-about-p">Most Sundays there are six to ten people at the table, sometimes more. Skill levels run the full range — beginners sitting next to people who\'ve been building for decades, all happy to share a tip or two. Kids are welcome. There\'s no agenda, no instruction, no pressure.</p>' +
             '<p class="ch-bn-about-p">And if you\'ve got a backlog (everyone does), this is a great excuse to chip away at it.</p>' +
           '</div>' +
-          '<div class="ch-bn-about-imgs">' +
-            '<div class="ch-bn-about-img-wrap"><img class="ch-bn-about-img" src="' + IMGS.general + '" alt="Builders at the community table"></div>' +
-            '<div class="ch-bn-about-img-wrap"><img class="ch-bn-about-img" src="' + IMGS.table + '" alt="Close-up of a kit being built"></div>' +
+          '<div class="ch-bn-about-img-wrap">' +
+            '<img class="ch-bn-about-img" src="' + IMGS.general + '" alt="Builders at the community table">' +
           '</div>' +
         '</div>' +
       '</section>' +
