@@ -8,7 +8,7 @@ Paste the following into:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@dee2dc0/custom-code/cart-drawer.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@1eb6b3d/custom-code/search-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@dbda362/custom-code/search-engine.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@7f95ebb/custom-code/art-classes.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@9f440f3/custom-code/about-page.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@01a6361/custom-code/location-page.js"></script>
@@ -32,7 +32,7 @@ Paste the following into:
   `https://purge.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@main/custom-code/search-engine.js`
   `https://purge.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@main/custom-code/cart-drawer.js`
 - cart-drawer.js last significant change: `876d4ef` (Canadian-only geo-restriction)
-- search-engine.js last significant change: `1eb6b3d` (fix children property name; cache v7)
+- search-engine.js last significant change: `dbda362` (blend art brushes into models page)
 - art-classes.js last significant change: `7f95ebb` (painting→art workshop; copy tweak)
 - about-page.js last significant change: `9f440f3` (swap placeholder images)
 - location-page.js last significant change: `01a6361` (reduce header top padding)
