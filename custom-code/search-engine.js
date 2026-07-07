@@ -107,7 +107,7 @@
     return null;
   }
 
-  var CACHE_KEY = 'ch_search_v6';
+  var CACHE_KEY = 'ch_search_v7';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
   var CACHE_STORE = (function() { try { return window.localStorage; } catch(e) { return window.sessionStorage; } }());
 
@@ -379,8 +379,8 @@
     if (nested && nested.categories) {
       nested.categories.forEach(function(parent) {
         catMap[parent.id] = parent.displayName;
-        if (parent.subcategories) {
-          parent.subcategories.forEach(function(sub) {
+        if (parent.children) {
+          parent.children.forEach(function(sub) {
             catMap[sub.id]    = sub.displayName;
             parentMap[sub.id] = parent.displayName;
           });
@@ -461,7 +461,7 @@
       return Promise.resolve();
     }
 
-    ['ch_search_v1', 'ch_search_v2', 'ch_search_v4', 'ch_search_v5'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
+    ['ch_search_v1', 'ch_search_v2', 'ch_search_v4', 'ch_search_v5', 'ch_search_v6'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
 
     var chain = COLLECTIONS.reduce(function(p, col) {
       return p.then(function() {
