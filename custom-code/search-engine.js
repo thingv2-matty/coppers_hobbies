@@ -1233,7 +1233,11 @@
     var col = getCollectionForPage();
     if (!col) return;
 
-    var colProducts = allProducts.filter(function(p) { return p.c === col.key; });
+    var colProducts = allProducts.filter(function(p) {
+      if (p.c === col.key) return true;
+      if (col.key === 'models' && p.c === 'art' && (p.cats || []).indexOf('Brushes') !== -1) return true;
+      return false;
+    });
 
     var urlCat = getCollectionCatFromUrl(col);
     if (urlCat) {
