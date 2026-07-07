@@ -72,6 +72,9 @@
     'Airfix','AMT','GSI Creos','Gunze'
   ];
 
+  var CAT_NORMALIZE = { 'paints': 'paint' };
+  function normalizeCat(c) { return CAT_NORMALIZE[c] || c; }
+
   function getBrand(product) {
     var cats = product.cats || [];
     for (var i = 0; i < cats.length; i++) {
@@ -104,9 +107,9 @@
     return null;
   }
 
-  var CACHE_KEY = 'ch_search_v4';
+  var CACHE_KEY = 'ch_search_v5';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
-  var CACHE_STORE = window.sessionStorage;
+  var CACHE_STORE = (function() { try { return window.localStorage; } catch(e) { return window.sessionStorage; } }());
 
   // ── State ───────────────────────────────────────────────────────────────────
   var allProducts  = [];
@@ -411,7 +414,7 @@
       return fetchPage(col.url, offset).then(function(data) {
         products = products.concat(extractItems(data, col));
         showStatus('Indexing ' + col.name + '… (' + products.length + ' products)');
-        if (data.pagination && data.pagination.nextPage) {
+        if (data.pagination && data.pagination.nextPage && data.pagination.nextPageOffset) {
           return next(data.pagination.nextPageOffset);
         }
         return products;
@@ -442,22 +445,24 @@
       return Promise.resolve();
     }
 
-    ['ch_search_v1', 'ch_search_v2'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
+    ['ch_search_v1', 'ch_search_v2', 'ch_search_v4'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
 
-    var promises = COLLECTIONS.map(function(col) {
-      return fetchCollection(col).then(function(products) {
-        allProducts  = allProducts.concat(products);
-        fuseInstance = makeFuse(allProducts);
-        indexReady   = true;
-        if (searchInput && searchInput.value.trim() && flyout && flyout.classList.contains('on')) {
-          refreshFlyout(searchInput.value);
-        }
-        if (isSearchPage() && getQuery() && document.getElementById('ch-sr')) renderSearchResults();
-        if (isCollectionPage() && document.getElementById('ch-col')) renderCollectionPage();
+    var chain = COLLECTIONS.reduce(function(p, col) {
+      return p.then(function() {
+        return fetchCollection(col).then(function(products) {
+          allProducts  = allProducts.concat(products);
+          fuseInstance = makeFuse(allProducts);
+          indexReady   = true;
+          if (searchInput && searchInput.value.trim() && flyout && flyout.classList.contains('on')) {
+            refreshFlyout(searchInput.value);
+          }
+          if (isSearchPage() && getQuery() && document.getElementById('ch-sr')) renderSearchResults();
+          if (isCollectionPage() && document.getElementById('ch-col')) renderCollectionPage();
+        });
       });
-    });
+    }, Promise.resolve());
 
-    return Promise.all(promises)
+    return chain
       .then(function() {
         fuseInstance = makeFuse(allProducts);
         hideStatus();
@@ -693,7 +698,7 @@
       if (filters.inStockOnly && !p.s) return false;
       if (activeCols.length && activeCols.indexOf(p.c) === -1) return false;
       if (activeBrands.length && !activeBrands.some(function(b) { return (p.cats||[]).indexOf(b) !== -1; })) return false;
-      if (activeCats.length && !activeCats.some(function(c) { return (p.cats||[]).indexOf(c) !== -1; })) return false;
+      if (activeCats.length && !activeCats.some(function(c) { return (p.cats||[]).some(function(pc) { return normalizeCat(pc) === c; }); })) return false;
       if (activeScales.length && activeScales.indexOf(p.scale || '') === -1) return false;
       if (filters.priceMin !== null && (parseFloat(p.p) || 0) < filters.priceMin) return false;
       if (filters.priceMax !== null && (parseFloat(p.p) || 0) > filters.priceMax) return false;
@@ -763,7 +768,8 @@
     var seen = {}, cats = [];
     products.forEach(function(p) {
       (p.cats||[]).forEach(function(c) {
-        if (c && KNOWN_BRANDS.indexOf(c) === -1 && !seen[c]) { seen[c] = true; cats.push(c); }
+        var norm = normalizeCat(c);
+        if (norm && KNOWN_BRANDS.indexOf(c) === -1 && !seen[norm]) { seen[norm] = true; cats.push(norm); }
       });
     });
     return cats.sort();
