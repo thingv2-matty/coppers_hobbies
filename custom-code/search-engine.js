@@ -72,9 +72,6 @@
     'Airfix','AMT','GSI Creos','Gunze'
   ];
 
-  var CAT_NORMALIZE = { 'paints': 'paint' };
-  function normalizeCat(c) { return CAT_NORMALIZE[c] || c; }
-
   function getBrand(product) {
     var cats = product.cats || [];
     for (var i = 0; i < cats.length; i++) {
@@ -109,7 +106,7 @@
 
   var CACHE_KEY = 'ch_search_v4';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
-  var CACHE_STORE = (function() { try { return window.localStorage; } catch(e) { return window.sessionStorage; } }());
+  var CACHE_STORE = window.sessionStorage;
 
   // ── State ───────────────────────────────────────────────────────────────────
   var allProducts  = [];
@@ -696,7 +693,7 @@
       if (filters.inStockOnly && !p.s) return false;
       if (activeCols.length && activeCols.indexOf(p.c) === -1) return false;
       if (activeBrands.length && !activeBrands.some(function(b) { return (p.cats||[]).indexOf(b) !== -1; })) return false;
-      if (activeCats.length && !activeCats.some(function(c) { return (p.cats||[]).some(function(pc) { return normalizeCat(pc) === c; }); })) return false;
+      if (activeCats.length && !activeCats.some(function(c) { return (p.cats||[]).indexOf(c) !== -1; })) return false;
       if (activeScales.length && activeScales.indexOf(p.scale || '') === -1) return false;
       if (filters.priceMin !== null && (parseFloat(p.p) || 0) < filters.priceMin) return false;
       if (filters.priceMax !== null && (parseFloat(p.p) || 0) > filters.priceMax) return false;
@@ -766,8 +763,7 @@
     var seen = {}, cats = [];
     products.forEach(function(p) {
       (p.cats||[]).forEach(function(c) {
-        var norm = normalizeCat(c);
-        if (norm && KNOWN_BRANDS.indexOf(c) === -1 && !seen[norm]) { seen[norm] = true; cats.push(norm); }
+        if (c && KNOWN_BRANDS.indexOf(c) === -1 && !seen[c]) { seen[c] = true; cats.push(c); }
       });
     });
     return cats.sort();
@@ -1480,7 +1476,7 @@
           '</div>' +
           '<div class="ch-hp-comm-cards">' +
             '<a href="/build-night" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
-              '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/0bdeb0fc-e9ab-4925-9e58-acc2e671cc77/buildnight-table.jpg?content-type=image%2Fjpeg);background-position:center top"></div>' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://i0.wp.com/www.gunpla101.com/wp-content/uploads/2019/01/image1.jpg?resize=980%2C980&ssl=1)"></div>' +
               '<div class="ch-hp-comm-card-body">' +
                 '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Weekly \u00b7 Free</span>' +
                 '<h3 class="ch-hp-comm-card-h3">Community Build Night</h3>' +
