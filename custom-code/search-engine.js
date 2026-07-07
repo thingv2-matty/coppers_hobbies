@@ -107,7 +107,7 @@
     return null;
   }
 
-  var CACHE_KEY = 'ch_search_v5';
+  var CACHE_KEY = 'ch_search_v6';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
   var CACHE_STORE = (function() { try { return window.localStorage; } catch(e) { return window.sessionStorage; } }());
 
@@ -373,10 +373,19 @@
 
   // ── Index builder ───────────────────────────────────────────────────────────
   function extractItems(data, col) {
-    var catMap = {};
+    var catMap    = {};
+    var parentMap = {};
     var nested = data.nestedCategories;
     if (nested && nested.categories) {
-      nested.categories.forEach(function(c) { catMap[c.id] = c.displayName; });
+      nested.categories.forEach(function(parent) {
+        catMap[parent.id] = parent.displayName;
+        if (parent.subcategories) {
+          parent.subcategories.forEach(function(sub) {
+            catMap[sub.id]    = sub.displayName;
+            parentMap[sub.id] = parent.displayName;
+          });
+        }
+      });
     }
     return (data.items || []).map(function(item) {
       var v     = item.variants && item.variants[0];
@@ -388,6 +397,13 @@
       var varCents = v && v.price > 0 ? (v.price / 100).toFixed(2) : null;
       var price = topPrice || varPrice || varCents || '0.00';
       var title = item.title || '';
+      var catsSeen = {}, cats = [];
+      (item.categoryIds || []).forEach(function(id) {
+        var name = catMap[id];
+        if (name && !catsSeen[name]) { catsSeen[name] = true; cats.push(name); }
+        var pName = parentMap[id];
+        if (pName && !catsSeen[pName]) { catsSeen[pName] = true; cats.push(pName); }
+      });
       return {
         id   : item.id,
         t    : title,
@@ -397,7 +413,7 @@
         s    : stock,
         c    : col.key,
         cn   : col.name,
-        cats : (item.categoryIds || []).map(function(id) { return catMap[id]; }).filter(Boolean),
+        cats : cats,
         scale: extractScale(title)
       };
     });
@@ -445,7 +461,7 @@
       return Promise.resolve();
     }
 
-    ['ch_search_v1', 'ch_search_v2', 'ch_search_v4'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
+    ['ch_search_v1', 'ch_search_v2', 'ch_search_v4', 'ch_search_v5'].forEach(function(k) { try { localStorage.removeItem(k); } catch(e) {} });
 
     var chain = COLLECTIONS.reduce(function(p, col) {
       return p.then(function() {
