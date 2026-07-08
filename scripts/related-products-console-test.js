@@ -78,7 +78,7 @@
     // Track
     '.ch-rel-track{display:flex;gap:16px;overflow-x:auto;overflow-y:visible;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab;padding:4px 0 4px}',
     '.ch-rel-track::-webkit-scrollbar{display:none}',
-    '.ch-rel-track.is-dragging{cursor:grabbing;scroll-behavior:auto;user-select:none}',
+    '.ch-rel-track.is-dragging{cursor:grabbing;scroll-behavior:auto;user-select:none;scroll-snap-type:none}',
 
     // Cards
     '.ch-rel-card{flex:0 0 200px;scroll-snap-align:start;text-decoration:none;color:inherit;display:flex;flex-direction:column;border:1px solid #ece4d6;border-radius:8px;overflow:hidden;background:#fff;transition:border-color .18s,box-shadow .18s}',

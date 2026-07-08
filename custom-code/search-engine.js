@@ -451,6 +451,7 @@
           indexReady   = true;
           cacheLoaded  = true;
           window.__chProducts = allProducts;
+          window.dispatchEvent(new CustomEvent('chReady'));
         }
       }
     } catch(e) {}
@@ -488,6 +489,7 @@
           try {
             CACHE_STORE.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: allProducts }));
           } catch(e) {}
+          window.dispatchEvent(new CustomEvent('chReady'));
         }
         if (isSearchPage()) renderSearchResults();
         if (isCollectionPage()) renderCollectionPage();
