@@ -13,6 +13,7 @@ Paste the following into:
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@9f440f3/custom-code/about-page.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@01a6361/custom-code/location-page.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@45d387e/custom-code/build-night.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@ce53861/custom-code/kwsa-page.js"></script>
 ```
 
 ## Latest @main (may be delayed by CDN cache after a push)
@@ -37,3 +38,4 @@ Paste the following into:
 - about-page.js last significant change: `9f440f3` (swap placeholder images)
 - location-page.js last significant change: `01a6361` (reduce header top padding)
 - build-night.js last significant change: `45d387e` (single image in page; table close-up on homepage card)
+- kwsa-page.js last significant change: `ce53861` (initial build — logo header, about, shows, getting involved, CTA)
