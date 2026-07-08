@@ -450,6 +450,7 @@
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
           cacheLoaded  = true;
+          window.__chProducts = allProducts;
         }
       }
     } catch(e) {}
@@ -469,6 +470,7 @@
           allProducts  = allProducts.concat(products);
           fuseInstance = makeFuse(allProducts);
           indexReady   = true;
+          window.__chProducts = allProducts;
           if (searchInput && searchInput.value.trim() && flyout && flyout.classList.contains('on')) {
             refreshFlyout(searchInput.value);
           }
