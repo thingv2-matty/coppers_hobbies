@@ -243,7 +243,12 @@
     '.ch-sort-sel{font-family:"Work Sans",sans-serif;font-size:12px;color:#5e5850;border:1px solid #ece4d6;border-radius:4px;padding:3px 8px;background:#fff;cursor:pointer}',
     '@media(max-width:720px){.ch-sort-sel{border:1.5px solid #2c2820;color:#1f1c18;padding:8px 12px;border-radius:6px;font-size:13px}}',
     '.ch-oos-banner{margin-top:20px;background:#faf7f1;border:1px solid #ece4d6;border-left:3px solid #c9943a;border-radius:6px;padding:14px 16px;font-family:"Work Sans",sans-serif;font-size:14px;color:#5e5850;line-height:1.6}',
-    '.ch-oos-banner strong{color:#1f1c18;font-weight:600}'
+    '.ch-oos-banner strong{color:#1f1c18;font-weight:600}',
+    '.ch-loading{text-align:center;padding:80px 20px;font-family:"Work Sans",sans-serif}',
+    '.ch-loading-bar{width:280px;height:3px;background:#ece4d6;border-radius:2px;overflow:hidden;margin:0 auto 14px}',
+    '.ch-loading-fill{height:100%;width:100%;background:linear-gradient(90deg,#ece4d6 0%,#c9943a 50%,#ece4d6 100%);background-size:200% 100%;animation:ch-shimmer 1.4s linear infinite}',
+    '@keyframes ch-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}',
+    '.ch-loading-msg{color:#8a8273;font-size:13px;margin:0}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -358,8 +363,11 @@
   ].join('');
   document.head.appendChild(hpStyle);
 
-  // ── Status bar (no-op in production) ────────────────────────────────────────
-  function showStatus(msg) {}
+  // ── Status bar ───────────────────────────────────────────────────────────────
+  function showStatus(msg) {
+    var msgEl = document.querySelector('.ch-loading-msg');
+    if (msgEl) msgEl.textContent = msg;
+  }
   function hideStatus() {}
 
   // ── Fuse.js loader ──────────────────────────────────────────────────────────
@@ -1336,7 +1344,7 @@
     if (indexReady) {
       renderCollectionPage();
     } else {
-      container.innerHTML = '<p style="text-align:center;padding:60px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Loading products…</p>';
+      container.innerHTML = '<div class="ch-loading"><div class="ch-loading-bar"><div class="ch-loading-fill"></div></div><p class="ch-loading-msg">Loading products…</p></div>';
     }
   }
 
@@ -1612,7 +1620,7 @@
     if (indexReady) {
       renderShopAll();
     } else {
-      container.innerHTML = '<p style="text-align:center;padding:60px;font-family:\'Work Sans\',sans-serif;color:#8a8273">Loading products…</p>';
+      container.innerHTML = '<div class="ch-loading"><div class="ch-loading-bar"><div class="ch-loading-fill"></div></div><p class="ch-loading-msg">Loading products…</p></div>';
     }
   }
 
