@@ -248,7 +248,8 @@
     '.ch-loading-bar{width:280px;height:3px;background:#ece4d6;border-radius:2px;overflow:hidden;margin:0 auto 14px}',
     '.ch-loading-fill{height:100%;width:100%;background:linear-gradient(90deg,#ece4d6 0%,#c9943a 50%,#ece4d6 100%);background-size:200% 100%;animation:ch-shimmer 1.4s linear infinite}',
     '@keyframes ch-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}',
-    '.ch-loading-msg{color:#8a8273;font-size:13px;margin:0}'
+    '.ch-loading-msg{color:#8a8273;font-size:13px;margin:0}',
+    '.ch-loading-sub{color:#b8b0a6;font-size:11px;margin:5px 0 0}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -365,8 +366,8 @@
 
   // ── Status bar ───────────────────────────────────────────────────────────────
   function showStatus(msg) {
-    var msgEl = document.querySelector('.ch-loading-msg');
-    if (msgEl) msgEl.textContent = msg;
+    var subEl = document.getElementById('ch-loading-sub');
+    if (subEl) subEl.textContent = msg;
   }
   function hideStatus() {}
 
@@ -1344,7 +1345,7 @@
     if (indexReady) {
       renderCollectionPage();
     } else {
-      container.innerHTML = '<div class="ch-loading"><div class="ch-loading-bar"><div class="ch-loading-fill"></div></div><p class="ch-loading-msg">Loading products…</p></div>';
+      container.innerHTML = '<div class="ch-loading"><div class="ch-loading-bar"><div class="ch-loading-fill"></div></div><p class="ch-loading-msg">Loading products…</p><p class="ch-loading-sub" id="ch-loading-sub"></p></div>';
     }
   }
 
@@ -1620,7 +1621,7 @@
     if (indexReady) {
       renderShopAll();
     } else {
-      container.innerHTML = '<div class="ch-loading"><div class="ch-loading-bar"><div class="ch-loading-fill"></div></div><p class="ch-loading-msg">Loading products…</p></div>';
+      container.innerHTML = '<div class="ch-loading"><div class="ch-loading-bar"><div class="ch-loading-fill"></div></div><p class="ch-loading-msg">Loading products…</p><p class="ch-loading-sub" id="ch-loading-sub"></p></div>';
     }
   }
 
