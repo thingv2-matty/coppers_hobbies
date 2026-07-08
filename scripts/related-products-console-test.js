@@ -152,11 +152,14 @@
   btnR.addEventListener('click', function() { track.scrollBy({ left:  STEP, behavior: 'smooth' }); });
 
   // Click-and-drag
-  var drag = { on: false, x0: 0, sl0: 0 };
+  var drag = { on: false, moved: false, x0: 0, sl0: 0 };
+  // Stop the browser dragging the <a> card as a native link drag
+  track.addEventListener('dragstart', function(e) { e.preventDefault(); });
   track.addEventListener('mousedown', function(e) {
-    drag.on = true;
-    drag.x0  = e.pageX;
-    drag.sl0 = track.scrollLeft;
+    drag.on    = true;
+    drag.moved = false;
+    drag.x0    = e.pageX;
+    drag.sl0   = track.scrollLeft;
     track.classList.add('is-dragging');
   });
   function endDrag() { drag.on = false; track.classList.remove('is-dragging'); }
@@ -164,9 +167,16 @@
   track.addEventListener('mouseleave', endDrag);
   track.addEventListener('mousemove', function(e) {
     if (!drag.on) return;
-    e.preventDefault();
-    track.scrollLeft = drag.sl0 - (e.pageX - drag.x0);
+    var dx = e.pageX - drag.x0;
+    if (Math.abs(dx) > 4) {
+      drag.moved = true;
+      track.scrollLeft = drag.sl0 - dx;
+    }
   });
+  // If the user actually dragged, swallow the click so the card doesn't navigate
+  track.addEventListener('click', function(e) {
+    if (drag.moved) e.preventDefault();
+  }, true);
 
   // Hide right arrow if carousel doesn't overflow
   window.addEventListener('load', syncArrows);
