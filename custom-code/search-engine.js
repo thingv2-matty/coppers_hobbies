@@ -482,9 +482,11 @@
       .then(function() {
         fuseInstance = makeFuse(allProducts);
         hideStatus();
-        try {
-          CACHE_STORE.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: allProducts }));
-        } catch(e) {}
+        if (allProducts.length > 0) {
+          try {
+            CACHE_STORE.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products: allProducts }));
+          } catch(e) {}
+        }
         if (isSearchPage()) renderSearchResults();
         if (isCollectionPage()) renderCollectionPage();
         if (isShopAllPage()) renderShopAll();
