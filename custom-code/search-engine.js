@@ -26,6 +26,8 @@
     'airbrush paint' : 'airbrush',
     'tamiya kits'    : 'Tamiya',
     'bandai kits'    : 'Bandai',
+    'god hand'       : 'GodHand',
+    'godhand'        : 'GodHand',
   };
 
   var KNOWN_BRANDS = [
@@ -107,7 +109,7 @@
     return null;
   }
 
-  var CACHE_KEY = 'ch_search_v7';
+  var CACHE_KEY = 'ch_search_v8';
   var CACHE_TTL = 24 * 60 * 60 * 1000;
   var CACHE_STORE = (function() { try { return window.localStorage; } catch(e) { return window.sessionStorage; } }());
 
@@ -446,7 +448,8 @@
         c    : col.key,
         cn   : col.name,
         cats : cats,
-        scale: extractScale(title)
+        scale: extractScale(title),
+        tags : item.tags || []
       };
     });
   }
@@ -547,13 +550,60 @@
     Object.keys(SYNONYMS).forEach(function(k) {
       if (q.indexOf(k) !== -1) q = q.replace(k, SYNONYMS[k]);
     });
-    var results = fuseInstance.search(q, { limit: limit || 200 });
+
+    var words = q.split(/\s+/).filter(function(w) { return w.length >= 2; });
+    var results;
+
+    if (words.length < 2) {
+      // Single word: normal Fuse search
+      results = fuseInstance.search(q, { limit: limit || 200 });
+    } else {
+      // Multi-word: search each word separately and keep products matching ALL words.
+      // This handles "brand + item type" queries like "Excel tweezers" or "Tamiya cement"
+      // where the words may hit different fields (cats vs title).
+      var wordResults = words.map(function(w) {
+        return fuseInstance.search(w, { limit: 300 });
+      });
+
+      var itemMap     = {};   // id → { item, totalScore, wordCount }
+      var matchedByWord = {}; // id → { wordIndex: true } — dedupes same word hitting same product twice
+
+      wordResults.forEach(function(wres, wi) {
+        wres.forEach(function(r) {
+          var id = r.item.id;
+          if (!itemMap[id]) {
+            itemMap[id] = { item: r.item, totalScore: 0, wordCount: 0 };
+            matchedByWord[id] = {};
+          }
+          if (!matchedByWord[id][wi]) {
+            matchedByWord[id][wi] = true;
+            itemMap[id].totalScore += (r.score || 0);
+            itemMap[id].wordCount++;
+          }
+        });
+      });
+
+      var intersection = Object.keys(itemMap).filter(function(id) {
+        return itemMap[id].wordCount === words.length;
+      });
+
+      if (intersection.length) {
+        results = intersection.map(function(id) {
+          var e = itemMap[id];
+          return { item: e.item, score: e.totalScore / e.wordCount };
+        });
+      } else {
+        // Nothing matched all words — fall back to full-phrase Fuse search
+        results = fuseInstance.search(q, { limit: limit || 200 });
+      }
+    }
+
     results.sort(function(a, b) {
       if (a.item.s && !b.item.s) return -1;
       if (!a.item.s && b.item.s) return 1;
       return (a.score || 0) - (b.score || 0);
     });
-    return results.map(function(r) { return r.item; });
+    return results.map(function(r) { return r.item; }).slice(0, limit || 200);
   }
 
   // ── Flyout ──────────────────────────────────────────────────────────────────
@@ -1717,7 +1767,7 @@
             '<a href="https://www.coppershobbies.com/art-classes/kwsa-kitchenerwaterloo-society-of-artists" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f6ad95ec-8a86-468c-8ae3-2dbc97626d00/_KWSA.png?format=2500w);background-size:contain;background-repeat:no-repeat;background-color:#fff"></div>' +
               '<div class="ch-hp-comm-card-body">' +
-                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Classes</span>' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Partner</span>' +
                 '<h3 class="ch-hp-comm-card-h3">KW Society of Artists</h3>' +
                 '<p class="ch-hp-comm-card-p">Art classes and workshops through the Kitchener-Waterloo Society of Artists.</p>' +
                 '<span class="ch-hp-comm-card-link">Learn more \u2192</span>' +
