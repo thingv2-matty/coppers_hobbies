@@ -8,7 +8,7 @@ Paste the following into:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@dee2dc0/custom-code/cart-drawer.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@ad1b07d/custom-code/search-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@0a67b7e/custom-code/search-engine.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@e61fda8/custom-code/related-products.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@7f95ebb/custom-code/art-classes.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@9f440f3/custom-code/about-page.js"></script>
@@ -35,7 +35,7 @@ Paste the following into:
   `https://purge.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@main/custom-code/search-engine.js`
   `https://purge.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@main/custom-code/cart-drawer.js`
 - cart-drawer.js last significant change: `876d4ef` (Canadian-only geo-restriction)
-- search-engine.js last significant change: `ad1b07d` (happenings grid: 3-up top row, 2-up centered bottom row)
+- search-engine.js last significant change: `0a67b7e` (header search button — magnifying glass in nav opens search bar on all pages)
 - related-products.js last significant change: `e61fda8` (initial build — carousel of up to 8 related products on product pages)
 - art-classes.js last significant change: `7f95ebb` (painting→art workshop; copy tweak)
 - about-page.js last significant change: `9f440f3` (swap placeholder images)
