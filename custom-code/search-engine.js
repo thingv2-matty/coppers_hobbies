@@ -1525,6 +1525,15 @@
                 '<span class="ch-hp-comm-card-link">Find out more \u2192</span>' +
               '</div>' +
             '</a>' +
+            '<a href="/group-build" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/650e1560-49f2-40eb-b707-4eda84928c91/Watercolour-Workshop+%283%29.png?content-type=image%2Fpng)"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Community \u00b7 Free</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Group Build: Vintage 1985</h3>' +
+                '<p class="ch-hp-comm-card-p">Build a box-stock kit from 1985 or older. Register July 12\u2013Aug 9, reveal on December 12.</p>' +
+                '<span class="ch-hp-comm-card-link">Find out more \u2192</span>' +
+              '</div>' +
+            '</a>' +
             '<a href="https://www.coppershobbies.com/scale-model-happenings" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/c58c2dbd-c950-40b2-8f4a-03545e36f019/IMG_9648.JPG?format=1000w)"></div>' +
               '<div class="ch-hp-comm-card-body">' +
