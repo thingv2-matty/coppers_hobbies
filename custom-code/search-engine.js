@@ -119,6 +119,10 @@
   var searchInput  = null;
   var debounce     = null;
   var activeIndex  = -1;
+  var hFlyout      = null;
+  var hInput       = null;
+  var hDebounce    = null;
+  var hActive      = -1;
 
   var filters         = { collections: {}, inStockOnly: false, brands: {}, categories: {}, scales: {}, priceMin: null, priceMax: null };
   var _filterOnChange = null;
@@ -364,7 +368,22 @@
     '.ch-hp-store-addr{font-size:14.5px;color:#1f1c18;line-height:1.9;margin:0}',
     '.ch-hp-store-dir{display:inline-block;margin-top:12px;font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;color:#a9772a;text-decoration:none}',
     '.ch-hp-store-dir:hover{color:#c9943a}',
-    '.ch-hp-store-note{font-size:12px;color:#8a8273;font-style:italic}'
+    '.ch-hp-store-note{font-size:12px;color:#8a8273;font-style:italic}',
+    // Header search
+    '.ch-hsb{background:none;border:none;cursor:pointer;padding:4px 10px;display:inline-flex;align-items:center;justify-content:center;color:inherit;vertical-align:middle;line-height:1}',
+    '.ch-hsb:hover{opacity:.7}',
+    '.ch-hsb svg{width:18px;height:18px;display:block}',
+    '#ch-hs{position:fixed;left:0;right:0;z-index:10000;background:#fff;border-bottom:2px solid #c9943a;padding:12px 24px;display:none;box-shadow:0 4px 16px rgba(31,28,24,.1)}',
+    '#ch-hs.on{display:block}',
+    '#ch-hs-inner{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:8px}',
+    '#ch-hs-field{flex:1;position:relative;min-width:0}',
+    '#ch-hs-input{width:100%;border:1px solid #ece4d6;border-radius:6px;padding:10px 16px;font-size:15px;font-family:"Work Sans",sans-serif;color:#1f1c18;outline:none;box-sizing:border-box}',
+    '#ch-hs-input:focus{border-color:#c9943a}',
+    '#ch-hs-input::placeholder{color:#b8b0a6}',
+    '#ch-hs-close{background:none;border:none;cursor:pointer;color:#8a8273;font-size:22px;line-height:1;padding:4px 6px;flex-shrink:0}',
+    '#ch-hs-close:hover{color:#1f1c18}',
+    '#ch-hs-drop{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid #ece4d6;border-radius:8px;box-shadow:0 8px 24px rgba(31,28,24,.12);max-height:400px;overflow-y:auto;display:none;z-index:10001}',
+    '#ch-hs-drop.on{display:block}'
   ].join('');
   document.head.appendChild(hpStyle);
 
@@ -622,6 +641,145 @@
   function closeFlyout() {
     if (flyout) flyout.classList.remove('on');
     activeIndex = -1;
+  }
+
+  // ── Header search ────────────────────────────────────────────────────────────
+  function initHeaderSearch() {
+    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
+    if (!headerEl) return;
+
+    var actionsEl = headerEl.querySelector('.header-actions, [class*="HeaderActions"], [class*="header-actions"]');
+    if (!actionsEl) {
+      var cartEl = headerEl.querySelector('.sqs-cart-quantity, [class*="cart-btn"], [class*="CartBtn"]');
+      actionsEl = cartEl ? (cartEl.closest('[class*="actions"], [class*="Actions"]') || cartEl.parentElement || headerEl) : headerEl;
+    }
+
+    var btn = document.createElement('button');
+    btn.className = 'ch-hsb';
+    btn.setAttribute('aria-label', 'Search');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    actionsEl.insertBefore(btn, actionsEl.firstChild);
+
+    var bar = document.createElement('div');
+    bar.id = 'ch-hs';
+    bar.style.top = (headerEl.getBoundingClientRect().height || 72) + 'px';
+
+    var inner = document.createElement('div');
+    inner.id = 'ch-hs-inner';
+
+    var field = document.createElement('div');
+    field.id = 'ch-hs-field';
+
+    hInput = document.createElement('input');
+    hInput.id = 'ch-hs-input';
+    hInput.type = 'text';
+    hInput.placeholder = 'Search products…';
+    hInput.setAttribute('autocomplete', 'off');
+    hInput.setAttribute('autocorrect', 'off');
+    hInput.setAttribute('autocapitalize', 'off');
+    hInput.setAttribute('spellcheck', 'false');
+
+    hFlyout = document.createElement('div');
+    hFlyout.id = 'ch-hs-drop';
+
+    field.appendChild(hInput);
+    field.appendChild(hFlyout);
+
+    var closeBtn = document.createElement('button');
+    closeBtn.id = 'ch-hs-close';
+    closeBtn.setAttribute('aria-label', 'Close search');
+    closeBtn.innerHTML = '×';
+
+    inner.appendChild(field);
+    inner.appendChild(closeBtn);
+    bar.appendChild(inner);
+    document.body.appendChild(bar);
+
+    btn.addEventListener('click', function() {
+      var isOpen = bar.classList.toggle('on');
+      if (isOpen) { hInput.focus(); } else { closeHSearch(); }
+    });
+
+    closeBtn.addEventListener('click', closeHSearch);
+
+    hInput.addEventListener('input', function() {
+      clearTimeout(hDebounce);
+      hDebounce = setTimeout(function() { refreshHFlyout(hInput.value); }, 220);
+    });
+
+    hInput.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); moveHCursor(1); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); moveHCursor(-1); }
+      if (e.key === 'Escape')    { closeHSearch(); }
+      if (e.key === 'Enter')     { onHEnter(e); }
+    });
+
+    hFlyout.addEventListener('mousedown', function(e) { e.preventDefault(); });
+    hFlyout.addEventListener('click', function(e) {
+      var link = e.target.closest('a.ch-fr');
+      if (link) { e.preventDefault(); window.location.href = link.href; }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (bar.classList.contains('on') && !bar.contains(e.target) && !btn.contains(e.target)) {
+        closeHSearch();
+      }
+    });
+  }
+
+  function refreshHFlyout(query) {
+    if (!hFlyout) return;
+    if (!query.trim()) { hFlyout.classList.remove('on'); return; }
+    if (!indexReady) {
+      hFlyout.innerHTML = '<span class="ch-fall" style="cursor:default;color:#8a8273">Building index, please wait…</span>';
+      hFlyout.classList.add('on');
+      return;
+    }
+    var results = runSearch(query, 5);
+    hActive = -1;
+    if (!results.length) {
+      hFlyout.innerHTML = '<span class="ch-fall" style="cursor:default;color:#8a8273">No results for “' + esc(query) + '”</span>';
+      hFlyout.classList.add('on');
+      return;
+    }
+    hFlyout.innerHTML = results.map(function(p) {
+      var sold = !p.s ? ' <span class="ch-fso">· Sold Out</span>' : '';
+      return '<a class="ch-fr" href="' + p.u + '">' +
+        '<div class="ch-fi"' + (p.img ? ' style="background-image:url(' + p.img + ')"' : '') + '></div>' +
+        '<div><div class="ch-ft">' + esc(p.t) + '</div><div class="ch-fm">' + esc(p.cn) + sold + '</div></div>' +
+        '<div class="ch-fp">$' + esc(String(p.p)) + '</div>' +
+      '</a>';
+    }).join('') +
+    '<a class="ch-fall" href="/search?q=' + encodeURIComponent(query) + '">See all results for “' + esc(query) + '” →</a>';
+    hFlyout.classList.add('on');
+  }
+
+  function moveHCursor(dir) {
+    if (!hFlyout) return;
+    var items = hFlyout.querySelectorAll('.ch-fr');
+    if (!items.length) return;
+    if (hActive >= 0) items[hActive].classList.remove('act');
+    hActive = Math.max(-1, Math.min(items.length - 1, hActive + dir));
+    if (hActive >= 0) items[hActive].classList.add('act');
+  }
+
+  function onHEnter(e) {
+    if (!hFlyout) return;
+    var items = hFlyout.querySelectorAll('.ch-fr');
+    if (hActive >= 0 && items[hActive]) {
+      e.preventDefault();
+      window.location.href = items[hActive].href;
+    } else if (hInput && hInput.value.trim()) {
+      window.location.href = '/search?q=' + encodeURIComponent(hInput.value.trim());
+    }
+  }
+
+  function closeHSearch() {
+    var bar = document.getElementById('ch-hs');
+    if (bar) bar.classList.remove('on');
+    if (hFlyout) hFlyout.classList.remove('on');
+    if (hInput) hInput.value = '';
+    hActive = -1;
   }
 
   // ── Search results page ─────────────────────────────────────────────────────
@@ -1736,6 +1894,7 @@
     loadFiltersFromUrl();
     loadFuse(function() {
       initFlyout();
+      initHeaderSearch();
       initSearchPage();
       initCollectionPage();
       initHomePage();
