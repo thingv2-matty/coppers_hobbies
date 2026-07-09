@@ -8,12 +8,14 @@ Paste the following into:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@dee2dc0/custom-code/cart-drawer.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@dbda362/custom-code/search-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@b2fa54c/custom-code/search-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@e61fda8/custom-code/related-products.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@7f95ebb/custom-code/art-classes.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@9f440f3/custom-code/about-page.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@01a6361/custom-code/location-page.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@45d387e/custom-code/build-night.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@ce53861/custom-code/kwsa-page.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@b2fa54c/custom-code/group-build.js"></script>
 ```
 
 ## Latest @main (may be delayed by CDN cache after a push)
@@ -33,9 +35,11 @@ Paste the following into:
   `https://purge.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@main/custom-code/search-engine.js`
   `https://purge.jsdelivr.net/gh/thingv2-matty/coppers_hobbies@main/custom-code/cart-drawer.js`
 - cart-drawer.js last significant change: `876d4ef` (Canadian-only geo-restriction)
-- search-engine.js last significant change: `dbda362` (blend art brushes into models page)
+- search-engine.js last significant change: `b2fa54c` (Group Build happenings card added)
+- related-products.js last significant change: `e61fda8` (initial build — carousel of up to 8 related products on product pages)
 - art-classes.js last significant change: `7f95ebb` (painting→art workshop; copy tweak)
 - about-page.js last significant change: `9f440f3` (swap placeholder images)
 - location-page.js last significant change: `01a6361` (reduce header top padding)
 - build-night.js last significant change: `45d387e` (single image in page; table close-up on homepage card)
 - kwsa-page.js last significant change: `ce53861` (initial build — logo header, about, shows, getting involved, CTA)
+- group-build.js last significant change: `b2fa54c` (initial build — Vintage 1985 community group build page)
