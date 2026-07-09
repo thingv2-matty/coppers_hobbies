@@ -1,2 +1,6 @@
 .DS_Store
 *.map
+node_modules/
+scripts/descriptions/descriptions-cache.json
+*.csv
+.claude/

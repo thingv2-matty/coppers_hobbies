@@ -1,0 +1,13 @@
+{
+  "name": "coppers-hobbies-descriptions",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-time script to backfill product descriptions in a Squarespace product CSV export using Claude.",
+  "scripts": {
+    "generate": "node generate-descriptions.js"
+  },
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "csv-stringify": "^6.5.0"
+  }
+}
