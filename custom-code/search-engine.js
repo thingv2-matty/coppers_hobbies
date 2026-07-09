@@ -1460,8 +1460,8 @@
       '<section class="ch-hp-hero">' +
         '<div class="ch-hp-hero-inner" style="padding-top:' + (headerH + 24) + 'px">' +
           '<div>' +
-            '<h1 class="ch-hp-h1">The hobby shop for people who care how it turns out.</h1>' +
-            '<p class="ch-hp-sub">Scale models, paints, tools and art supplies — chosen and stocked by two people who build, paint and obsess over this hobby right alongside you, in the heart of Kitchener.</p>' +
+            '<h1 class="ch-hp-h1">Premium art supplies, scale models, paints, tools and creative materials.</h1>' +
+            '<p class="ch-hp-sub">Carefully chosen by people who create, build and paint every day. Whether you are finishing a masterpiece or starting your next hobby, you will find quality products and knowledgeable advice in a place that feels like home.</p>' +
             '<div class="ch-hp-hero-btns">' +
               '<a href="/shopall" class="ch-hp-btn-primary">Shop the store</a>' +
               '<a href="/about" class="ch-hp-btn-outline">Our Story</a>' +
