@@ -101,7 +101,8 @@
   function lookupUrl(products, urlPath) {
     var needle = '/' + urlPath.replace(/^\//, '');
     for (var i = 0; i < products.length; i++) {
-      if (products[i].u === needle) return products[i];
+      var u = products[i].u || '';
+      if (u === needle || u.slice(-needle.length) === needle) return products[i];
     }
     return null;
   }
@@ -192,7 +193,8 @@
     var path = window.location.pathname;
     var current = null;
     for (var i = 0; i < products.length; i++) {
-      if (products[i].u === path) { current = products[i]; break; }
+      var u = products[i].u || '';
+      if (u === path || u.slice(-path.length) === path) { current = products[i]; break; }
     }
     if (!current) return;
 
