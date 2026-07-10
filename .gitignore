@@ -1,6 +1,9 @@
 .DS_Store
 *.map
 node_modules/
-scripts/descriptions/descriptions-cache.json
 *.csv
 .claude/
+scripts/
+*.md
+custom-code/*-console-test.js
+custom-code/*.html
