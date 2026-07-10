@@ -114,9 +114,10 @@
   var CACHE_STORE = (function() { try { return window.localStorage; } catch(e) { return window.sessionStorage; } }());
 
   // ── State ───────────────────────────────────────────────────────────────────
-  var allProducts  = [];
-  var fuseInstance = null;
-  var indexReady   = false;
+  var allProducts    = [];
+  var fuseInstance   = null;
+  var fuseTitleOnly  = null;
+  var indexReady     = false;
   var flyout       = null;
   var searchInput  = null;
   var debounce     = null;
@@ -535,6 +536,13 @@
   }
 
   function makeFuse(products) {
+    fuseTitleOnly = new Fuse(products, {
+      keys          : ['t'],
+      threshold     : 0.3,
+      includeScore  : true,
+      minMatchCharLength: 2,
+      ignoreLocation: true
+    });
     return new Fuse(products, {
       keys          : [{ name: 't', weight: 3 }, { name: 'cats', weight: 1 }],
       threshold     : 0.3,
@@ -563,7 +571,10 @@
       // This handles "brand + item type" queries like "Excel tweezers" or "Tamiya cement"
       // where the words may hit different fields (cats vs title).
       var wordResults = words.map(function(w) {
-        return fuseInstance.search(w, { limit: 300 });
+        // Title-first: if the word hits product names, use only those matches.
+        // Fall back to full search (title + categories) only if nothing in titles.
+        var titleHits = fuseTitleOnly ? fuseTitleOnly.search(w, { limit: 300 }) : [];
+        return titleHits.length ? titleHits : fuseInstance.search(w, { limit: 300 });
       });
 
       var itemMap     = {};   // id → { item, totalScore, wordCount }
