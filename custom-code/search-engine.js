@@ -1668,13 +1668,14 @@
     }).join('');
 
     var FRIENDS = [
-      { name: 'Many Minis',            img: 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/ead69217-5d2b-4017-b72e-b299163fcd25/many+minis+logo.png?content-type=image%2Fpng', href: 'https://www.manyminis.ca', bg: '#fff' },
+      { name: 'Many Minis',            img: 'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/ead69217-5d2b-4017-b72e-b299163fcd25/many+minis+logo.png?content-type=image%2Fpng', href: '/manyminis', bg: '#fff' },
       { name: 'Little Shop of Heroes', img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1646872352725-IY0BFEAZI7S5ULBSIUUN/lsof.jpg?format=750w',                                                                   href: 'https://www.facebook.com/people/Little-Shop-Of-Heroes/100054529897208/' },
       { name: 'IPMS Hamilton',         img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/1647388211440-DJ767HTLMFPEXD81A4V7/cwhm-logo-no-background.png?format=1000w',                                               href: 'https://www.ipmshamilton.ca' },
       { name: 'IPMS Canada',           img: 'https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f74eb026-fecf-4333-9a96-c7b26b45fe27/IPMS.png?format=750w',                                                                 href: 'https://www.ipmscanada.com' }
     ];
     var friendsHtml = FRIENDS.map(function(f) {
-      return '<a class="ch-hp-friend" href="' + f.href + '" target="_blank" rel="noopener">' +
+      var isExt = /^https?:/.test(f.href);
+      return '<a class="ch-hp-friend" href="' + f.href + '"' + (isExt ? ' target="_blank" rel="noopener"' : '') + '>' +
         '<div class="ch-hp-friend-img-wrap"' + (f.bg ? ' style="background:' + f.bg + ';padding:8px"' : '') + '><img class="ch-hp-friend-img" src="' + f.img + '" alt="' + esc(f.name) + '"></div>' +
         '<span class="ch-hp-friend-name">' + esc(f.name) + '</span>' +
       '</a>';
