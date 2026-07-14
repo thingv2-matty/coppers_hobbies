@@ -57,7 +57,13 @@
     '.ch-mm-cta-h2{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:500;color:#faf7f1;margin:0 0 14px;text-wrap:balance}',
     '.ch-mm-cta-p{font-size:15px;color:#8a7f72;margin:0 0 32px;line-height:1.65}',
     '.ch-mm-cta-btn{display:inline-flex;align-items:center;background:#c9943a;color:#fff;padding:14px 36px;border-radius:6px;font-family:"Work Sans",sans-serif;font-weight:600;font-size:15px;text-decoration:none;letter-spacing:.02em;transition:background .2s}',
-    '.ch-mm-cta-btn:hover{background:#b8832e}'
+    '.ch-mm-cta-btn:hover{background:#b8832e}',
+    '.ch-mm-cta-rule{width:48px;height:1px;background:rgba(250,247,241,.15);margin:48px auto 0}',
+    '.ch-mm-cta-custom{margin-top:44px}',
+    '.ch-mm-cta-custom-h3{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:500;color:#faf7f1;margin:0 0 12px;text-wrap:balance}',
+    '.ch-mm-cta-contact-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}',
+    '.ch-mm-cta-contact-link{display:inline-flex;align-items:center;color:rgba(250,247,241,.7);border:1px solid rgba(250,247,241,.2);padding:10px 22px;border-radius:6px;font-size:14px;text-decoration:none;font-family:"Work Sans",sans-serif;transition:color .2s,border-color .2s}',
+    '.ch-mm-cta-contact-link:hover{color:#faf7f1;border-color:rgba(250,247,241,.5)}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -135,6 +141,15 @@
         '<h2 class="ch-mm-cta-h2">Browse the collection</h2>' +
         '<p class="ch-mm-cta-p">Explore the full range of Many Minis resin models available at Copper\'s Hobbies &mdash; figures, accessories, vehicles, and more.</p>' +
         '<a href="https://www.coppershobbies.com/shopall?brands=Many+Minis" class="ch-mm-cta-btn">Shop Many Minis</a>' +
+        '<div class="ch-mm-cta-rule"></div>' +
+        '<div class="ch-mm-cta-custom">' +
+          '<h3 class="ch-mm-cta-custom-h3">Looking for something custom?</h3>' +
+          '<p class="ch-mm-cta-p">Not seeing what you need in the catalogue? Many Minis takes on custom printing requests &mdash; reach out directly to talk through your project.</p>' +
+          '<div class="ch-mm-cta-contact-links">' +
+            '<a href="mailto:manyminis2025@gmail.com" class="ch-mm-cta-contact-link">manyminis2025@gmail.com</a>' +
+            '<a href="https://www.instagram.com/manyminis2025/" target="_blank" rel="noopener" class="ch-mm-cta-contact-link">@manyminis2025 on Instagram</a>' +
+          '</div>' +
+        '</div>' +
       '</div>' +
     '</section>';
 
