@@ -65,7 +65,7 @@
       '<div id="ch-cart-body"><div id="ch-cart-items"></div></div>' +
       '<div id="ch-cart-footer">' +
         '<div id="ch-cart-subtotal-row"><span>Subtotal</span><span id="ch-cart-subtotal">—</span></div>' +
-        '<p id="ch-cart-note">$20 flat-rate shipping across Canada · Free in-store pickup at 935 Frederick St</p>' +
+        '<p id="ch-cart-note">$20 flat-rate shipping across Canada* · Free in-store pickup at 935 Frederick St<br><span style="font-size:11px;color:#b0a899">* May be higher for large or heavy items</span></p>' +
         '<a href="/checkout" id="ch-cart-checkout-btn">Checkout</a>' +
         '<button id="ch-cart-continue-btn">Continue shopping</button>' +
       '</div>' +
