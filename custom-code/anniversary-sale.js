@@ -189,14 +189,11 @@
           '<span class="ch-ann-prod-deal">Staedtler Marker Sets: 30% Off</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
           '<span class="ch-ann-prod-deal">In-store only</span>';
+      var prodStyle = document.createElement('style');
+      prodStyle.textContent = 'section[data-sqsp-section="product-detail"]{padding-top:0!important}';
+      document.head.appendChild(prodStyle);
       var main = document.querySelector('main, #page, .Site-inner') || document.body;
-      var origFirst = main.firstElementChild;
       main.insertBefore(banner, main.firstChild);
-      if (origFirst) {
-        origFirst.style.marginTop = '0';
-        var fc = origFirst.firstElementChild;
-        if (fc) fc.style.paddingTop = '0';
-      }
     }
     if (document.readyState === 'complete') {
       initProdBanner();
