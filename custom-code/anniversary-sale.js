@@ -36,6 +36,8 @@
     '.ch-ann-instore-msg{font-family:"Work Sans",sans-serif;font-size:14px;font-weight:600;color:#1f1c18;margin:0 0 6px}',
     '.ch-ann-instore-addr{font-family:"Work Sans",sans-serif;font-size:13px;color:#5e5850;margin:0 0 4px}',
     '.ch-ann-instore-hrs{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;margin:0;line-height:1.6}',
+    '.ch-ann-hide-label{display:flex;align-items:center;justify-content:center;gap:6px;font-family:"Work Sans",sans-serif;font-size:12px;color:#b0a899;cursor:pointer;margin-top:14px}',
+    '.ch-ann-hide-label input[type="checkbox"]{width:14px;height:14px;accent-color:#c9943a;cursor:pointer;margin:0;flex-shrink:0}',
     '@media(max-width:520px){#ch-anniv-card{padding:28px 20px 24px}.ch-ann-deal{flex-direction:column;align-items:flex-start;gap:2px}.ch-ann-deal-val{text-align:left}}',
 
     // Collection banner
@@ -66,7 +68,8 @@
   // ── Homepage popup ─────────────────────────────────────────────────────────
   if (isHome) {
     setTimeout(function() {
-      if (sessionStorage.getItem('ch_anniv3_x')) return;
+      var hideUntil = localStorage.getItem('ch_anniv3_hide');
+      if (hideUntil && Date.now() < parseInt(hideUntil, 10)) return;
 
       var overlay = document.createElement('div');
       overlay.id = 'ch-anniv-overlay';
@@ -91,13 +94,17 @@
           '</div>' +
           '<a href="/location" class="ch-ann-pop-btn">View Location &amp; Hours</a>' +
           '<p class="ch-ann-thanks">Thank you for 3 amazing years!</p>' +
+          '<label class="ch-ann-hide-label"><input type="checkbox" id="ch-ann-hide24"> Hide for 24 hours</label>' +
         '</div>';
 
       document.body.appendChild(overlay);
 
       function dismiss() {
         overlay.classList.add('ch-ann-off');
-        sessionStorage.setItem('ch_anniv3_x', '1');
+        var cb = document.getElementById('ch-ann-hide24');
+        if (cb && cb.checked) {
+          localStorage.setItem('ch_anniv3_hide', String(Date.now() + 86400000));
+        }
       }
       overlay.querySelector('#ch-anniv-close').addEventListener('click', dismiss);
       overlay.addEventListener('click', function(e) { if (e.target === overlay) dismiss(); });
