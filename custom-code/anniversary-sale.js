@@ -118,7 +118,7 @@
       ? '<div class="ch-ann-col">' +
           '<div class="ch-ann-col-top">' +
             '<span class="ch-ann-col-top-title">3rd Anniversary Sale</span>' +
-            '<span class="ch-ann-col-top-dates">July 29 &ndash; August 2</span>' +
+            '<span class="ch-ann-col-top-dates">July 29 &ndash; August 2 &nbsp;&middot;&nbsp; In-store only</span>' +
           '</div>' +
           '<div class="ch-ann-col-deals">' +
             '<div class="ch-ann-col-deal"><span class="ch-ann-col-lbl">Sale Kits</span><span class="ch-ann-col-val">Huge selection on now!</span></div>' +
@@ -130,7 +130,7 @@
       : '<div class="ch-ann-col">' +
           '<div class="ch-ann-col-top">' +
             '<span class="ch-ann-col-top-title">3rd Anniversary Sale</span>' +
-            '<span class="ch-ann-col-top-dates">July 29 &ndash; August 2</span>' +
+            '<span class="ch-ann-col-top-dates">July 29 &ndash; August 2 &nbsp;&middot;&nbsp; In-store only</span>' +
           '</div>' +
           '<div class="ch-ann-col-deals">' +
             '<div class="ch-ann-col-deal"><span class="ch-ann-col-lbl">Art Supplies</span><span class="ch-ann-col-val">15% Off*</span></div>' +
@@ -169,12 +169,16 @@
           '<span class="ch-ann-prod-sep">&#183;</span>' +
           '<span class="ch-ann-prod-deal">Vintage Kits: Buy 1 Get 2nd 50% Off</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
-          '<span class="ch-ann-prod-deal">Many Minis: 20% Off</span>'
+          '<span class="ch-ann-prod-deal">Many Minis: 20% Off</span>' +
+          '<span class="ch-ann-prod-sep">&#183;</span>' +
+          '<span class="ch-ann-prod-deal">In-store only</span>'
         : '<span class="ch-ann-prod-title">3rd Anniversary Sale</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
           '<span class="ch-ann-prod-deal">15% Off Art Supplies*</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
-          '<span class="ch-ann-prod-deal">Staedtler Marker Sets: 30% Off</span>';
+          '<span class="ch-ann-prod-deal">Staedtler Marker Sets: 30% Off</span>' +
+          '<span class="ch-ann-prod-sep">&#183;</span>' +
+          '<span class="ch-ann-prod-deal">In-store only</span>';
       document.body.appendChild(banner);
       setTimeout(function() {
         var bh = banner.getBoundingClientRect().height;
