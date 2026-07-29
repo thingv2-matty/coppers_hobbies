@@ -1953,6 +1953,35 @@
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // ── Header-offset correction ─────────────────────────────────────────────────
+  // getBoundingClientRect() at DOMContentLoaded can be wrong on mobile because
+  // webfonts haven't loaded yet and inflate the header after layout. Re-measure
+  // once fonts are ready (and again on resize for device rotation).
+  function reapplyHeaderOffsets() {
+    var hEl = document.querySelector('.Site-header, header, [class*="Header"]');
+    if (!hEl) return;
+    var h = hEl.getBoundingClientRect().height;
+    // margin-top containers (custom page files)
+    ['ch-amps','ch-bn','ch-about','ch-ac','ch-gb','ch-kwsa','ch-loc','ch-hap','ch-mm'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.marginTop = h + 'px';
+    });
+    // padding-top containers (search-engine pages)
+    ['ch-col','ch-shopall'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.paddingTop = (h + 20) + 'px';
+    });
+    // Homepage hero inner
+    var heroInner = document.querySelector('.ch-hp-hero-inner');
+    if (heroInner) heroInner.style.paddingTop = (h + 24) + 'px';
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(reapplyHeaderOffsets);
+  var _raoTid;
+  window.addEventListener('resize', function() {
+    clearTimeout(_raoTid);
+    _raoTid = setTimeout(reapplyHeaderOffsets, 120);
+  });
+
   // ── Init ────────────────────────────────────────────────────────────────────
   function init() {
     loadFiltersFromUrl();
