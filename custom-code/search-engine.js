@@ -1975,7 +1975,12 @@
     var heroInner = document.querySelector('.ch-hp-hero-inner');
     if (heroInner) heroInner.style.paddingTop = (h + 24) + 'px';
   }
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(reapplyHeaderOffsets);
+  // Wait for all images (including the logo) to load before measuring
+  window.addEventListener('load', function() {
+    reapplyHeaderOffsets();
+    // Second pass catches any Squarespace JS that adjusts the header after load
+    setTimeout(reapplyHeaderOffsets, 350);
+  });
   var _raoTid;
   window.addEventListener('resize', function() {
     clearTimeout(_raoTid);
