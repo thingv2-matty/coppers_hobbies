@@ -190,7 +190,9 @@
           '<span class="ch-ann-prod-sep">&#183;</span>' +
           '<span class="ch-ann-prod-deal">In-store only</span>';
       var main = document.querySelector('main, #page, .Site-inner') || document.body;
+      var origFirst = main.firstElementChild;
       main.insertBefore(banner, main.firstChild);
+      if (origFirst) origFirst.style.marginTop = '0';
     }
     if (document.readyState === 'complete') {
       initProdBanner();
