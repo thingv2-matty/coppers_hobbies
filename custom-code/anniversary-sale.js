@@ -32,6 +32,10 @@
     '.ch-ann-pop-btn{display:inline-block;background:#e8357a;color:#fff;padding:13px 32px;border-radius:6px;font-family:"Work Sans",sans-serif;font-weight:600;font-size:15px;text-decoration:none;transition:background .2s;margin-bottom:14px}',
     '.ch-ann-pop-btn:hover{background:#cc2e6b}',
     '.ch-ann-thanks{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:#8a8273;margin:0}',
+    '.ch-ann-instore{background:#faf7f1;border:1px solid #ece4d6;border-radius:8px;padding:14px 16px;margin:0 0 18px;text-align:center}',
+    '.ch-ann-instore-msg{font-family:"Work Sans",sans-serif;font-size:14px;font-weight:600;color:#1f1c18;margin:0 0 6px}',
+    '.ch-ann-instore-addr{font-family:"Work Sans",sans-serif;font-size:13px;color:#5e5850;margin:0 0 4px}',
+    '.ch-ann-instore-hrs{font-family:"Work Sans",sans-serif;font-size:12px;color:#8a8273;margin:0;line-height:1.6}',
     '@media(max-width:520px){#ch-anniv-card{padding:28px 20px 24px}.ch-ann-deal{flex-direction:column;align-items:flex-start;gap:2px}.ch-ann-deal-val{text-align:left}}',
 
     // Collection banner
@@ -80,7 +84,12 @@
             '<div class="ch-ann-deal"><span class="ch-ann-deal-lbl">Staedtler Marker Sets</span><span class="ch-ann-deal-val">30% Off</span></div>' +
           '</div>' +
           '<p class="ch-ann-fine">*Applied to kit of equal or lesser value. Kits in display case not included.<br>**Brushes not included. No deal stacking.</p>' +
-          '<a href="/shopall" class="ch-ann-pop-btn">Shop the Sale</a>' +
+          '<div class="ch-ann-instore">' +
+            '<p class="ch-ann-instore-msg">In-store only &mdash; come see us in Kitchener!</p>' +
+            '<p class="ch-ann-instore-addr">935 Frederick St &nbsp;&middot;&nbsp; 519-570-0001</p>' +
+            '<p class="ch-ann-instore-hrs">Mon&ndash;Fri 10am&ndash;6pm<br>Sat 10am&ndash;5pm &nbsp;&middot;&nbsp; Sun 11am&ndash;5pm</p>' +
+          '</div>' +
+          '<a href="/location" class="ch-ann-pop-btn">View Location &amp; Hours</a>' +
           '<p class="ch-ann-thanks">Thank you for 3 amazing years!</p>' +
         '</div>';
 
@@ -141,12 +150,11 @@
 
   // ── Product page banner (fixed bar below header) ───────────────────────────
   if (isProd && (isModels || isArt)) {
-    window.addEventListener('load', function() {
+    function initProdBanner() {
       var h = getHeaderH();
       var banner = document.createElement('div');
       banner.id = 'ch-anniv-prod';
       banner.style.top = h + 'px';
-
       banner.innerHTML = isModels
         ? '<span class="ch-ann-prod-title">3rd Anniversary Sale</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
@@ -160,16 +168,18 @@
           '<span class="ch-ann-prod-deal">15% Off Art Supplies*</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
           '<span class="ch-ann-prod-deal">Staedtler Marker Sets: 30% Off</span>';
-
       document.body.appendChild(banner);
-
-      // Push body down by banner height so content isn't hidden behind it
       setTimeout(function() {
         var bh = banner.getBoundingClientRect().height;
         var cur = parseInt(getComputedStyle(document.body).paddingTop, 10) || 0;
         document.body.style.paddingTop = (cur + bh) + 'px';
       }, 0);
-    });
+    }
+    if (document.readyState === 'complete') {
+      initProdBanner();
+    } else {
+      window.addEventListener('load', initProdBanner);
+    }
   }
 
 }());
