@@ -192,7 +192,11 @@
       var main = document.querySelector('main, #page, .Site-inner') || document.body;
       var origFirst = main.firstElementChild;
       main.insertBefore(banner, main.firstChild);
-      if (origFirst) origFirst.style.marginTop = '0';
+      if (origFirst) {
+        origFirst.style.marginTop = '0';
+        var fc = origFirst.firstElementChild;
+        if (fc) fc.style.paddingTop = '0';
+      }
     }
     if (document.readyState === 'complete') {
       initProdBanner();
