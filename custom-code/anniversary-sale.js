@@ -52,7 +52,7 @@
     '.ch-ann-col-fine{font-size:11px;color:#b0a899;width:100%;margin:4px 0 0;line-height:1.5}',
 
     // Product page banner
-    '#ch-anniv-prod{position:fixed;left:0;right:0;z-index:9000;background:#e8357a;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 16px;padding:9px 20px;font-family:"Work Sans",sans-serif}',
+    '#ch-anniv-prod{position:sticky;width:100%;box-sizing:border-box;z-index:9000;background:#e8357a;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 16px;padding:9px 20px;font-family:"Work Sans",sans-serif}',
     '.ch-ann-prod-title{font-size:13px;font-weight:700;color:#fff;letter-spacing:.04em}',
     '.ch-ann-prod-sep{color:rgba(255,255,255,.4);font-size:11px;padding:0 2px}',
     '.ch-ann-prod-deal{font-size:13px;color:rgba(255,255,255,.92);font-weight:500}'
@@ -139,23 +139,33 @@
           '</div>' +
         '</div>';
 
-    function tryColInsert() {
+    var BANNER_ID = 'ch-ann-col-bann';
+    function insertColBanner() {
+      if (document.getElementById(BANNER_ID)) return;
       var col = document.getElementById('ch-col');
-      if (!col) return false;
+      if (!col) return;
       var tmp = document.createElement('div');
       tmp.innerHTML = colHtml;
-      col.insertBefore(tmp.firstChild, col.firstChild);
+      var el = tmp.firstChild;
+      el.id = BANNER_ID;
+      col.insertBefore(el, col.firstChild);
+    }
+    function watchCol() {
+      var col = document.getElementById('ch-col');
+      if (!col) return false;
+      insertColBanner();
+      new MutationObserver(insertColBanner).observe(col, { childList: true });
       return true;
     }
-    if (!tryColInsert()) {
+    if (!watchCol()) {
       var attempts = 0;
       var tid = setInterval(function() {
-        if (tryColInsert() || ++attempts > 30) clearInterval(tid);
+        if (watchCol() || ++attempts > 30) clearInterval(tid);
       }, 100);
     }
   }
 
-  // ── Product page banner (fixed bar below header) ───────────────────────────
+  // ── Product page banner (sticky bar at top of main) ────────────────────────
   if (isProd && (isModels || isArt)) {
     function initProdBanner() {
       var h = getHeaderH();
@@ -179,12 +189,8 @@
           '<span class="ch-ann-prod-deal">Staedtler Marker Sets: 30% Off</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
           '<span class="ch-ann-prod-deal">In-store only</span>';
-      document.body.appendChild(banner);
-      setTimeout(function() {
-        var bh = banner.getBoundingClientRect().height;
-        var cur = parseInt(getComputedStyle(document.body).paddingTop, 10) || 0;
-        document.body.style.paddingTop = (cur + bh) + 'px';
-      }, 0);
+      var main = document.querySelector('main, #page, .Site-inner') || document.body;
+      main.insertBefore(banner, main.firstChild);
     }
     if (document.readyState === 'complete') {
       initProdBanner();
