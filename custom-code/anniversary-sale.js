@@ -52,7 +52,7 @@
     '.ch-ann-col-fine{font-size:11px;color:#b0a899;width:100%;margin:4px 0 0;line-height:1.5}',
 
     // Product page banner
-    '#ch-anniv-prod{position:sticky;width:100%;box-sizing:border-box;z-index:9000;background:#e8357a;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 16px;padding:9px 20px;font-family:"Work Sans",sans-serif}',
+    '#ch-anniv-prod{width:100%;box-sizing:border-box;background:#e8357a;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 16px;padding:9px 20px;font-family:"Work Sans",sans-serif}',
     '.ch-ann-prod-title{font-size:13px;font-weight:700;color:#fff;letter-spacing:.04em}',
     '.ch-ann-prod-sep{color:rgba(255,255,255,.4);font-size:11px;padding:0 2px}',
     '.ch-ann-prod-deal{font-size:13px;color:rgba(255,255,255,.92);font-weight:500}'
@@ -168,10 +168,8 @@
   // ── Product page banner (sticky bar at top of main) ────────────────────────
   if (isProd && (isModels || isArt)) {
     function initProdBanner() {
-      var h = getHeaderH();
       var banner = document.createElement('div');
       banner.id = 'ch-anniv-prod';
-      banner.style.top = h + 'px';
       banner.innerHTML = isModels
         ? '<span class="ch-ann-prod-title">3rd Anniversary Sale</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
