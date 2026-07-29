@@ -168,8 +168,10 @@
   // ── Product page banner (sticky bar at top of main) ────────────────────────
   if (isProd && (isModels || isArt)) {
     function initProdBanner() {
+      var h = getHeaderH();
       var banner = document.createElement('div');
       banner.id = 'ch-anniv-prod';
+      banner.style.marginTop = h + 'px';
       banner.innerHTML = isModels
         ? '<span class="ch-ann-prod-title">3rd Anniversary Sale</span>' +
           '<span class="ch-ann-prod-sep">&#183;</span>' +
