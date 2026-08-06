@@ -1769,6 +1769,17 @@
                 '<span class="ch-hp-comm-card-link">See what\u2019s on \u2192</span>' +
               '</div>' +
             '</a>' +
+            '<a href="/art-hangout" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background:linear-gradient(135deg,#fdf6e3,#e8d5a3);display:flex;align-items:center;justify-content:center">' +
+                '<span style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:700;color:#2a4a9c;line-height:1.2;text-align:center">The Art<br>Hang Out</span>' +
+              '</div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Drop-In · Free</span>' +
+                '<h3 class="ch-hp-comm-card-h3">The Art Hang Out</h3>' +
+                '<p class="ch-hp-comm-card-p">Bring any medium and spend the afternoon creating and connecting. Aug 15, 12–4pm — inaugural meeting!</p>' +
+                '<span class="ch-hp-comm-card-link">Find out more →</span>' +
+              '</div>' +
+            '</a>' +
             '<a href="/art-classes" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(' + HP_IMG.richard + ')"></div>' +
               '<div class="ch-hp-comm-card-body">' +
@@ -1962,7 +1973,7 @@
     if (!hEl) return;
     var h = hEl.getBoundingClientRect().height;
     // margin-top containers (custom page files)
-    ['ch-amps','ch-bn','ch-about','ch-ac','ch-gb','ch-kwsa','ch-loc','ch-hap','ch-mm'].forEach(function(id) {
+    ['ch-amps','ch-bn','ch-about','ch-ac','ch-gb','ch-kwsa','ch-loc','ch-hap','ch-mm','ch-hao'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.style.marginTop = h + 'px';
     });
