@@ -1767,8 +1767,7 @@
               '</div>' +
             '</a>' +
             '<a href="/art-hangout" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
-              '<div class="ch-hp-comm-card-img" style="background:linear-gradient(135deg,#fdf6e3,#e8d5a3);display:flex;align-items:center;justify-content:center">' +
-                '<span style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:700;color:#2a4a9c;line-height:1.2;text-align:center">The Art<br>Hang Out</span>' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(\'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/8d7f34a2-b051-4df5-9c7c-964cde14001c/art+Hang+OUt+%281%29.png?content-type=image%2Fpng\')">' +
               '</div>' +
               '<div class="ch-hp-comm-card-body">' +
                 '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Drop-In · Free</span>' +
