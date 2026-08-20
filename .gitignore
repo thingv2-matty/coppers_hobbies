@@ -5,5 +5,6 @@ node_modules/
 .claude/
 scripts/
 *.md
+!CLAUDE.md
 custom-code/*-console-test.js
 custom-code/*.html
