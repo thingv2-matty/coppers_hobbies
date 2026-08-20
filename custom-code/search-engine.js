@@ -1772,7 +1772,7 @@
               '<div class="ch-hp-comm-card-body">' +
                 '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Drop-In · Free</span>' +
                 '<h3 class="ch-hp-comm-card-h3">The Art Hang Out</h3>' +
-                '<p class="ch-hp-comm-card-p">Bring any medium and spend the afternoon creating and connecting. Aug 15, 12–4pm — inaugural meeting!</p>' +
+                '<p class="ch-hp-comm-card-p">Drop-in art social at Copper\'s Hobbies. Bring any medium and spend the afternoon creating alongside others. Sep 12 &amp; Oct 17, 12–4pm.</p>' +
                 '<span class="ch-hp-comm-card-link">Find out more →</span>' +
               '</div>' +
             '</a>' +

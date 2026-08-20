@@ -86,7 +86,8 @@
       '<em class="ch-hao-sub-h1">A day of creativity and connection</em>' +
       '<p class="ch-hao-tagline">Bring any medium you like and spend an afternoon creating and mingling with people who love to make things.</p>' +
       '<div class="ch-hao-chips">' +
-        '<span class="ch-hao-chip"><strong>Date:</strong>&nbsp; Saturday, August 15th</span>' +
+        '<span class="ch-hao-chip"><strong>Sep 12:</strong>&nbsp; Saturday, September 12th</span>' +
+        '<span class="ch-hao-chip"><strong>Oct 17:</strong>&nbsp; Saturday, October 17th</span>' +
         '<span class="ch-hao-chip"><strong>Time:</strong>&nbsp; 12pm to 4pm</span>' +
         '<span class="ch-hao-chip"><strong>Cost:</strong>&nbsp; Free</span>' +
         '<span class="ch-hao-chip"><strong>Format:</strong>&nbsp; Drop in anytime</span>' +
@@ -99,13 +100,14 @@
           '<h2 class="ch-hao-about-h2">Come create with people who get it</h2>' +
           '<p class="ch-hao-about-p">The Art Hang Out is a casual drop-in event where artists of every kind come together to create, chat, and connect. Bring whatever you\'re working on — watercolours, acrylics, pencil, charcoal, markers, mixed media — and spend the afternoon doing what you love alongside others who feel the same way.</p>' +
           '<p class="ch-hao-about-p">There\'s no agenda, no skill level requirement, and no pressure. Just a welcoming space to make things, meet people, and pick up a trick or two from whoever\'s sitting next to you.</p>' +
-          '<p class="ch-hao-about-p">This is our inaugural meeting — we\'re planning to make this a regular thing, with more dates to follow. Come out and help us make it stick.</p>' +
+          '<p class="ch-hao-about-p">The inaugural Art Hang Out in August was a hit, so we\'re doing it again — twice. Join us Saturday September 12th or Saturday October 17th, both 12pm to 4pm. Drop in for an hour or stay the whole afternoon.</p>' +
         '</div>' +
         '<div class="ch-hao-poster-card">' +
           '<p class="ch-hao-poster-title">The Art<br>Hang Out</p>' +
           '<div class="ch-hao-poster-divider"></div>' +
-          '<p class="ch-hao-poster-date">Saturday, August 15th</p>' +
-          '<p class="ch-hao-poster-time">12pm &ndash; 4pm &nbsp;&middot;&nbsp; Our Inaugural Meeting!</p>' +
+          '<p class="ch-hao-poster-date">Saturday, September 12th</p>' +
+          '<p class="ch-hao-poster-date" style="margin-top:0">Saturday, October 17th</p>' +
+          '<p class="ch-hao-poster-time">12pm &ndash; 4pm &nbsp;&middot;&nbsp; Drop in anytime</p>' +
           '<p class="ch-hao-poster-loc">Copper\'s Hobbies<br>935 Frederick Street<br>Kitchener, Ontario</p>' +
         '</div>' +
       '</div>' +
@@ -133,7 +135,7 @@
 
     '<section class="ch-hao-cta">' +
       '<div class="ch-hao-cta-inner">' +
-        '<h2 class="ch-hao-cta-h2">See you on August 15th</h2>' +
+        '<h2 class="ch-hao-cta-h2">See you this fall</h2>' +
         '<p class="ch-hao-cta-p">Copper\'s Hobbies &nbsp;&middot;&nbsp; 935 Frederick Street, Kitchener, Ontario</p>' +
         '<p class="ch-hao-cta-contact">519-570-0001 &nbsp;&middot;&nbsp; coppershobbies@gmail.com</p>' +
         '<a href="/art-supplies" class="ch-hao-cta-btn">Browse Art Supplies</a>' +
