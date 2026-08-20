@@ -1553,8 +1553,7 @@
     var firstSection = main.firstElementChild;
     var container = document.createElement('div');
     container.id = 'ch-col';
-    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
-    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    var headerH  = getHeaderBottom();
     container.style.cssText = 'max-width:1200px;margin:0 auto;padding:' + (headerH + 20) + 'px 8px 40px';
     if (firstSection) {
       main.insertBefore(container, firstSection);
@@ -1601,8 +1600,7 @@
   function initHomePage() {
     if (!isHomePage()) return;
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
-    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
-    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    var headerH  = getHeaderBottom();
     var container = document.createElement('div');
     container.id = 'ch-home';
     var firstSection = main.firstElementChild;
@@ -1843,8 +1841,7 @@
     var firstSection = main.firstElementChild;
     var container = document.createElement('div');
     container.id = 'ch-shopall';
-    var headerEl = document.querySelector('.Site-header, header, [class*="Header"]');
-    var headerH  = headerEl ? headerEl.getBoundingClientRect().height : 72;
+    var headerH  = getHeaderBottom();
     container.style.cssText = 'max-width:1200px;margin:0 auto;padding:' + (headerH + 20) + 'px 8px 40px';
     if (firstSection) {
       main.insertBefore(container, firstSection);
@@ -1964,10 +1961,18 @@
   // getBoundingClientRect() at DOMContentLoaded can be wrong on mobile because
   // webfonts haven't loaded yet and inflate the header after layout. Re-measure
   // once fonts are ready (and again on resize for device rotation).
+  // getHeaderBottom() accounts for announcement bars stacked above the nav by
+  // taking the maximum bottom-edge of all top-of-page header-like elements.
+  function getHeaderBottom() {
+    var max = 0;
+    document.querySelectorAll('.Site-header, header, [class*="Header"], .sqs-announcement-bar, [class*="announcement-bar"]').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top >= 0 && r.height > 0) max = Math.max(max, r.bottom);
+    });
+    return max || 72;
+  }
   function reapplyHeaderOffsets() {
-    var hEl = document.querySelector('.Site-header, header, [class*="Header"]');
-    if (!hEl) return;
-    var h = hEl.getBoundingClientRect().height;
+    var h = getHeaderBottom();
     // margin-top containers (custom page files)
     ['ch-amps','ch-bn','ch-about','ch-ac','ch-gb','ch-kwsa','ch-loc','ch-hap','ch-mm','ch-hao'].forEach(function(id) {
       var el = document.getElementById(id);
