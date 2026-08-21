@@ -854,6 +854,8 @@
 
     var container = document.createElement('div');
     container.id = 'ch-sr';
+    var headerH = getHeaderBottom();
+    container.style.cssText = 'max-width:1200px;margin:0 auto;padding:' + (headerH + 20) + 'px 8px 40px';
     var main = document.querySelector('main, #page, .Site-inner') || document.body;
     var firstSection = main.firstElementChild;
     if (firstSection) {
@@ -1964,12 +1966,11 @@
   // getHeaderBottom() accounts for announcement bars stacked above the nav by
   // taking the maximum bottom-edge of all top-of-page header-like elements.
   function getHeaderBottom() {
-    var max = 0;
-    document.querySelectorAll('.Site-header, header, [class*="Header"], .sqs-announcement-bar, [class*="announcement-bar"]').forEach(function(el) {
-      var r = el.getBoundingClientRect();
-      if (r.top >= 0 && r.height > 0) max = Math.max(max, r.bottom);
+    var total = 0;
+    document.querySelectorAll('.header-announcement-bar-wrapper, .sqs-announcement-bar').forEach(function(el) {
+      if (el.offsetHeight > 0) total += el.offsetHeight;
     });
-    return max || 72;
+    return total || 72;
   }
   function reapplyHeaderOffsets() {
     var h = getHeaderBottom();
@@ -1979,7 +1980,7 @@
       if (el) el.style.marginTop = h + 'px';
     });
     // padding-top containers (search-engine pages)
-    ['ch-col','ch-shopall'].forEach(function(id) {
+    ['ch-col','ch-shopall','ch-sr'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.style.paddingTop = (h + 20) + 'px';
     });
