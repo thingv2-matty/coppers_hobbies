@@ -1128,7 +1128,8 @@
     if (brandSearch) {
       brandSearch.addEventListener('input', function() {
         var q = this.value.toLowerCase();
-        container.querySelectorAll('.fc-brand').forEach(function(cb) {
+        var sf = document.getElementById('ch-sf') || container;
+        sf.querySelectorAll('.fc-brand').forEach(function(cb) {
           var label = cb.closest('label');
           if (label) label.style.display = cb.value.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
         });
