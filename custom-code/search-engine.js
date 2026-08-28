@@ -176,6 +176,8 @@
     '.ch-fg.collapsed .ch-fg-bd{display:none}',
     '.ch-fg{margin-bottom:28px}',
     '.ch-fg h3{font-family:"Work Sans",sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8a8273;margin:0 0 10px}',
+    '.ch-brand-search{width:100%;box-sizing:border-box;padding:5px 8px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;font-family:"Work Sans",sans-serif;font-size:13px;color:#1f1c18;outline:none}',
+    '.ch-brand-search:focus{border-color:#c9943a}',
     '.ch-fo{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;cursor:pointer;font-family:"Work Sans",sans-serif;font-size:13px;color:#1f1c18;line-height:1.4}',
     '.ch-fo input{accent-color:#c9943a;cursor:pointer;flex-shrink:0;margin-top:2px}',
     '.ch-it{display:flex;align-items:center;gap:10px;font-family:"Work Sans",sans-serif;font-size:13px;color:#1f1c18}',
@@ -1096,7 +1098,7 @@
         }).map(function(col) {
           return '<label class="ch-fo"><input type="checkbox" class="fc-col" value="' + col.key + '"' + (filters.collections[col.key] ? ' checked' : '') + '> ' + esc(col.name) + '</label>';
         }).join('')) : '') +
-      (brands.length ? section('Brand', checklist(brands, 'fc-brand', filters.brands)) : '') +
+      (brands.length ? section('Brand', '<input type="text" class="ch-brand-search" placeholder="Search brands…">' + checklist(brands, 'fc-brand', filters.brands)) : '') +
       (cats.length ? section('Category', checklist(cats, 'fc-cat', filters.categories)) : '') +
       (scales.length ? section('Scale', checklist(scales, 'fc-scale', filters.scales)) : '') +
     '</div>';
@@ -1122,6 +1124,16 @@
     container.querySelectorAll('.fc-brand').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.brands[cb.value] = cb.checked; onChange(); });
     });
+    var brandSearch = container.querySelector('.ch-brand-search');
+    if (brandSearch) {
+      brandSearch.addEventListener('input', function() {
+        var q = this.value.toLowerCase();
+        container.querySelectorAll('.fc-brand').forEach(function(cb) {
+          var label = cb.closest('label');
+          if (label) label.style.display = cb.value.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+        });
+      });
+    }
     container.querySelectorAll('.fc-cat').forEach(function(cb) {
       cb.addEventListener('change', function() { filters.categories[cb.value] = cb.checked; onChange(); });
     });
