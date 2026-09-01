@@ -332,6 +332,12 @@
     '.ch-hp-comm-card-p{font-size:14.5px;color:#5e5850;line-height:1.65;margin:0 0 16px}',
     '.ch-hp-comm-card-link{font-size:14px;color:#a9772a;font-weight:600;text-decoration:none}',
     '.ch-hp-comm-card-link:hover{color:#c9943a}',
+    '.ch-hp-comm-cards-art{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}',
+    '@media(max-width:760px){.ch-hp-comm-cards-art{grid-template-columns:1fr}}',
+    '.ch-hp-comm-card--h{display:flex;flex-direction:row}',
+    '.ch-hp-comm-card--h .ch-hp-comm-card-img{width:160px;min-width:160px;height:auto;min-height:150px;flex-shrink:0}',
+    '.ch-hp-comm-card--h .ch-hp-comm-card-h3{font-size:22px}',
+    '@media(max-width:480px){.ch-hp-comm-card--h{flex-direction:column}.ch-hp-comm-card--h .ch-hp-comm-card-img{width:100%;height:160px;min-height:0}}',
     // Brands bar
     '.ch-hp-brands{padding:48px 0;background:#fff;border-top:1px solid #ece4d6}',
     '.ch-hp-brands-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
@@ -1779,7 +1785,9 @@
                 '<span class="ch-hp-comm-card-link">See what\u2019s on \u2192</span>' +
               '</div>' +
             '</a>' +
-            '<a href="/art-hangout" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+          '</div>' +
+          '<div class="ch-hp-comm-cards-art">' +
+            '<a href="/art-hangout" class="ch-hp-comm-card ch-hp-comm-card--h" style="text-decoration:none;color:inherit;display:flex">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(\'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/8d7f34a2-b051-4df5-9c7c-964cde14001c/art+Hang+OUt+%281%29.png?content-type=image%2Fpng\')">' +
               '</div>' +
               '<div class="ch-hp-comm-card-body">' +
@@ -1789,7 +1797,7 @@
                 '<span class="ch-hp-comm-card-link">Find out more →</span>' +
               '</div>' +
             '</a>' +
-            '<a href="/art-classes" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+            '<a href="/art-classes" class="ch-hp-comm-card ch-hp-comm-card--h" style="text-decoration:none;color:inherit;display:flex">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(' + HP_IMG.richard + ')"></div>' +
               '<div class="ch-hp-comm-card-body">' +
                 '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Monthly</span>' +
@@ -1798,7 +1806,7 @@
                 '<span class="ch-hp-comm-card-link">See upcoming sessions →</span>' +
               '</div>' +
             '</a>' +
-            '<a href="https://www.coppershobbies.com/art-classes/kwsa-kitchenerwaterloo-society-of-artists" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+            '<a href="https://www.coppershobbies.com/art-classes/kwsa-kitchenerwaterloo-society-of-artists" class="ch-hp-comm-card ch-hp-comm-card--h" style="text-decoration:none;color:inherit;display:flex">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/v1/6227ef6f1be14312f370c9fe/f6ad95ec-8a86-468c-8ae3-2dbc97626d00/_KWSA.png?format=2500w);background-size:contain;background-repeat:no-repeat;background-color:#fff"></div>' +
               '<div class="ch-hp-comm-card-body">' +
                 '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Partner</span>' +
@@ -1807,7 +1815,7 @@
                 '<span class="ch-hp-comm-card-link">Learn more \u2192</span>' +
               '</div>' +
             '</a>' +
-            '<a href="/mastkw" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+            '<a href="/mastkw" class="ch-hp-comm-card ch-hp-comm-card--h" style="text-decoration:none;color:inherit;display:flex">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/9615d6a5-60b1-4ebf-9bd5-bfe1a2dfa980/MASTkw+Logo.png?content-type=image%2Fpng);background-size:contain;background-repeat:no-repeat;background-color:#1a7a8c"></div>' +
               '<div class="ch-hp-comm-card-body">' +
                 '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Sponsor</span>' +
