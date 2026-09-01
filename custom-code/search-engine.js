@@ -46,7 +46,7 @@
     'Pit Road','Platz','Plastruct','Polar Lights',
     'Revell','Revell Germany','RFM','Roden','ROKR','Rolife','Ryefield Model',
     'Salvinos','Scale75','SMS','SNAA','Suyata',
-    'Takom','Tamiya','Testors','Trumpeter',
+    'Takom','Tamiya','Tamiya Supplies','Testors','Trumpeter',
     'Ultra Pro','ZM','Zoukei-Mura',
     'Ammo by MIG','Fine Molds','Minicraft','Monogram','Atlantis','Round 2',
     'Vallejo',
