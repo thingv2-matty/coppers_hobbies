@@ -1997,7 +1997,7 @@
   function reapplyHeaderOffsets() {
     var h = getHeaderBottom();
     // margin-top containers (custom page files)
-    ['ch-amps','ch-bn','ch-about','ch-ac','ch-gb','ch-kwsa','ch-loc','ch-hap','ch-mm','ch-hao'].forEach(function(id) {
+    ['ch-amps','ch-bn','ch-about','ch-ac','ch-gb','ch-kwsa','ch-loc','ch-hap','ch-mm','ch-hao','ch-mast'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.style.marginTop = h + 'px';
     });
