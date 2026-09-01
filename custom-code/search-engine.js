@@ -1807,6 +1807,15 @@
                 '<span class="ch-hp-comm-card-link">Learn more \u2192</span>' +
               '</div>' +
             '</a>' +
+            '<a href="/mastkw" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/9615d6a5-60b1-4ebf-9bd5-bfe1a2dfa980/MASTkw+Logo.png?content-type=image%2Fpng);background-size:contain;background-repeat:no-repeat;background-color:#1a7a8c"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Sponsor</span>' +
+                '<h3 class="ch-hp-comm-card-h3">MASTkw Art Tour</h3>' +
+                '<p class="ch-hp-comm-card-p">Annual artist showcase, sale and walking tour through Midtown KW. Copper\'s is a proud sponsor. Sep 26 &amp; 27.</p>' +
+                '<span class="ch-hp-comm-card-link">Learn more →</span>' +
+              '</div>' +
+            '</a>' +
           '</div>' +
         '</div>' +
       '</section>' +
