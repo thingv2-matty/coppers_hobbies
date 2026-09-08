@@ -1,4 +1,4 @@
-// Copper's Hobbies — Art Classes Page
+// Copper's Hobbies — Art Classes + Session Booking
 (function () {
   'use strict';
 
