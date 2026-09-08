@@ -200,6 +200,31 @@
           '<a href="/contact" class="ch-ac-cta-btn">Get in touch</a>' +
         '</div>' +
       '</section>';
+
+    var sessionUrls = [
+      'https://www.coppershobbies.com/shop/p/painting-with-gouache-art-class',
+      'https://www.coppershobbies.com/shop/p/wildlife-drawing-workshop'
+    ];
+    container.querySelectorAll('.ch-ac-session-btn').forEach(function(btn, i) {
+      fetch(sessionUrls[i] + '?format=json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var v = data.item && data.item.variants && data.item.variants[0];
+          if (!v || v.unlimited) return;
+          var qty = v.qtyInStock != null ? v.qtyInStock : (v.stock && v.stock.quantity);
+          if (qty == null || qty > 2) return;
+          if (qty === 0) {
+            btn.textContent = 'Fully Booked';
+            btn.style.background = '#9e9589';
+            btn.style.cursor = 'default';
+            btn.style.pointerEvents = 'none';
+            btn.removeAttribute('href');
+          } else {
+            btn.textContent = 'Only ' + qty + (qty === 1 ? ' spot' : ' spots') + ' left';
+          }
+        })
+        .catch(function() {});
+    });
   }
 
   if (document.readyState === 'loading') {
