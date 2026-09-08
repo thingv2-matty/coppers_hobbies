@@ -71,7 +71,22 @@
     '.ch-ac-cta-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 14px;line-height:1.2}',
     '.ch-ac-cta-p{font-size:15px;color:#5e5850;line-height:1.65;margin:0 0 28px}',
     '.ch-ac-cta-btn{display:inline-flex;align-items:center;background:#c9943a;color:#fff;padding:12px 28px;border-radius:6px;font-family:"Work Sans",sans-serif;font-weight:600;font-size:15px;text-decoration:none;transition:background .2s}',
-    '.ch-ac-cta-btn:hover{background:#b5832f}'
+    '.ch-ac-cta-btn:hover{background:#b5832f}',
+
+    // Session booking cards
+    '.ch-ac-sessions{padding:72px 0;background:#fff;border-top:1px solid #ece4d6}',
+    '.ch-ac-sessions-inner{max-width:1100px;margin:0 auto;padding:0 32px}',
+    '@media(max-width:720px){.ch-ac-sessions-inner{padding:0 20px}}',
+    '.ch-ac-sessions-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:8px 0 40px;line-height:1.2}',
+    '.ch-ac-session-cards{display:grid;grid-template-columns:1fr 1fr;gap:28px}',
+    '@media(max-width:680px){.ch-ac-session-cards{grid-template-columns:1fr;gap:20px}}',
+    '.ch-ac-session-card{background:#faf7f1;border:1px solid #ece4d6;border-radius:10px;border-top:3px solid #c9943a;padding:32px 28px;display:flex;flex-direction:column}',
+    '.ch-ac-session-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c9943a;margin:0 0 12px;display:block}',
+    '.ch-ac-session-h3{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:500;color:#1f1c18;margin:0 0 14px;line-height:1.2}',
+    '.ch-ac-session-desc{font-size:14.5px;color:#5e5850;line-height:1.65;margin:0 0 20px;flex:1}',
+    '.ch-ac-session-meta{font-size:13px;font-weight:600;color:#8a8273;margin:0 0 24px;letter-spacing:.02em}',
+    '.ch-ac-session-btn{display:inline-flex;align-items:center;background:#c9943a;color:#fff;padding:11px 24px;border-radius:6px;font-family:"Work Sans",sans-serif;font-weight:600;font-size:14px;text-decoration:none;transition:background .2s;align-self:flex-start}',
+    '.ch-ac-session-btn:hover{background:#b5832f}'
   ].join('');
   document.head.appendChild(styleEl);
 
@@ -155,10 +170,33 @@
         '</div>' +
       '</section>' +
 
+      '<section class="ch-ac-sessions">' +
+        '<div class="ch-ac-sessions-inner">' +
+          '<span class="ch-ac-eye">Open for registration</span>' +
+          '<h2 class="ch-ac-sessions-h2">Book a session</h2>' +
+          '<div class="ch-ac-session-cards">' +
+            '<div class="ch-ac-session-card">' +
+              '<span class="ch-ac-session-eyebrow">Up next · September 19</span>' +
+              '<h3 class="ch-ac-session-h3">Painting with Gouache</h3>' +
+              '<p class="ch-ac-session-desc">Explore a medium that predates acrylic by centuries — bold, opaque, and beautiful on its own or layered with watercolours. All skill levels welcome.</p>' +
+              '<p class="ch-ac-session-meta">Saturday, September 19 · 11 am · $20</p>' +
+              '<a href="https://www.coppershobbies.com/shop/p/painting-with-gouache-art-class" class="ch-ac-session-btn">Book your spot →</a>' +
+            '</div>' +
+            '<div class="ch-ac-session-card">' +
+              '<span class="ch-ac-session-eyebrow">Or the one after · October 24</span>' +
+              '<h3 class="ch-ac-session-h3">Intro to Wildlife Drawing</h3>' +
+              '<p class="ch-ac-session-desc">Learn to draw realistic animals through sizing, structure, proportions, and texture — skills that transfer to anything you want to draw. All skill levels welcome.</p>' +
+              '<p class="ch-ac-session-meta">Saturday, October 24 · 11 am · $20</p>' +
+              '<a href="https://www.coppershobbies.com/shop/p/wildlife-drawing-workshop" class="ch-ac-session-btn">Book your spot →</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
       '<section class="ch-ac-cta">' +
         '<div class="ch-ac-cta-inner">' +
-          '<h2 class="ch-ac-cta-h2">Ready to join a session?</h2>' +
-          '<p class="ch-ac-cta-p">Reach out to reserve your spot. We’ll confirm your registration and send you the supply list ahead of time.</p>' +
+          '<h2 class="ch-ac-cta-h2">Questions before you sign up?</h2>' +
+          ‘<p class="ch-ac-cta-p">Happy to help with anything — what to bring, what to expect, whether it\’s right for your level. Just get in touch.</p>’ +
           '<a href="/contact" class="ch-ac-cta-btn">Get in touch</a>' +
         '</div>' +
       '</section>';
