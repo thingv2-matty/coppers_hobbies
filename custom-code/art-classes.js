@@ -196,7 +196,7 @@
       '<section class="ch-ac-cta">' +
         '<div class="ch-ac-cta-inner">' +
           '<h2 class="ch-ac-cta-h2">Questions before you sign up?</h2>' +
-          ‘<p class="ch-ac-cta-p">Happy to help with anything — what to bring, what to expect, whether it\’s right for your level. Just get in touch.</p>’ +
+          ‘<p class="ch-ac-cta-p">Happy to answer questions before you commit — what to bring, what to expect, whether the session suits your level. Just get in touch.</p>’ +
           '<a href="/contact" class="ch-ac-cta-btn">Get in touch</a>' +
         '</div>' +
       '</section>';
