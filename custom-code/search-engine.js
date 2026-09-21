@@ -1787,16 +1787,6 @@
             '</a>' +
           '</div>' +
           '<div class="ch-hp-comm-cards-art">' +
-            '<a href="/art-hangout" class="ch-hp-comm-card ch-hp-comm-card--h" style="text-decoration:none;color:inherit;display:flex">' +
-              '<div class="ch-hp-comm-card-img" style="background-image:url(\'https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/8d7f34a2-b051-4df5-9c7c-964cde14001c/art+Hang+OUt+%281%29.png?content-type=image%2Fpng\')">' +
-              '</div>' +
-              '<div class="ch-hp-comm-card-body">' +
-                '<span class="ch-hp-comm-badge ch-hp-comm-badge-gold">Drop-In · Free</span>' +
-                '<h3 class="ch-hp-comm-card-h3">The Art Hang Out</h3>' +
-                '<p class="ch-hp-comm-card-p">Drop-in art social at Copper\'s Hobbies. Bring any medium and spend the afternoon creating alongside others. Sep 12 &amp; Oct 17, 12–4pm.</p>' +
-                '<span class="ch-hp-comm-card-link">Find out more →</span>' +
-              '</div>' +
-            '</a>' +
             '<a href="/art-classes" class="ch-hp-comm-card ch-hp-comm-card--h" style="text-decoration:none;color:inherit;display:flex">' +
               '<div class="ch-hp-comm-card-img" style="background-image:url(' + HP_IMG.richard + ')"></div>' +
               '<div class="ch-hp-comm-card-body">' +
