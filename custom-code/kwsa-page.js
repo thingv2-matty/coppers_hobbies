@@ -46,6 +46,10 @@
     '.ch-kw-shows-h2{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:500;color:#1f1c18;margin:0 0 36px;line-height:1.2}',
     '.ch-kw-show-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}',
     '@media(max-width:640px){.ch-kw-show-grid{grid-template-columns:1fr}}',
+    '.ch-kw-show-card--full{grid-column:1/-1}',
+    '.ch-kw-show-desc{font-size:14px;color:#5e5850;line-height:1.65;margin:12px 0 0}',
+    '.ch-kw-show-link{display:inline-flex;align-items:center;margin-top:18px;font-size:14px;font-weight:600;color:#c9943a;text-decoration:none}',
+    '.ch-kw-show-link:hover{color:#b5832f}',
     '.ch-kw-show-card{background:#faf7f1;border:1px solid #ece4d6;border-radius:10px;padding:28px}',
     '.ch-kw-show-title{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:500;color:#1f1c18;margin:0 0 10px;line-height:1.2}',
     '.ch-kw-show-dates{font-size:12px;font-weight:700;color:#c9943a;margin:0 0 10px;text-transform:uppercase;letter-spacing:.07em}',
@@ -136,18 +140,15 @@
 
       '<section class="ch-kw-shows">' +
         '<div class="ch-kw-shows-inner">' +
-          '<span class="ch-kw-shows-eye">On Now</span>' +
-          '<h2 class="ch-kw-shows-h2">Current Exhibitions</h2>' +
+          '<span class="ch-kw-shows-eye">This Weekend</span>' +
+          '<h2 class="ch-kw-shows-h2">Upcoming Events</h2>' +
           '<div class="ch-kw-show-grid">' +
-            '<div class="ch-kw-show-card">' +
-              '<h3 class="ch-kw-show-title">&#8220;Florals &amp; Fauna&#8221;</h3>' +
-              '<p class="ch-kw-show-dates">April 23 – August 20, 2026</p>' +
-              '<p class="ch-kw-show-venue">Williams Fresh Cafe<br>170 University Ave W, Waterloo</p>' +
-            '</div>' +
-            '<div class="ch-kw-show-card">' +
-              '<h3 class="ch-kw-show-title">&#8220;Pop of Colour&#8221;</h3>' +
-              '<p class="ch-kw-show-dates">June 30 – September 8, 2026</p>' +
-              '<p class="ch-kw-show-venue">Charlie West Condo Front Gallery<br>60 Charles St W, Kitchener</p>' +
+            '<div class="ch-kw-show-card ch-kw-show-card--full">' +
+              '<h3 class="ch-kw-show-title">KWSA Arts Festival &#8212; Culture Days</h3>' +
+              '<p class="ch-kw-show-dates">Saturday &amp; Sunday, September 26&#8211;27 &middot; 1&#8211;5 pm</p>' +
+              '<p class="ch-kw-show-venue">44 Gaukel Creative Workspace &mdash; Downtown Kitchener</p>' +
+              '<p class="ch-kw-show-desc">Celebrate creativity at KWSA&#8217;s Culture Days festival. Explore Artists Alley and the Galleries, watch live painting demos, and get hands-on with free workshops. There\'s a collaborative community art build too &#8212; something for every age and skill level.</p>' +
+              '<a href="https://www.kwsa.ca" class="ch-kw-show-link" target="_blank" rel="noopener">Register &amp; learn more at kwsa.ca &#8594;</a>' +
             '</div>' +
           '</div>' +
         '</div>' +
