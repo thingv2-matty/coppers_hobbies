@@ -176,18 +176,18 @@
           '<h2 class="ch-ac-sessions-h2">Book a session</h2>' +
           '<div class="ch-ac-session-cards">' +
             '<div class="ch-ac-session-card">' +
-              '<span class="ch-ac-session-eyebrow">Up next · September 19</span>' +
-              '<h3 class="ch-ac-session-h3">Painting with Gouache</h3>' +
-              '<p class="ch-ac-session-desc">Explore a medium that predates acrylic by centuries — bold, opaque, and beautiful on its own or layered with watercolours. All skill levels welcome.</p>' +
-              '<p class="ch-ac-session-meta">Saturday, September 19 · 11 am · $20</p>' +
-              '<a href="https://www.coppershobbies.com/shop/p/painting-with-gouache-art-class" class="ch-ac-session-btn">Book your spot →</a>' +
-            '</div>' +
-            '<div class="ch-ac-session-card">' +
-              '<span class="ch-ac-session-eyebrow">Or the one after · October 24</span>' +
+              '<span class="ch-ac-session-eyebrow">Up next · October 24</span>' +
               '<h3 class="ch-ac-session-h3">Intro to Wildlife Drawing</h3>' +
               '<p class="ch-ac-session-desc">Learn to draw realistic animals through sizing, structure, proportions, and texture — skills that transfer to anything you want to draw. All skill levels welcome.</p>' +
               '<p class="ch-ac-session-meta">Saturday, October 24 · 11 am · $20</p>' +
               '<a href="https://www.coppershobbies.com/shop/p/wildlife-drawing-workshop" class="ch-ac-session-btn">Book your spot →</a>' +
+            '</div>' +
+            '<div class="ch-ac-session-card">' +
+              '<span class="ch-ac-session-eyebrow">Coming up · November 21</span>' +
+              '<h3 class="ch-ac-session-h3">Watercolour Pencil Cityscape</h3>' +
+              '<p class="ch-ac-session-desc">Capture the character of urban architecture using watercolour pencils — a versatile medium that works both dry and wet. All skill levels welcome.</p>' +
+              '<p class="ch-ac-session-meta">Saturday, November 21 · 11 am · $20</p>' +
+              '<span class="ch-ac-session-btn" style="background:#9e9589;cursor:default;pointer-events:none">Fully Booked</span>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -202,10 +202,10 @@
       '</section>';
 
     var sessionUrls = [
-      'https://www.coppershobbies.com/shop/p/painting-with-gouache-art-class',
       'https://www.coppershobbies.com/shop/p/wildlife-drawing-workshop'
     ];
     container.querySelectorAll('.ch-ac-session-btn').forEach(function(btn, i) {
+      if (!sessionUrls[i]) return;
       fetch(sessionUrls[i] + '?format=json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
