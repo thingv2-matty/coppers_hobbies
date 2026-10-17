@@ -138,21 +138,6 @@
         '</div>' +
       '</section>' +
 
-      '<section class="ch-kw-shows">' +
-        '<div class="ch-kw-shows-inner">' +
-          '<span class="ch-kw-shows-eye">This Weekend</span>' +
-          '<h2 class="ch-kw-shows-h2">Upcoming Events</h2>' +
-          '<div class="ch-kw-show-grid">' +
-            '<div class="ch-kw-show-card ch-kw-show-card--full">' +
-              '<h3 class="ch-kw-show-title">KWSA Arts Festival &#8212; Culture Days</h3>' +
-              '<p class="ch-kw-show-dates">Saturday &amp; Sunday, September 26&#8211;27 &middot; 1&#8211;5 pm</p>' +
-              '<p class="ch-kw-show-venue">44 Gaukel Creative Workspace &mdash; Downtown Kitchener</p>' +
-              '<p class="ch-kw-show-desc">Celebrate creativity at KWSA&#8217;s Culture Days festival. Explore Artists Alley and the Galleries, watch live painting demos, and get hands-on with free workshops. There\'s a collaborative community art build too &#8212; something for every age and skill level.</p>' +
-              '<a href="https://www.kwsa.ca" class="ch-kw-show-link" target="_blank" rel="noopener">Register &amp; learn more at kwsa.ca &#8594;</a>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-      '</section>' +
 
       '<section class="ch-kw-involved">' +
         '<div class="ch-kw-involved-inner">' +
