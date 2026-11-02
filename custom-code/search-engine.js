@@ -386,7 +386,22 @@
     '#ch-hs-close{background:none;border:none;cursor:pointer;color:#8a8273;font-size:22px;line-height:1;padding:4px 6px;flex-shrink:0}',
     '#ch-hs-close:hover{color:#1f1c18}',
     '#ch-hs-drop{display:none;max-height:400px;overflow-y:auto;border-top:1px solid #ece4d6}',
-    '#ch-hs-drop.on{display:block}'
+    '#ch-hs-drop.on{display:block}',
+    // Canvas Challenge popup
+    '#ch-cc-pop{position:fixed;inset:0;z-index:10001;background:rgba(31,28,24,.6);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}',
+    '#ch-cc-pop.on{opacity:1;pointer-events:all}',
+    '.ch-cc-pop-card{background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(31,28,24,.22);max-width:380px;width:100%;position:relative;padding:36px 32px 28px;transform:translateY(14px);transition:transform .3s}',
+    '#ch-cc-pop.on .ch-cc-pop-card{transform:translateY(0)}',
+    '.ch-cc-pop-close{position:absolute;top:12px;right:14px;background:none;border:none;cursor:pointer;color:#8a8273;font-size:22px;line-height:1;padding:4px 8px;font-family:inherit}',
+    '.ch-cc-pop-close:hover{color:#1f1c18}',
+    '.ch-cc-pop-eye{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#c9943a;text-align:center;margin-bottom:10px}',
+    '.ch-cc-pop-logo{max-width:130px;height:auto;display:block;margin:0 auto 18px}',
+    '.ch-cc-pop-h{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:500;color:#1f1c18;margin:0 0 12px;text-align:center;line-height:1.2;text-wrap:balance}',
+    '.ch-cc-pop-p{font-size:14px;color:#5e5850;line-height:1.7;margin:0 0 24px;text-align:center}',
+    '.ch-cc-pop-btn{display:block;text-align:center;background:#c9943a;color:#fff;padding:12px 24px;border-radius:6px;font-family:"Work Sans",sans-serif;font-weight:600;font-size:15px;text-decoration:none;transition:background .2s;margin-bottom:14px}',
+    '.ch-cc-pop-btn:hover{background:#b5832f}',
+    '.ch-cc-pop-dismiss{display:block;text-align:center;width:100%;font-family:"Work Sans",sans-serif;font-size:13px;color:#8a8273;background:none;border:none;cursor:pointer;padding:4px 0;text-decoration:underline}',
+    '.ch-cc-pop-dismiss:hover{color:#5e5850}'
   ].join('');
   document.head.appendChild(hpStyle);
 
@@ -1798,6 +1813,15 @@
                 '<span class="ch-hp-comm-card-link">Learn more \u2192</span>' +
               '</div>' +
             '</a>' +
+            '<a href="/humane-society" class="ch-hp-comm-card" style="text-decoration:none;color:inherit;display:block">' +
+              '<div class="ch-hp-comm-card-img" style="background-image:url(https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/91c19826-4ac6-4174-b892-0bf8848b2b16/KWSP+HS+Logo.png?content-type=image%2Fpng);background-size:contain;background-repeat:no-repeat;background-color:#fff"></div>' +
+              '<div class="ch-hp-comm-card-body">' +
+                '<span class="ch-hp-comm-badge ch-hp-comm-badge-cream">Partner</span>' +
+                '<h3 class="ch-hp-comm-card-h3">Humane Society</h3>' +
+                '<p class="ch-hp-comm-card-p">We support the Humane Society of KW Stratford &amp; Perth through the Canvas Challenge. Every piece sold makes a difference.</p>' +
+                '<span class="ch-hp-comm-card-link">Learn more \u2192</span>' +
+              '</div>' +
+            '</a>' +
           '</div>' +
         '</div>' +
       '</section>' +
@@ -2004,6 +2028,45 @@
     _raoTid = setTimeout(reapplyHeaderOffsets, 120);
   });
 
+  // ── Canvas Challenge popup ───────────────────────────────────────────────────
+  function initCCPopup() {
+    if (!isHomePage()) return;
+    var KEY = 'ch_cc_popup_v1';
+    try {
+      var ts = localStorage.getItem(KEY);
+      if (ts && Date.now() - parseInt(ts, 10) < 30 * 24 * 60 * 60 * 1000) return;
+    } catch (e) {}
+
+    var overlay = document.createElement('div');
+    overlay.id = 'ch-cc-pop';
+    overlay.innerHTML =
+      '<div class="ch-cc-pop-card">' +
+        '<button class="ch-cc-pop-close" id="ch-cc-pop-close" aria-label="Close">×</button>' +
+        '<span class="ch-cc-pop-eye">Now Live</span>' +
+        '<img class="ch-cc-pop-logo" src="https://images.squarespace-cdn.com/content/6227ef6f1be14312f370c9fe/91c19826-4ac6-4174-b892-0bf8848b2b16/KWSP+HS+Logo.png?content-type=image%2Fpng" alt="Humane Society of KW Stratford and Perth">' +
+        '<h2 class="ch-cc-pop-h">Copper\'s Canvas Challenge</h2>' +
+        '<p class="ch-cc-pop-p">Local artists. One canvas each. Browse original pieces available to purchase — a portion of every sale goes directly to the Humane Society of KW Stratford &amp; Perth.</p>' +
+        '<a href="/coppers-canvas-challenge" class="ch-cc-pop-btn">Browse the Collection →</a>' +
+        '<button class="ch-cc-pop-dismiss" id="ch-cc-pop-dismiss">Dismiss for 30 days</button>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    setTimeout(function () { overlay.classList.add('on'); }, 1500);
+
+    function closePopup() {
+      overlay.classList.remove('on');
+      setTimeout(function () { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 300);
+    }
+    function dismissPopup() {
+      try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+      closePopup();
+    }
+
+    document.getElementById('ch-cc-pop-close').addEventListener('click', closePopup);
+    document.getElementById('ch-cc-pop-dismiss').addEventListener('click', dismissPopup);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closePopup(); });
+  }
+
   // ── Init ────────────────────────────────────────────────────────────────────
   function init() {
     loadFiltersFromUrl();
@@ -2013,6 +2076,7 @@
       initSearchPage();
       initCollectionPage();
       initHomePage();
+      initCCPopup();
       initShopAllPage();
       initProductPage();
       buildIndex();
