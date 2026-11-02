@@ -8,8 +8,8 @@
 
   var styleEl = document.createElement('style');
   styleEl.textContent = [
-    '#ch-hs{font-family:"Work Sans",sans-serif;color:#1f1c18;line-height:1.6}',
-    '#ch-hs *{box-sizing:border-box}',
+    '#ch-humane{font-family:"Work Sans",sans-serif;color:#1f1c18;line-height:1.6}',
+    '#ch-humane *{box-sizing:border-box}',
 
     // Identity header
     '.ch-hs-identity{background:#fff;border-bottom:1px solid #ece4d6;padding:52px 32px 44px;text-align:center}',
@@ -74,7 +74,7 @@
     var headerH = headerEl ? headerEl.getBoundingClientRect().height : 72;
 
     var container = document.createElement('div');
-    container.id = 'ch-hs';
+    container.id = 'ch-humane';
 
     var firstSection = main.firstElementChild;
     if (firstSection) {
