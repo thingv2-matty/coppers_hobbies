@@ -20,19 +20,12 @@
 
     // About
     '.ch-hs-about{padding:72px 0;background:#faf7f1;border-top:1px solid #ece4d6}',
-    '.ch-hs-about-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 280px;gap:64px;align-items:start}',
-    '@media(max-width:880px){.ch-hs-about-inner{grid-template-columns:1fr;gap:40px}}',
+    '.ch-hs-about-inner{max-width:760px;margin:0 auto;padding:0 32px}',
     '@media(max-width:600px){.ch-hs-about-inner{padding:0 20px}}',
     '.ch-hs-about-eye{display:block;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c9943a;margin-bottom:16px}',
     '.ch-hs-about-h2{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:500;color:#1f1c18;margin:0 0 24px;line-height:1.2;text-wrap:balance}',
     '.ch-hs-about-p{font-size:15px;color:#5e5850;line-height:1.8;margin:0 0 16px}',
     '.ch-hs-about-p:last-child{margin-bottom:0}',
-    '.ch-hs-stats{display:flex;flex-direction:column;gap:14px}',
-    '.ch-hs-stat{background:#fff;border:1px solid #ece4d6;border-radius:10px;padding:22px 20px;text-align:center}',
-    '.ch-hs-stat-num{font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:500;color:#c9943a;line-height:1;display:block;margin-bottom:5px}',
-    '.ch-hs-stat-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8273}',
-    '@media(max-width:880px){.ch-hs-stats{flex-direction:row}.ch-hs-stat{flex:1}}',
-    '@media(max-width:480px){.ch-hs-stats{flex-direction:column}}',
 
     // Events
     '.ch-hs-events{padding:72px 0;background:#fff;border-top:1px solid #ece4d6}',
@@ -105,18 +98,11 @@
 
       '<section class="ch-hs-about">' +
         '<div class="ch-hs-about-inner">' +
-          '<div>' +
-            '<span class="ch-hs-about-eye">About the Humane Society</span>' +
-            '<h2 class="ch-hs-about-h2">A safe haven for animals across the region</h2>' +
-            '<p class="ch-hs-about-p">The Humane Society of Kitchener Waterloo Stratford &amp; Perth is a non-profit animal welfare organization serving the Waterloo Region and Stratford-Perth area. Their dedicated team works tirelessly to rescue, shelter, and find loving homes for animals in need.</p>' +
-            '<p class="ch-hs-about-p">Beyond adoption, the Humane Society provides veterinary care, community outreach, and education programs that promote responsible pet ownership and the humane treatment of all animals across the region.</p>' +
-            '<p class="ch-hs-about-p">Copper\'s Hobbies is proud to support their mission. A portion of every sale from the Copper\'s Canvas Challenge goes directly to the Humane Society.</p>' +
-          '</div>' +
-          '<div class="ch-hs-stats">' +
-            '<div class="ch-hs-stat"><span class="ch-hs-stat-num">KW</span><span class="ch-hs-stat-label">Kitchener-Waterloo</span></div>' +
-            '<div class="ch-hs-stat"><span class="ch-hs-stat-num">S&amp;P</span><span class="ch-hs-stat-label">Stratford &amp; Perth</span></div>' +
-            '<div class="ch-hs-stat"><span class="ch-hs-stat-num">Non</span><span class="ch-hs-stat-label">Non-Profit</span></div>' +
-          '</div>' +
+          '<span class="ch-hs-about-eye">About the Humane Society</span>' +
+          '<h2 class="ch-hs-about-h2">A safe haven for animals across the region</h2>' +
+          '<p class="ch-hs-about-p">The Humane Society of Kitchener Waterloo Stratford &amp; Perth is a non-profit animal welfare organization serving the Waterloo Region and Stratford-Perth area. Their dedicated team works tirelessly to rescue, shelter, and find loving homes for animals in need.</p>' +
+          '<p class="ch-hs-about-p">Beyond adoption, the Humane Society provides veterinary care, community outreach, and education programs that promote responsible pet ownership and the humane treatment of all animals across the region.</p>' +
+          '<p class="ch-hs-about-p">Copper\'s Hobbies is proud to support their mission. A portion of every sale from the Copper\'s Canvas Challenge goes directly to the Humane Society.</p>' +
         '</div>' +
       '</section>' +
 
